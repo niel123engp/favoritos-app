@@ -3,7 +3,7 @@
 // @namespace    favoritos
 // @updateURL    https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
 // @downloadURL  https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
-// @version      2.1
+// @version      2.2
 // @description  Lê as odds 1x2 (margem 0%) dos jogos do dia e acompanha a movimentação dos jogos de margem 0% (piloto) na Parimatch, gravando na planilha "Favorito e odds de valor". Só lê; nunca aposta.
 // @match        https://parimatch-hub.bet/*
 // @match        https://packball.com/*
@@ -47,7 +47,17 @@
       return O.apply(this, arguments);
     };
 
-    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    // Relógio num Worker: o Chrome segura os timers de aba em segundo plano (1 por minuto); os do Worker não.
+    let relogio = null; const espera = {}; let seq = 0;
+    try {
+      relogio = new Worker(URL.createObjectURL(new Blob(['onmessage=function(e){setTimeout(function(){postMessage(e.data.id)},e.data.ms)}'], { type: 'text/javascript' })));
+      relogio.onmessage = (e) => { const f = espera[e.data]; if (f) { delete espera[e.data]; f(); } };
+      relogio.onerror = () => { relogio = null; Object.keys(espera).forEach((k) => { const f = espera[k]; delete espera[k]; f(); }); };
+    } catch (e) { relogio = null; }
+    const sleep = (ms) => new Promise((r) => {
+      if (!relogio) return setTimeout(r, ms);
+      const id = ++seq; espera[id] = r; relogio.postMessage({ id, ms });
+    });
     const estado = { ultimo: '', feitos: 0, falhas: {}, log: [] };
     window.__pbEstado = estado;
     const log = (t) => {
