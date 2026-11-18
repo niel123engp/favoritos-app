@@ -195,7 +195,7 @@
     if (j.resultado || comecou(j)) return null;
     const t = tier(j); if (t !== 'g' && t !== 'a') return null;
     const odd = num(j.odd), alvo = num(j.oddMinima), ev = num(j.ev);
-    if (!alvo) return null;
+    if (!alvo || !odd) return null;
     if (odd && odd >= alvo && ev != null && ev >= 2) return 'agora';
     return 'espera';
   }
