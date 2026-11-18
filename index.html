@@ -203,7 +203,7 @@
   function cardJogo(j, i) {
     const t = tier(j);
     const alvo = j.oddMinima || '—';
-    const ev = j.evAntecipado || j.ev || '—';
+    const ev = j.ev || j.evAntecipado || '—';   // EV da fórmula da planilha (recalcula com a odd ao vivo)
     const res = j.resultado ? `<span class="res ${esc(j.resultado)}">${esc(j.resultado)}</span>` : '';
     return `<div class="card tap ${j.apostada ? 'bet' : ''}" data-jogo="${i}">
       <div class="row"><div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
@@ -326,7 +326,7 @@
         <div><div class="k">Odd justa Pinnacle</div><div class="n">${esc(j.oddJusta || '—')}</div></div>
         <div><div class="k">Alvo (EV +2%)</div><div class="n pos">${esc(j.oddMinima || '—')}</div></div>
         <div><div class="k">EV puro (Pinnacle)</div><div class="n ${evClass(j.evPinnacle)}">${esc(j.evPinnacle || '—')}</div></div>
-        <div><div class="k">EV c/ pag. antecipado</div><div class="n ${evClass(j.evAntecipado)}">${esc(j.evAntecipado || '—')}</div></div>
+        <div><div class="k">EV atual (odd ao vivo)</div><div class="n ${evClass(j.ev)}">${esc(j.ev || '—')}</div></div>
         <div><div class="k">Prob. estimada</div><div class="n">${esc(j.prob || '—')}</div></div>
       </div>
       ${p('Motivo', j.motivo)}${p('Contexto', j.alertaContexto || j.contexto)}${p('Critérios', j.criterios)}${p('A favor', j.aFavor)}${p('Contra', j.contra)}${p('Observação', j.obs)}
