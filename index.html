@@ -190,11 +190,14 @@
     const ini = new Date(); ini.setHours(+m[1], +m[2], 0, 0);
     return now >= ini;
   }
+  // odd e EV atuais: a última leitura do guardião (a planilha guarda a odd de entrada quando a aposta já foi feita)
+  const oddV = (j) => (j.oddAtual != null ? String(j.oddAtual).replace('.', ',') : j.odd);
+  const evV = (j) => (j.evAtual != null ? (j.evAtual > 0 ? '+' : '') + String(j.evAtual).replace('.', ',') + '%' : j.ev);
   // 'agora' = decisão verde/amarela, odd atual ≥ alvo e EV ≥ 2% · 'espera' = boa decisão, preço ainda abaixo do alvo
   function valor(j) {
     if (j.resultado || comecou(j)) return null;
     const t = tier(j); if (t !== 'g' && t !== 'a') return null;
-    const odd = num(j.odd), alvo = num(j.oddMinima), ev = num(j.ev);
+    const odd = num(oddV(j)), alvo = num(j.oddMinima), ev = num(evV(j));
     if (!alvo || !odd) return null;
     if (odd && odd >= alvo && ev != null && ev >= 2) return 'agora';
     return 'espera';
@@ -202,7 +205,7 @@
   function textoEntrada(j) {
     const v = valor(j);
     return `⚽ ${j.jogo} · ${j.hora}${j.liga ? ' · ' + j.liga : ''}\n` +
-      (v === 'espera' ? `⏳ ${j.favorito} só se pagar ≥ @${j.oddMinima} (agora @${j.odd || '—'})\n` : `✅ ${j.favorito} vence @${j.odd} (Parimatch)\n🎯 Não entrar abaixo de @${j.oddMinima}\n📈 EV ${j.ev}\n`) +
+      (v === 'espera' ? `⏳ ${j.favorito} só se pagar ≥ @${j.oddMinima} (agora @${oddV(j) || '—'})\n` : `✅ ${j.favorito} vence @${oddV(j)} (Parimatch)\n🎯 Não entrar abaixo de @${j.oddMinima}\n📈 EV ${evV(j)}\n`) +
       `👉 ${linkAposta(j)}`;
   }
   async function compartilhar(txt) {
@@ -217,9 +220,9 @@
     return `<div class="vcard ${v === 'espera' ? 'wait' : ''}">
       <div class="vtop"><div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
         ${j.apostada ? '<span class="pill b">você já apostou</span>' : `<span class="pill ${v === 'agora' ? 'g' : 'a'}"><span class="d ${v === 'agora' ? 'g' : 'a'}"></span>${v === 'agora' ? 'Valor agora' : 'Esperando preço'}</span>`}</div>
-      <div class="vpick">${esc(j.favorito)} <span class="o">@${esc(j.odd || '—')}</span></div>
-      <div class="vsub">${esc(j.jogo)}</div>
-      <div class="vline"><span>Mínimo <b>@${esc(j.oddMinima)}</b></span><span>EV <b class="${evClass(j.ev)}">${esc(j.ev || '—')}</b></span>${j.prob ? `<span>Chance <b>${esc(j.prob)}</b></span>` : ''}</div>
+      <div class="vpick">${esc(j.favorito)} <span class="o">@${esc(oddV(j) || '—')}</span></div>
+      <div class="vsub">${esc(j.jogo)}${j.oddAtualEm ? ' · odd lida às ' + esc(j.oddAtualEm) : ''}</div>
+      <div class="vline"><span>Mínimo <b>@${esc(j.oddMinima)}</b></span><span>EV <b class="${evClass(evV(j))}">${esc(evV(j) || '—')}</b></span>${j.apostada && j.oddAtual != null && num(j.odd) !== j.oddAtual ? `<span>Sua entrada <b>@${esc(j.odd)}</b></span>` : ''}${j.prob ? `<span>Chance <b>${esc(j.prob)}</b></span>` : ''}</div>
       <div class="acts">
         <a class="a-bet" href="${esc(linkAposta(j))}" target="_blank" rel="noopener">${icoBet}${v === 'agora' ? 'Apostar' : 'Abrir jogo'}</a>
         <button type="button" class="a-share" data-share="${i}" aria-label="Compartilhar">${icoShare}</button>
