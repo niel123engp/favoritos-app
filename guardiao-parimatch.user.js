@@ -3,7 +3,7 @@
 // @namespace    favoritos
 // @updateURL    https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
 // @downloadURL  https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
-// @version      1.2
+// @version      1.3
 // @description  Lê as odds 1x2 (margem 0%) e marca se há pagamento antecipado (2UP) nos jogos do dia na Parimatch e grava na planilha "Favorito e odds de valor". Só lê; nunca aposta.
 // @match        https://parimatch-hub.bet/*
 // @grant        none
@@ -150,7 +150,9 @@
     let resp = null;
     if (leituras.length) {
       try {
-        resp = await (await fetch(API, { method: 'POST', body: JSON.stringify({ k: KEY, dia, leituras }) })).json();
+        // GET, porque o site da Parimatch bloqueia POST para fora
+        const url = API + '?k=' + encodeURIComponent(KEY) + '&dia=' + encodeURIComponent(dia) + '&leituras=' + encodeURIComponent(JSON.stringify(leituras)) + '&_=' + Date.now();
+        resp = await (await fetch(url, { cache: 'no-store' })).json();
       } catch (e) { log('falha ao gravar', e); }
     }
     const hhmm = new Date().toLocaleTimeString('pt-BR').slice(0, 5);
