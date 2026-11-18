@@ -3,7 +3,7 @@
 // @namespace    favoritos
 // @updateURL    https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
 // @downloadURL  https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
-// @version      2.3
+// @version      2.4
 // @description  Lê as odds 1x2 (margem 0%) dos jogos do dia e acompanha a movimentação dos jogos de margem 0% (piloto) na Parimatch, gravando na planilha "Favorito e odds de valor". Só lê; nunca aposta.
 // @match        https://parimatch-hub.bet/*
 // @match        https://packball.com/*
@@ -17,6 +17,8 @@
   const API = 'https://script.google.com/macros/s/AKfycbz1ZowgfolCmH6HWEH49olOa4p2WZASaI8r8uNgl922SOBMxCg10GNOQ5dB_phDy83L-w/exec';
   // A chave NÃO fica neste arquivo (ele é público). Na primeira vez o guardião pergunta e guarda no Chrome.
   let KEY = localStorage.getItem('guard.key') || '';
+  // Segura um Web Lock: o Chrome congela abas paradas em segundo plano; aba com lock não é congelada.
+  try { navigator.locks.request('favoritos-guardiao-' + Date.now(), () => new Promise(() => {})); } catch (e) { /* sem locks */ }
 
   // ======== COLETOR PACKBALL (v2.1) ========
   // No site do PackBall este mesmo script vira o coletor: para cada jogo das abas da planilha ele abre
