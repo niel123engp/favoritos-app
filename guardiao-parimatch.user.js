@@ -144,16 +144,24 @@
     const proximoDia = (ymd) => new Date(Date.parse(ymd + 'T12:00:00Z') + 86400000).toISOString().slice(0, 10);
 
     (async () => {
-      if (!KEY) {
-        KEY = prompt('Coletor PackBall: cole a chave do app Favoritos (só na primeira vez)') || '';
-        if (KEY) localStorage.setItem('guard.key', KEY);
-      }
+      // Chave própria do coletor: nasce aqui e é aceita pela planilha num pareamento (sem digitar nada).
+      let PBK = localStorage.getItem('pb.key') || '';
+      const parear = async () => {
+        const nova = (crypto.randomUUID() + crypto.randomUUID()).replace(/[^\w-]/g, '');
+        try {
+          const r = await (await fetch(API, { method: 'POST', body: JSON.stringify({ pbPair: nova }) })).json();
+          if (r.ok) { PBK = nova; localStorage.setItem('pb.key', nova); log('pareado com a planilha'); }
+          else log('aguardando pareamento com a planilha (' + r.erro + ')');
+        } catch (e) { log('pareamento: ' + e); }
+      };
       log('coletor ligado');
       while (true) {
+        if (!PBK) { await parear(); if (!PBK) { await sleep(60000); continue; } }
         try {
-          const api = await (await fetch(API + '?k=' + encodeURIComponent(KEY) + '&pbLista=1&_=' + Date.now(), { cache: 'no-store' })).json();
+          const api = await (await fetch(API + '?k=' + encodeURIComponent(PBK) + '&pbLista=1&_=' + Date.now(), { cache: 'no-store' })).json();
           const lista = (api.jogos || []).filter((j) => !(estado.falhas[j.dia + '|' + j.jogo] > Date.now()));
           log(api.ok ? 'pendentes: ' + lista.length : 'erro da planilha: ' + api.erro);
+          if (!api.ok && /chave/.test(String(api.erro))) { PBK = ''; localStorage.removeItem('pb.key'); }
           const listas = {};
           const fxDia = async (ymd) => { if (!listas[ymd]) listas[ymd] = await irParaDia(ymd); return listas[ymd]; };
           for (const j of lista) {
@@ -164,7 +172,7 @@
             if (!Object.keys(r.abas).length) { log('sem painel: ' + j.jogo); continue; }
             const resp = await (await fetch(API, {
               method: 'POST',
-              body: JSON.stringify({ k: KEY, packball: { dia: j.dia, hora: j.hora, liga: j.liga, jogo: j.jogo, id: f.a, url: r.url, abas: r.abas } }),
+              body: JSON.stringify({ k: PBK, packball: { dia: j.dia, hora: j.hora, liga: j.liga, jogo: j.jogo, id: f.a, url: r.url, abas: r.abas } }),
             })).json();
             estado.feitos++;
             log(j.dia + ' ' + j.jogo + ' → ' + (resp.ok ? 'gravado; análise: ' + resp.analise : 'erro: ' + resp.erro));
