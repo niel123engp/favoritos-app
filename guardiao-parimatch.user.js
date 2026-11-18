@@ -3,8 +3,8 @@
 // @namespace    favoritos
 // @updateURL    https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
 // @downloadURL  https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
-// @version      1.4
-// @description  Lê as odds 1x2 (margem 0%) e marca se há pagamento antecipado (2UP) nos jogos do dia na Parimatch e grava na planilha "Favorito e odds de valor". Só lê; nunca aposta.
+// @version      2.0
+// @description  Lê as odds 1x2 (margem 0%) dos jogos do dia e acompanha a movimentação dos jogos de margem 0% (piloto) na Parimatch, gravando na planilha "Favorito e odds de valor". Só lê; nunca aposta.
 // @match        https://parimatch-hub.bet/*
 // @grant        none
 // @run-at       document-idle
@@ -168,7 +168,152 @@
     while (true) {
       let esperar = CADA_MIN;
       try { esperar = await varrer(); } catch (e) { log('erro geral', e); st('erro: ' + e.message, '#F87171'); }
+      limparFila();
       await new Promise((r) => setTimeout(r, esperar * 60000));
+    }
+  })();
+
+  // =====================================================================
+  // PILOTO MARGEM 0% — acompanha a movimentação dos jogos de margem 0%
+  // nas 24 h antes do apito (30 min longe, 10 min a 1–6 h, 3 min na última hora)
+  // e procura jogos novos de margem 0% de hora em hora.
+  // =====================================================================
+  const PIL_JANELA_H = 24;
+  const PIL_CADENCIA = (min) => (min > 360 ? 30 : min > 60 ? 10 : 3);   // minutos entre leituras
+  const PIL_BUSCA_MIN = 60;                                           // procura jogos novos
+  const PIL_LIGAS = 'pil.ligas0';                                     // ligas onde já apareceu margem 0%
+
+  // o site acumula filas de estatística no armazenamento a cada página aberta; quando enche, nada mais grava
+  function limparFila() {
+    try { Object.keys(localStorage).filter((k) => k.startsWith('snowplowOutQueue_')).forEach((k) => localStorage.removeItem(k)); } catch (e) { }
+  }
+
+  const MESES = { JAN: 0, FEV: 1, MAR: 2, ABR: 3, MAI: 4, JUN: 5, JUL: 6, AGO: 7, SET: 8, OUT: 9, NOV: 10, DEZ: 11 };
+  function dataDe(rot) {   // 'HOJE' | 'AMANHÃ' | '21 DE NOV.'
+    const d = new Date(); d.setHours(0, 0, 0, 0);
+    if (/^HOJE/.test(rot)) return d;
+    if (/^AMANH/.test(rot)) { d.setDate(d.getDate() + 1); return d; }
+    const m = rot.match(/^(\d{1,2}) DE ([A-ZÇ]{3})/);
+    if (!m || MESES[m[2]] === undefined) return null;
+    const r = new Date(d.getFullYear(), MESES[m[2]], +m[1]);
+    if (r < d && d.getMonth() === 11 && MESES[m[2]] === 0) r.setFullYear(d.getFullYear() + 1);
+    return r;
+  }
+  const dd = (d) => String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+
+  // lê a página de uma liga e devolve os jogos com odds normais e de margem 0%
+  function lerLiga(doc) {
+    const txt = doc.body ? doc.body.innerText : '';
+    const lm = txt.match(/Futebol\. ([^\n]+)/);
+    const liga = lm ? lm[1].trim() : '';
+    const out = [];
+    doc.querySelectorAll('a[href*="/events/"]').forEach((a) => {
+      const idm = (a.getAttribute('href') || '').match(/-(\d+)$/); if (!idm) return;
+      const ls = a.innerText.split('\n').map((s) => s.trim()).filter(Boolean);
+      const dm = (ls[0] || '').match(/^(HOJE|AMANHÃ|\d{1,2} DE [A-ZÇ]+\.?), (\d{1,2}:\d{2})$/); if (!dm) return;
+      let j = 1; if (/^\+\d+$/.test(ls[j])) j++;
+      const home = ls[j], away = ls[j + 1]; j += 2;
+      const nums = []; const pos = [];
+      for (; j < ls.length; j++) {
+        if (/^\d+\.\d+$/.test(ls[j])) nums.push(parseFloat(ls[j]));
+        else if (/^[1X2]$/.test(ls[j])) pos.push(nums.length);
+        else break;
+      }
+      const dia = dataDe(dm[1]); if (!dia || !home || !away) return;
+      let z = null, n = null;
+      if (pos.join() === '2,4,6' && nums.length === 6) { n = [nums[0], nums[2], nums[4]]; z = [nums[1], nums[3], nums[5]]; }
+      else if (pos.join() === '1,2,3' && nums.length === 3) { n = nums.slice(0, 3); }
+      out.push({ id: idm[1], liga, dia: dd(dia), hora: dm[2].padStart(5, '0'), home, away, jogo: home + ' x ' + away, n, z, mz: !!z });
+    });
+    return out;
+  }
+
+  function abrir(url, ms = 15000) {
+    return new Promise((res) => {
+      const f = document.createElement('iframe');
+      f.style.cssText = 'position:fixed;left:0;top:0;width:1400px;height:5000px;opacity:0.01;z-index:-1;pointer-events:none';
+      f.src = url; document.body.appendChild(f);
+      const t0 = Date.now(); let ult = -1;
+      const iv = setInterval(() => {
+        let r = null;
+        try {
+          const d = f.contentDocument; const n = d.querySelectorAll('a[href*="/events/"]').length;
+          if (n > 0 && n === ult) r = lerLiga(d); ult = n;
+          if (!r && Date.now() - t0 > ms) r = lerLiga(d);
+        } catch (e) { if (Date.now() - t0 > ms) r = []; }
+        if (r) { clearInterval(iv); f.remove(); limparFila(); res({ url, jogos: r }); }
+      }, 1200);
+    });
+  }
+
+  async function api(params) {
+    let q = API + '?k=' + encodeURIComponent(KEY);
+    Object.keys(params).forEach((k) => { q += '&' + k + '=' + encodeURIComponent(params[k]); });
+    return (await fetch(q + '&_=' + Date.now(), { cache: 'no-store' })).json();
+  }
+  async function enviarEmLotes(chave, lista, extra) {
+    let tot = 0;
+    for (let i = 0; i < lista.length; i += 12) {
+      try { const r = await api(Object.assign({ [chave]: JSON.stringify(lista.slice(i, i + 12)) }, extra || {})); if (r && r.ok) tot += (r.gravadas || r.novos || 0) + (r.atualizados || 0); } catch (e) { log('piloto: falha ao enviar', e); }
+    }
+    return tot;
+  }
+
+  async function lerVarias(urls, paralelo = 3) {
+    const res = []; let i = 0;
+    const w = async () => { while (i < urls.length) { const u = urls[i++]; res.push(await abrir(u)); } };
+    await Promise.all(Array.from({ length: paralelo }, w));
+    return res;
+  }
+
+  // procura jogos novos de margem 0% (ligas já conhecidas a cada hora)
+  async function pilotoBuscar() {
+    const ligas = JSON.parse(localStorage.getItem(PIL_LIGAS) || '[]');
+    if (!ligas.length) return 0;
+    const rs = await lerVarias(ligas);
+    const novos = [];
+    rs.forEach((r) => r.jogos.filter((j) => j.mz).forEach((j) => novos.push({ id: j.id, liga: j.liga, dia: j.dia, hora: j.hora, home: j.home, away: j.away, url: r.url, z: true })));
+    return novos.length ? enviarEmLotes('monitor', novos) : 0;
+  }
+
+  // lê as ligas que têm jogo "na hora" de leitura
+  async function pilotoLer() {
+    const r = await api({ listaMonitor: 1 });
+    if (!r || !r.ok) return { lidos: 0, devidos: 0 };
+    const agora = Date.now();
+    const devidos = (r.jogos || []).filter((j) => {
+      const min = (j.ini - agora) / 60000;
+      if (min > PIL_JANELA_H * 60 || min < -5) return false;
+      return !j.ult || (agora - j.ult) >= PIL_CADENCIA(min) * 60000 - 30000;
+    });
+    if (!devidos.length) return { lidos: 0, devidos: 0, prox: (r.jogos || []).length };
+    const urls = [...new Set(devidos.map((j) => j.url).filter(Boolean))];
+    const rs = await lerVarias(urls);
+    const porId = {}; rs.forEach((x) => x.jogos.forEach((j) => { porId[j.id] = j; }));
+    const movs = [];
+    devidos.forEach((d) => {
+      const j = porId[d.id];
+      if (j) movs.push({ id: d.id, liga: j.liga || d.liga, jogo: j.jogo, dia: j.dia, hora: j.hora, z: j.z, n: j.n, mz: j.mz });
+    });
+    const g = movs.length ? await enviarEmLotes('mov', movs) : 0;
+    return { lidos: g, devidos: devidos.length };
+  }
+
+  (async function loopPiloto() {
+    await new Promise((r) => setTimeout(r, 45000));     // deixa a primeira varredura dos Favoritos rodar
+    let ultBusca = 0;
+    while (true) {
+      try {
+        if (souDono()) {
+          if (Date.now() - ultBusca > PIL_BUSCA_MIN * 60000) { const n = await pilotoBuscar(); ultBusca = Date.now(); log('piloto: busca', n); }
+          const r = await pilotoLer();
+          const hh = new Date().toLocaleTimeString('pt-BR').slice(0, 5);
+          if (r.devidos) log('piloto: ' + r.lidos + '/' + r.devidos + ' leituras ' + hh);
+          badge.title = 'Piloto 0%: ' + r.lidos + '/' + r.devidos + ' leituras às ' + hh;
+        }
+      } catch (e) { log('piloto: erro', e); }
+      limparFila();
+      await new Promise((r) => setTimeout(r, 60000));
     }
   })();
 })();
