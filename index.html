@@ -108,6 +108,28 @@
   .btn.ghost { background:var(--surface2); color:var(--text); }
   input { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:12px; padding:12px; font-size:14px; font-family:inherit; }
   .note { font-size:12px; color:var(--muted); line-height:1.5; }
+  .vcard { background:linear-gradient(0deg, var(--surface), var(--surface)); border:1px solid rgba(52,211,153,.45); border-radius:18px; padding:13px 15px; margin-bottom:10px; }
+  .vcard.wait { border-color:rgba(251,191,36,.4); }
+  .vtop { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .vpick { font-size:19px; font-weight:800; margin-top:8px; letter-spacing:-.01em; }
+  .vpick .o { color:var(--green); }
+  .vcard.wait .vpick .o { color:var(--amber); }
+  .vsub { font-size:12px; color:var(--muted); margin-top:2px; }
+  .vline { display:flex; gap:14px; margin-top:8px; font-size:12.5px; color:var(--muted); flex-wrap:wrap; }
+  .vline b { color:var(--text); font-weight:700; }
+  .acts { display:grid; grid-template-columns:1fr auto auto; gap:8px; margin-top:12px; }
+  .acts button, .acts a { border:0; border-radius:12px; padding:12px 12px; font-size:14px; font-weight:800; text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center; gap:6px; }
+  .a-bet { background:var(--green); color:#06281C; }
+  .vcard.wait .a-bet { background:var(--amber); color:#3A2A02; }
+  .a-share { background:var(--surface2); color:var(--text); min-width:48px; }
+  .a-info { background:var(--surface2); color:var(--muted); min-width:48px; }
+  .acts svg { width:18px; height:18px; }
+  .hero { display:flex; justify-content:space-between; align-items:center; gap:10px; background:var(--green-bg); border:1px solid rgba(52,211,153,.35); border-radius:16px; padding:12px 14px; margin-bottom:12px; }
+  .hero .t { font-size:13px; color:var(--green); font-weight:700; }
+  .hero .s { font-size:11.5px; color:var(--muted); margin-top:2px; }
+  .hero button { border:0; border-radius:12px; padding:10px 12px; font-size:13px; font-weight:800; background:var(--green); color:#06281C; white-space:nowrap; }
+  .hero.none { background:var(--surface); border-color:var(--border); }
+  .hero.none .t { color:var(--muted); }
   .toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(84px + var(--safe-b)); background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:12px; font-size:13px; z-index:30; }
 </style>
 </head>
@@ -156,6 +178,55 @@
   const tierTxt = { g: 'Entra', a: 'Avaliar', r: 'Fora', n: 'Sem decisão' };
   const evClass = (s) => { const n = num(s); if (n == null) return ''; return n >= 2 ? 'pos' : n >= 0 ? 'mid' : 'neg'; };
 
+  // ================== ENTRADAS DE VALOR ==================
+  const PM = 'https://parimatch-hub.bet';
+  const linkAposta = (j) => j.eventId ? PM + '/pt/events/x-' + encodeURIComponent(j.eventId) : PM + '/pt/sports/football';
+  // jogo já começou? (só vale para a aba de hoje; 00:00 = virada da noite, ainda não começou)
+  function comecou(j) {
+    const now = new Date();
+    if (String(data && data.dia) !== String(now.getDate())) return false;
+    const m = String(j.hora || '').match(/^(\d{1,2}):(\d{2})/); if (!m) return false;
+    if (+m[1] === 0 && +m[2] === 0) return false;
+    const ini = new Date(); ini.setHours(+m[1], +m[2], 0, 0);
+    return now >= ini;
+  }
+  // 'agora' = decisão verde/amarela, odd atual ≥ alvo e EV ≥ 2% · 'espera' = boa decisão, preço ainda abaixo do alvo
+  function valor(j) {
+    if (j.resultado || comecou(j)) return null;
+    const t = tier(j); if (t !== 'g' && t !== 'a') return null;
+    const odd = num(j.odd), alvo = num(j.oddMinima), ev = num(j.ev);
+    if (!alvo) return null;
+    if (odd && odd >= alvo && ev != null && ev >= 2) return 'agora';
+    return 'espera';
+  }
+  function textoEntrada(j) {
+    const v = valor(j);
+    return `⚽ ${j.jogo} · ${j.hora}${j.liga ? ' · ' + j.liga : ''}\n` +
+      (v === 'espera' ? `⏳ ${j.favorito} só se pagar ≥ @${j.oddMinima} (agora @${j.odd || '—'})\n` : `✅ ${j.favorito} vence @${j.odd} (Parimatch)\n🎯 Não entrar abaixo de @${j.oddMinima}\n📈 EV ${j.ev}\n`) +
+      `👉 ${linkAposta(j)}`;
+  }
+  async function compartilhar(txt) {
+    try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+    try { await navigator.clipboard.writeText(txt); toast('Copiado. Cole no WhatsApp.'); } catch (e) { location.href = 'https://wa.me/?text=' + encodeURIComponent(txt); }
+  }
+  const icoBet = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>';
+  const icoShare = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
+  const icoInfo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>';
+  function cardValor(j, i) {
+    const v = valor(j);
+    return `<div class="vcard ${v === 'espera' ? 'wait' : ''}">
+      <div class="vtop"><div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
+        ${j.apostada ? '<span class="pill b">você já apostou</span>' : `<span class="pill ${v === 'agora' ? 'g' : 'a'}"><span class="d ${v === 'agora' ? 'g' : 'a'}"></span>${v === 'agora' ? 'Valor agora' : 'Esperando preço'}</span>`}</div>
+      <div class="vpick">${esc(j.favorito)} <span class="o">@${esc(j.odd || '—')}</span></div>
+      <div class="vsub">${esc(j.jogo)}</div>
+      <div class="vline"><span>Mínimo <b>@${esc(j.oddMinima)}</b></span><span>EV <b class="${evClass(j.ev)}">${esc(j.ev || '—')}</b></span>${j.prob ? `<span>Chance <b>${esc(j.prob)}</b></span>` : ''}</div>
+      <div class="acts">
+        <a class="a-bet" href="${esc(linkAposta(j))}" target="_blank" rel="noopener">${icoBet}${v === 'agora' ? 'Apostar' : 'Abrir jogo'}</a>
+        <button type="button" class="a-share" data-share="${i}" aria-label="Compartilhar">${icoShare}</button>
+        <button type="button" class="a-info" data-jogo="${i}" aria-label="Detalhes">${icoInfo}</button>
+      </div></div>`;
+  }
+
   // ================== DADOS ==================
   async function load(manual) {
     const sy = $('#sync'), st = $('#synctxt');
@@ -188,7 +259,13 @@
     const titles = { hoje: 'Hoje', apostas: 'Apostas', painel: 'Painel', alertas: 'Alertas' };
     $('#htitle').textContent = titles[tab];
     m.innerHTML = ({ hoje: viewHoje, apostas: viewApostas, painel: viewPainel, alertas: viewAlertas })[tab]();
-    m.querySelectorAll('[data-jogo]').forEach((c) => c.addEventListener('click', () => openJogo(c.dataset.jogo)));
+    m.querySelectorAll('[data-jogo]').forEach((c) => c.addEventListener('click', (e) => { e.stopPropagation(); openJogo(c.dataset.jogo); }));
+    m.querySelectorAll('[data-share]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); compartilhar(textoEntrada(data.hoje.jogos[b.dataset.share])); }));
+    m.querySelectorAll('[data-shareall]').forEach((b) => b.addEventListener('click', () => {
+      const js = (data.hoje.jogos || []).filter((j) => valor(j) === 'agora');
+      if (!js.length) return;
+      compartilhar('🔥 Entradas de valor · ' + ((data.hoje.kpi && data.hoje.kpi.DATA) || 'hoje') + '\n\n' + js.map(textoEntrada).join('\n\n') + '\n\nStake fixa · odd abaixo do mínimo = não entra.');
+    }));
     window.scrollTo(0, 0);
   }
 
@@ -221,7 +298,15 @@
     const d = data.hoje || {}, js = d.jogos || [];
     if (!d.existe) return '<div class="empty">A aba de hoje ainda não foi criada.<br>Ela nasce às 22h do dia anterior.</div>';
     const c = { g: 0, a: 0, r: 0 }; js.forEach((j) => { const t = tier(j); if (c[t] != null) c[t]++; });
-    let h = `<div class="tiles">
+    const porHora = (a, b) => String(js[a].hora).localeCompare(String(js[b].hora));
+    const agora = js.map((j, i) => i).filter((i) => valor(js[i]) === 'agora').sort((a, b) => (num(js[b].ev) || 0) - (num(js[a].ev) || 0));
+    const espera = js.map((j, i) => i).filter((i) => valor(js[i]) === 'espera').sort(porHora);
+    let h = agora.length
+      ? `<div class="hero"><div><div class="t">${agora.length} entrada${agora.length > 1 ? 's' : ''} de valor agora</div><div class="s">Toque em Apostar: abre o jogo na Parimatch.</div></div><button type="button" data-shareall="1">${icoShare.replace('<svg', '<svg style="width:15px;height:15px;vertical-align:-3px"')} Enviar</button></div>`
+      : `<div class="hero none"><div><div class="t">Nenhuma entrada com valor agora</div><div class="s">${espera.length ? espera.length + ' jogo(s) esperando o preço subir.' : 'O guardião atualiza as odds sozinho.'}</div></div></div>`;
+    if (agora.length) { h += `<div class="sec"><h2>Entrar agora</h2><span>odd ≥ mínimo · EV ≥ 2%</span></div>`; agora.forEach((i) => { h += cardValor(js[i], i); }); }
+    if (espera.length) { h += `<div class="sec"><h2>Esperando preço</h2><span>entra se a odd subir</span></div>`; espera.forEach((i) => { h += cardValor(js[i], i); }); }
+    h += `<div class="tiles" style="margin-top:14px">
       <div class="tile"><div class="l"><span class="d g"></span>Entra</div><div class="v">${c.g}</div></div>
       <div class="tile"><div class="l"><span class="d a"></span>Avaliar</div><div class="v">${c.a}</div></div>
       <div class="tile"><div class="l"><span class="d r"></span>Fora</div><div class="v">${c.r}</div></div></div>`;
@@ -332,8 +417,11 @@
       ${p('Motivo', j.motivo)}${p('Contexto', j.alertaContexto || j.contexto)}${p('Critérios', j.criterios)}${p('A favor', j.aFavor)}${p('Contra', j.contra)}${p('Observação', j.obs)}
       ${j.resultado ? p('Resultado', j.resultado + (j.lucro ? ' · ' + j.lucro : '')) : ''}
       <div class="note" style="margin-top:12px">Stake fixa R$ 100. A aposta é feita por você na casa.</div>
+      <a class="btn" style="display:block;text-align:center;text-decoration:none" href="${esc(linkAposta(j))}" target="_blank" rel="noopener">Abrir na Parimatch</a>
+      <button class="btn ghost" type="button" id="shareS">Compartilhar</button>
       <button class="btn ghost" type="button" id="closeS">Fechar</button></div>`;
     document.body.appendChild(bg);
+    bg.querySelector('#shareS').addEventListener('click', () => compartilhar(textoEntrada(j)));
     bg.addEventListener('click', (e) => { if (e.target === bg || e.target.id === 'closeS') bg.remove(); });
   }
 
