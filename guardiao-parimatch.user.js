@@ -3,7 +3,7 @@
 // @namespace    favoritos
 // @updateURL    https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
 // @downloadURL  https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
-// @version      2.2
+// @version      2.3
 // @description  Lê as odds 1x2 (margem 0%) dos jogos do dia e acompanha a movimentação dos jogos de margem 0% (piloto) na Parimatch, gravando na planilha "Favorito e odds de valor". Só lê; nunca aposta.
 // @match        https://parimatch-hub.bet/*
 // @match        https://packball.com/*
@@ -47,6 +47,8 @@
       return O.apply(this, arguments);
     };
 
+    // Segura um Web Lock: o Chrome não congela abas que seguram um (abas paradas ou em grupo recolhido).
+    try { navigator.locks.request('pb-coletor-' + Date.now(), () => new Promise(() => {})); } catch (e) { /* sem locks */ }
     // Relógio num Worker: o Chrome segura os timers de aba em segundo plano (1 por minuto); os do Worker não.
     let relogio = null; const espera = {}; let seq = 0;
     try {
