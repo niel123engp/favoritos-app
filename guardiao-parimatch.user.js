@@ -3,9 +3,10 @@
 // @namespace    favoritos
 // @updateURL    https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
 // @downloadURL  https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
-// @version      2.0
+// @version      2.1
 // @description  Lê as odds 1x2 (margem 0%) dos jogos do dia e acompanha a movimentação dos jogos de margem 0% (piloto) na Parimatch, gravando na planilha "Favorito e odds de valor". Só lê; nunca aposta.
 // @match        https://parimatch-hub.bet/*
+// @match        https://packball.com/*
 // @grant        none
 // @run-at       document-idle
 // ==/UserScript==
@@ -16,6 +17,163 @@
   const API = 'https://script.google.com/macros/s/AKfycbz1ZowgfolCmH6HWEH49olOa4p2WZASaI8r8uNgl922SOBMxCg10GNOQ5dB_phDy83L-w/exec';
   // A chave NÃO fica neste arquivo (ele é público). Na primeira vez o guardião pergunta e guarda no Chrome.
   let KEY = localStorage.getItem('guard.key') || '';
+
+  // ======== COLETOR PACKBALL (v2.1) ========
+  // No site do PackBall este mesmo script vira o coletor: para cada jogo das abas da planilha ele abre
+  // todas as abas do jogo (pré-jogo, odds, estatísticas, jogadores, características, confrontos,
+  // classificação, oportunidades, análise), copia o texto e manda para a planilha. Só lê.
+  // Só trabalha na aba aberta em https://packball.com/pt/matches#coletor (a aba que você usa fica livre).
+  if (location.hostname.endsWith('packball.com')) { coletorPackball(); return; }
+
+  function coletorPackball() {
+    if (window.__pbColetor) return;
+    if (location.hash === '#coletor') sessionStorage.setItem('pb.coletor', '1');
+    if (sessionStorage.getItem('pb.coletor') !== '1') return;
+    window.__pbColetor = true;
+
+    const cap = {};
+    const O = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function (m, u) {
+      this.addEventListener('load', () => {
+        try {
+          if (!String(u).includes('api.packball.com')) return;
+          const p = new URL(u, location.href).pathname, rt = this.responseType;
+          if (rt === '' || rt === 'text') cap[p] = this.responseText;
+          else if (rt === 'json') cap[p] = JSON.stringify(this.response);
+          else if (rt === 'arraybuffer') cap[p] = new TextDecoder().decode(this.response);
+          else if (rt === 'blob') this.response.text().then((t) => { cap[p] = t; });
+        } catch (e) { /* ignora */ }
+      });
+      return O.apply(this, arguments);
+    };
+
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const estado = { ultimo: '', feitos: 0, falhas: {}, log: [] };
+    window.__pbEstado = estado;
+    const log = (t) => {
+      estado.ultimo = new Date().toLocaleTimeString() + ' ' + t;
+      estado.log.push(estado.ultimo); if (estado.log.length > 80) estado.log.shift();
+      console.log('[coletor PackBall]', t);
+    };
+    const go = async (path, ms) => { history.pushState({}, '', path); dispatchEvent(new PopStateEvent('popstate')); await sleep(ms || 3000); };
+    const painel = () => {
+      let p = document.querySelector('li > a[href$="/standings"]');
+      while (p && p.parentElement && !p.parentElement.querySelector('.grid-matches')) p = p.parentElement;
+      return p && p.parentElement ? p : null;
+    };
+
+    const LIXO = new Set('fc sc ec ca cf ac cd rj sp ba mg rs pr go ce pe club clube de do da la el rb as afc cs'.split(' '));
+    const semAcento = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const toks = (s) => semAcento(s).replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((t) => t && !LIXO.has(t));
+    const sim = (a, b) => {
+      const A = toks(a), B = toks(b);
+      if (!A.length || !B.length) return 0;
+      const n = A.filter((t) => B.some((u) => u === t || (t.length >= 4 && u.length >= 4 && (u.startsWith(t) || t.startsWith(u))))).length;
+      return n / Math.min(A.length, B.length);
+    };
+    const slug = (s) => semAcento(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    async function irParaDia(ymd) {
+      if (!document.querySelector('.arrow-nav')) await go('/pt/matches', 4000);
+      const alvo = ymd.slice(8, 10) + '/' + ymd.slice(5, 7);
+      const atual = () => ((document.querySelector('.arrow-nav .title-active') || {}).innerText || '').trim().slice(0, 5);
+      const num = (s) => +(s.slice(3, 5) + s.slice(0, 2));
+      const clicar = async (sel) => { const e = document.querySelector('.arrow-nav ' + sel); if (e) e.click(); await sleep(1300); };
+      for (let i = 0; i < 14 && atual() !== alvo; i++) await clicar(num(atual()) < num(alvo) ? '.arrow-next' : '.arrow-previous');
+      if (atual() !== alvo) return [];
+      // recarrega a lista deste dia para ter certeza de que a resposta capturada é a dele
+      await sleep(1500);
+      await clicar('.arrow-next'); await sleep(800);
+      delete cap['/fixtures/markets'];
+      await clicar('.arrow-previous');
+      for (let k = 0; k < 30 && !cap['/fixtures/markets']; k++) await sleep(400);
+      try { return JSON.parse(cap['/fixtures/markets']).data.b || []; } catch (e) { return []; }
+    }
+
+    function achar(j, fx) {
+      let best = null, bs = 0;
+      fx.forEach((f) => {
+        const h = sim(j.home, f.i && f.i.b), a = sim(j.away, f.j && f.j.b);
+        if (h < 0.5 || a < 0.5) return;
+        const t = f.g && f.g.a ? Date.parse(f.g.a) : 0;
+        if (j.kick && t && Math.abs(t - j.kick) > 3 * 3600000) return;
+        if (h + a > bs) { bs = h + a; best = f; }
+      });
+      return best;
+    }
+
+    const ABAS = {
+      preview: 'preview', odds: 'odds', 'team-stats': 'head-to-head/team-stats', 'player-stats': 'head-to-head/player-stats',
+      characteristics: 'head-to-head/characteristics', 'h2h-stats': 'head-to-head/h2h-stats', standings: 'standings',
+      predictions: 'predictions', analysis: 'analysis',
+    };
+    const limpa = (t) => {
+      const i = t.indexOf('Anotações');
+      return (i > 0 && i < 700 ? t.slice(i + 9) : t).replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim();
+    };
+
+    async function lerJogo(f) {
+      const base = '/pt/matches/' + f.a + '/match/' + slug(f.i.b) + 'x' + slug(f.j.b) + '/';
+      const abas = {};
+      for (const nome of Object.keys(ABAS)) {
+        await go(base + ABAS[nome], 3200);
+        let p = painel();
+        for (let k = 0; k < 8 && !p; k++) { await sleep(500); p = painel(); }
+        if (!p) continue;
+        let txt = limpa(p.innerText);
+        const vistos = new Set([txt]);
+        // sub-abas dentro da aba (outro time, gols, escanteios, cartões, casa/fora...)
+        const subs = [...p.querySelectorAll('ul.tabs > li')].filter((li) => {
+          const a = li.querySelector('a');
+          const h = a && a.getAttribute('href');
+          return !(h && h !== '#');
+        }).slice(0, 8);
+        for (const li of subs) {
+          const rot = (li.innerText || '').trim().slice(0, 40);
+          try { (li.querySelector('a') || li).click(); } catch (e) { continue; }
+          await sleep(1300);
+          const p2 = painel(); if (!p2) break;
+          const t2 = limpa(p2.innerText);
+          if (!vistos.has(t2)) { vistos.add(t2); txt += '\n\n=== ' + (rot || 'sub-aba') + ' ===\n' + t2; }
+        }
+        abas[nome] = txt.slice(0, 44000);
+      }
+      return { abas, url: location.origin + base + 'preview' };
+    }
+
+    const proximoDia = (ymd) => new Date(Date.parse(ymd + 'T12:00:00Z') + 86400000).toISOString().slice(0, 10);
+
+    (async () => {
+      if (!KEY) {
+        KEY = prompt('Coletor PackBall: cole a chave do app Favoritos (só na primeira vez)') || '';
+        if (KEY) localStorage.setItem('guard.key', KEY);
+      }
+      log('coletor ligado');
+      while (true) {
+        try {
+          const api = await (await fetch(API + '?k=' + encodeURIComponent(KEY) + '&pbLista=1&_=' + Date.now(), { cache: 'no-store' })).json();
+          const lista = (api.jogos || []).filter((j) => !(estado.falhas[j.dia + '|' + j.jogo] > Date.now()));
+          log(api.ok ? 'pendentes: ' + lista.length : 'erro da planilha: ' + api.erro);
+          const listas = {};
+          const fxDia = async (ymd) => { if (!listas[ymd]) listas[ymd] = await irParaDia(ymd); return listas[ymd]; };
+          for (const j of lista) {
+            let f = achar(j, await fxDia(j.data));
+            if (!f) f = achar(j, await fxDia(proximoDia(j.data)));
+            if (!f) { estado.falhas[j.dia + '|' + j.jogo] = Date.now() + 3 * 3600000; log('não achei no PackBall: ' + j.jogo + ' (' + j.data + ')'); continue; }
+            const r = await lerJogo(f);
+            if (!Object.keys(r.abas).length) { log('sem painel: ' + j.jogo); continue; }
+            const resp = await (await fetch(API, {
+              method: 'POST',
+              body: JSON.stringify({ k: KEY, packball: { dia: j.dia, hora: j.hora, liga: j.liga, jogo: j.jogo, id: f.a, url: r.url, abas: r.abas } }),
+            })).json();
+            estado.feitos++;
+            log(j.dia + ' ' + j.jogo + ' → ' + (resp.ok ? 'gravado; análise: ' + resp.analise : 'erro: ' + resp.erro));
+          }
+        } catch (e) { log('erro: ' + e); }
+        await sleep(20 * 60000);
+      }
+    })();
+  }
   const CADA_MIN = 5;                        // varredura normal
   const CADA_MIN_PERTO = 2;                  // quando há jogo em até 20 min
   const PARALELO = 3;                        // jogos lidos ao mesmo tempo
