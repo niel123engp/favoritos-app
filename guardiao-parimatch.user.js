@@ -3,7 +3,7 @@
 // @namespace    favoritos
 // @updateURL    https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
 // @downloadURL  https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
-// @version      1.3
+// @version      1.4
 // @description  Lê as odds 1x2 (margem 0%) e marca se há pagamento antecipado (2UP) nos jogos do dia na Parimatch e grava na planilha "Favorito e odds de valor". Só lê; nunca aposta.
 // @match        https://parimatch-hub.bet/*
 // @grant        none
@@ -54,7 +54,7 @@
   };
 
   // ---- lê um evento num iframe escondido ----
-  function lerEvento(id, timeoutMs = 25000) {
+  function lerEvento(id, timeoutMs = 30000) {
     return new Promise((res) => {
       const f = document.createElement('iframe');
       f.style.cssText = 'position:fixed;left:0;top:0;width:900px;height:4000px;opacity:0.01;z-index:-1;pointer-events:none';
@@ -67,10 +67,13 @@
         const i = t.indexOf('Resultado da partida');
         const bloco = i > 0 ? t.slice(i, i + 400) : '';
         const nums = (bloco.match(/\d+\.\d\d/g) || []).map(Number);
-        const pronto = i > 0 && (nums.length >= 6 || (nums.length >= 3 && !bloco.includes('0% margem')));
+        const oddsOk = i > 0 && (nums.length >= 6 || (nums.length >= 3 && !bloco.includes('0% margem')));
+        const tituloOk = /Aposte em .+ x .+ \|/.test(title);
+        // a página mostra as odds antes do título; espera o título (até o limite) para confirmar os times
+        const pronto = oddsOk && tituloOk;
         if (pronto || Date.now() - t0 > timeoutMs) {
           clearInterval(iv); f.remove();
-          if (!pronto) return res(null);
+          if (!oddsOk) return res(null);
           const m = title.match(/Aposte em (.+?) \| (.+?) \|/);
           const cab = bloco.slice(0, Math.max(0, bloco.search(/\d+\.\d\d/)));   // só o cabeçalho do mercado
           const zero = cab.includes('0% margem');
@@ -99,13 +102,13 @@
     let ids = await buscarIds(palavras(casa)[0] || casa);
     if (!ids.length) ids = await buscarIds(palavras(fora)[0] || fora);
     for (const id of ids.slice(0, 4)) {
-      const ev = await lerEvento(id, 15000);
-      if (!ev) continue;
+      const ev = await lerEvento(id, 30000);
+      if (!ev || !ev.titulo) continue;
       const [tc, tf] = ev.titulo.split(/\s+x\s+/i);
       if (tc && tf && bate(tc, casa) && bate(tf, fora)) {
         cache.m[jogo] = { id, liga: ev.liga };
         localStorage.setItem(CACHE, JSON.stringify(cache));
-        return cache.m[jogo];
+        return { id, liga: ev.liga, odds: ev };   // já traz as odds lidas agora
       }
     }
     return null;
@@ -140,7 +143,7 @@
         try {
           const ev = await acharEvento(j.jogo, dia);
           if (!ev) { log('não achei', j.jogo); return null; }
-          const o = await lerEvento(ev.id);
+          const o = ev.odds || await lerEvento(ev.id);
           if (!o) { log('sem odds', j.jogo); return null; }
           return { jogo: j.jogo, hora: j.hora, o1: o.o1, oX: o.oX, o2: o.o2, n1: o.n1, nX: o.nX, n2: o.n2, liga: o.liga, eventId: ev.id, pa: o.pa, margemZero: o.margemZero };
         } catch (e) { log('erro', j.jogo, e); return null; }
