@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Favoritos — odds de valor</title>
+<meta name="theme-color" content="#0B1220">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Favoritos">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  :root {
+    --bg:#0B1220; --surface:#121A2B; --surface2:#182238; --border:#243049;
+    --text:#E8ECF1; --muted:#94A3B8; --muted2:#64748B;
+    --green:#34D399; --green-bg:rgba(52,211,153,.14);
+    --amber:#FBBF24; --amber-bg:rgba(251,191,36,.14);
+    --red:#F87171;   --red-bg:rgba(248,113,113,.14);
+    --blue:#818CF8;  --blue-bg:rgba(129,140,248,.16);
+    --safe-b: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { margin:0; background:var(--bg); color:var(--text); font-family:Inter, system-ui, -apple-system, sans-serif; }
+  body { padding-bottom: calc(68px + var(--safe-b)); }
+  button { font-family:inherit; cursor:pointer; }
+  .hidden { display:none !important; }
+
+  header { position:sticky; top:0; z-index:5; background:rgba(11,18,32,.92); backdrop-filter:blur(10px); padding:14px 18px 10px; border-bottom:1px solid var(--border); }
+  .hrow { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
+  .hdate { font-size:12px; color:var(--muted); font-weight:500; }
+  h1 { margin:2px 0 0; font-size:24px; font-weight:800; letter-spacing:-.02em; }
+  .sync { display:flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:6px 11px; font-size:11px; color:var(--muted); white-space:nowrap; }
+  .sync .dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
+  .sync.off .dot { background:var(--red); }
+  .sync.loading .dot { background:var(--amber); animation:pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity:.3 } }
+
+  main { padding:14px 16px 10px; max-width:560px; margin:0 auto; }
+  .hrow, nav { max-width:560px; margin-left:auto; margin-right:auto; }
+  .sheet { max-width:560px; margin:0 auto; }
+  .tiles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:14px; }
+  .tile { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:12px 14px; }
+  .tile .l { font-size:11px; color:var(--muted); display:flex; align-items:center; gap:6px; font-weight:500; }
+  .tile .v { font-size:24px; font-weight:800; margin-top:3px; letter-spacing:-.02em; }
+  .tile .v.sm { font-size:17px; }
+  .tiles.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .d { width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .d.g{background:var(--green)} .d.a{background:var(--amber)} .d.r{background:var(--red)} .d.b{background:var(--blue)}
+
+  .sec { display:flex; justify-content:space-between; align-items:center; margin:16px 2px 8px; }
+  .sec h2 { margin:0; font-size:14px; font-weight:700; }
+  .sec span { font-size:12px; color:var(--muted); }
+
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:13px 15px; margin-bottom:10px; }
+  .card.tap:active { background:var(--surface2); }
+  .card.bet { border-color:rgba(52,211,153,.35); }
+  .row { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .meta { font-size:12px; color:var(--muted); font-weight:500; }
+  .pill { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:4px 10px; font-size:11.5px; font-weight:700; white-space:nowrap; }
+  .pill.g{background:var(--green-bg);color:var(--green)} .pill.a{background:var(--amber-bg);color:var(--amber)}
+  .pill.r{background:var(--red-bg);color:var(--red)} .pill.b{background:var(--blue-bg);color:var(--blue)} .pill.n{background:var(--surface2);color:var(--muted)}
+  .pill .d{width:7px;height:7px}
+  .jogo { font-size:16px; font-weight:700; margin-top:8px; letter-spacing:-.01em; }
+  .fav { font-size:12px; color:var(--muted); margin-top:2px; }
+  .fav b { color:var(--text); font-weight:600; }
+  .nums { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:10px; }
+  .nums .k { font-size:10.5px; color:var(--muted2); }
+  .nums .n { font-size:15px; font-weight:700; margin-top:1px; }
+  .pos{color:var(--green)} .neg{color:var(--red)} .mid{color:var(--amber)}
+  .res { font-size:12px; font-weight:800; border-radius:8px; padding:3px 8px; }
+  .res.G{background:var(--green-bg);color:var(--green)} .res.R{background:var(--red-bg);color:var(--red)} .res.A{background:var(--surface2);color:var(--muted)}
+  .empty { text-align:center; color:var(--muted); padding:40px 10px; font-size:14px; line-height:1.5; }
+
+  .bar { position:relative; height:10px; background:var(--bg); border-radius:999px; border:1px solid var(--border); overflow:visible; margin:10px 0 6px; }
+  .bar .fill { position:absolute; left:0; top:0; bottom:0; border-radius:999px; background:var(--green); }
+  .bar .mk { position:absolute; top:-4px; bottom:-4px; width:2px; }
+  .ticks { display:flex; justify-content:space-between; font-size:10.5px; color:var(--muted2); }
+  .hist { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:13px; }
+  .hist:last-child { border-bottom:0; }
+  .hist .dt { width:52px; color:var(--muted); font-weight:500; }
+  .hist .bw { flex:1; height:8px; background:var(--bg); border-radius:999px; overflow:hidden; }
+  .hist .bw i { display:block; height:100%; border-radius:999px; }
+  .hist .lu { width:84px; text-align:right; font-weight:700; }
+
+  .alert { border-left:3px solid var(--border); }
+  .alert.g{border-left-color:var(--green)} .alert.a{border-left-color:var(--amber)} .alert.r{border-left-color:var(--red)}
+  .alert .msg { font-size:13px; line-height:1.45; margin-top:6px; white-space:pre-wrap; word-break:break-word; }
+  .alert .when { font-size:11px; color:var(--muted2); }
+
+  nav { position:fixed; left:0; right:0; bottom:0; z-index:6; display:flex; justify-content:space-around; align-items:center; padding:8px 8px calc(10px + var(--safe-b)); background:#0E1626; border-top:1px solid var(--border); }
+  nav button { display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:0; color:var(--muted); font-size:11px; font-weight:500; min-width:64px; min-height:46px; }
+  nav button.on { color:var(--green); font-weight:700; }
+  nav svg { width:22px; height:22px; }
+
+  .sheet-bg { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:20; display:flex; align-items:flex-end; }
+  .sheet { background:var(--surface); border-radius:22px 22px 0 0; width:100%; max-height:88vh; overflow:auto; padding:14px 18px calc(22px + var(--safe-b)); border-top:1px solid var(--border); }
+  .grab { width:40px; height:4px; border-radius:2px; background:var(--border); margin:0 auto 12px; }
+  .kv { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+  .kv div { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; }
+  .kv .k { font-size:10.5px; color:var(--muted2); } .kv .n { font-size:17px; font-weight:700; margin-top:2px; }
+  .p { font-size:13px; line-height:1.5; color:var(--text); margin:8px 0; }
+  .p b { color:var(--muted); font-weight:600; font-size:11.5px; display:block; margin-bottom:2px; text-transform:uppercase; letter-spacing:.04em; }
+  .btn { width:100%; border:0; border-radius:14px; padding:14px; font-size:15px; font-weight:700; background:var(--green); color:#06281C; margin-top:10px; }
+  .btn.ghost { background:var(--surface2); color:var(--text); }
+  input { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:12px; padding:12px; font-size:14px; font-family:inherit; }
+  .note { font-size:12px; color:var(--muted); line-height:1.5; }
+  .toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(84px + var(--safe-b)); background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:12px; font-size:13px; z-index:30; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <div>
+      <div class="hdate" id="hdate">—</div>
+      <h1 id="htitle">Hoje</h1>
+    </div>
+    <button class="sync loading" id="sync" type="button" aria-label="Atualizar"><span class="dot"></span><span id="synctxt">carregando…</span></button>
+  </div>
+</header>
+
+<main id="main"><div class="empty">Carregando…</div></main>
+
+<nav>
+  <button type="button" data-tab="hoje" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Hoje</button>
+  <button type="button" data-tab="apostas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>Apostas</button>
+  <button type="button" data-tab="painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Painel</button>
+  <button type="button" data-tab="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Alertas</button>
+</nav>
+
+<script>
+(() => {
+  // ================== CONFIG ==================
+  const API_URL = 'https://script.google.com/macros/s/AKfycbz1ZowgfolCmH6HWEH49olOa4p2WZASaI8r8uNgl922SOBMxCg10GNOQ5dB_phDy83L-w/exec';
+  const LS = { key: 'fav.key', data: 'fav.data', at: 'fav.at', tab: 'fav.tab' };
+  const REFRESH_MS = 60 * 1000;
+
+  // chave: vem no link (#k=...) uma vez e fica guardada no aparelho
+  const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
+  if (hash.get('k')) { localStorage.setItem(LS.key, hash.get('k')); history.replaceState(null, '', location.pathname); }
+  let KEY = localStorage.getItem(LS.key) || '';
+
+  let data = null, tab = localStorage.getItem(LS.tab) || 'hoje', timer = null;
+  try { data = JSON.parse(localStorage.getItem(LS.data) || 'null'); } catch (e) { data = null; }
+
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const num = (s) => { if (typeof s === 'number') return s; const t = String(s ?? '').replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.'); const n = parseFloat(t); return isNaN(n) ? null : n; };
+  const brl = (n) => (n == null ? '—' : (n < 0 ? '-' : '') + 'R$ ' + Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+  const sgn = (s) => { const n = num(s); return n == null ? '' : n > 0 ? 'pos' : n < 0 ? 'neg' : ''; };
+  const tier = (j) => { const d = String(j.decisao || j.obs || ''); return d.includes('🟢') ? 'g' : d.includes('🟡') ? 'a' : d.includes('🔴') ? 'r' : 'n'; };
+  const tierTxt = { g: 'Entra', a: 'Avaliar', r: 'Fora', n: 'Sem decisão' };
+  const evClass = (s) => { const n = num(s); if (n == null) return ''; return n >= 2 ? 'pos' : n >= 0 ? 'mid' : 'neg'; };
+
+  // ================== DADOS ==================
+  async function load(manual) {
+    const sy = $('#sync'), st = $('#synctxt');
+    if (!KEY) { render(); return; }
+    sy.classList.add('loading'); sy.classList.remove('off'); st.textContent = 'atualizando…';
+    try {
+      const r = await fetch(API_URL + '?k=' + encodeURIComponent(KEY) + '&_=' + Date.now(), { cache: 'no-store' });
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.erro || 'erro');
+      data = j; localStorage.setItem(LS.data, JSON.stringify(j)); localStorage.setItem(LS.at, String(Date.now()));
+      sy.classList.remove('loading'); st.textContent = 'atualizado ' + j.geradoEm.slice(-5);
+      render();
+    } catch (e) {
+      sy.classList.remove('loading'); sy.classList.add('off');
+      st.textContent = data ? 'sem conexão · ' + (data.geradoEm || '').slice(-5) : 'sem conexão';
+      if (String(e.message).includes('chave')) { KEY = ''; localStorage.removeItem(LS.key); }
+      render();
+      if (manual) toast('Não consegui atualizar. Mostrando a última leitura.');
+    }
+  }
+
+  // ================== TELAS ==================
+  function render() {
+    document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));
+    const m = $('#main');
+    if (!KEY) { $('#htitle').textContent = 'Favoritos'; $('#hdate').textContent = 'configuração'; m.innerHTML = viewKey(); bindKey(); return; }
+    if (!data) { m.innerHTML = '<div class="empty">Carregando os dados da planilha…</div>'; return; }
+    const d = data.hoje || {};
+    $('#hdate').textContent = (d.kpi && d.kpi.DATA) ? d.kpi.DATA : ('dia ' + data.dia);
+    const titles = { hoje: 'Hoje', apostas: 'Apostas', painel: 'Painel', alertas: 'Alertas' };
+    $('#htitle').textContent = titles[tab];
+    m.innerHTML = ({ hoje: viewHoje, apostas: viewApostas, painel: viewPainel, alertas: viewAlertas })[tab]();
+    m.querySelectorAll('[data-jogo]').forEach((c) => c.addEventListener('click', () => openJogo(c.dataset.jogo)));
+    window.scrollTo(0, 0);
+  }
+
+  function viewKey() {
+    return `<div class="card"><div class="jogo">Conectar à planilha</div>
+      <p class="note">Cole a chave de acesso que você recebeu. Ela fica só neste aparelho.</p>
+      <input id="keyin" placeholder="chave de acesso" autocomplete="off">
+      <button class="btn" id="keybtn" type="button">Entrar</button></div>`;
+  }
+  function bindKey() { $('#keybtn').onclick = () => { const v = $('#keyin').value.trim(); if (!v) return; KEY = v; localStorage.setItem(LS.key, v); load(true); }; }
+
+  function cardJogo(j, i) {
+    const t = tier(j);
+    const alvo = j.oddMinima || '—';
+    const ev = j.evAntecipado || j.ev || '—';
+    const res = j.resultado ? `<span class="res ${esc(j.resultado)}">${esc(j.resultado)}</span>` : '';
+    return `<div class="card tap ${j.apostada ? 'bet' : ''}" data-jogo="${i}">
+      <div class="row"><div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
+        <div style="display:flex;gap:6px;align-items:center">${res}${j.apostada ? '<span class="pill b">apostada</span>' : ''}<span class="pill ${t}"><span class="d ${t}"></span>${tierTxt[t]}</span></div></div>
+      <div class="jogo">${esc(j.jogo)}</div>
+      <div class="fav">Favorito: <b>${esc(j.favorito)}</b> ${j.lado ? '· ' + esc(j.lado.toLowerCase()) : ''}</div>
+      <div class="nums">
+        <div><div class="k">Odd ${esc(j.casa || 'Parimatch')}</div><div class="n">${esc(j.odd || '—')}</div></div>
+        <div><div class="k">Alvo (EV +2%)</div><div class="n">${esc(alvo)}</div></div>
+        <div><div class="k">EV</div><div class="n ${evClass(ev)}">${esc(ev)}</div></div>
+      </div></div>`;
+  }
+
+  function viewHoje() {
+    const d = data.hoje || {}, js = d.jogos || [];
+    if (!d.existe) return '<div class="empty">A aba de hoje ainda não foi criada.<br>Ela nasce às 22h do dia anterior.</div>';
+    const c = { g: 0, a: 0, r: 0 }; js.forEach((j) => { const t = tier(j); if (c[t] != null) c[t]++; });
+    let h = `<div class="tiles">
+      <div class="tile"><div class="l"><span class="d g"></span>Entra</div><div class="v">${c.g}</div></div>
+      <div class="tile"><div class="l"><span class="d a"></span>Avaliar</div><div class="v">${c.a}</div></div>
+      <div class="tile"><div class="l"><span class="d r"></span>Fora</div><div class="v">${c.r}</div></div></div>`;
+    const ordem = { g: 0, a: 1, n: 2, r: 3 };
+    const idx = js.map((j, i) => i).sort((a, b) => (ordem[tier(js[a])] - ordem[tier(js[b])]) || String(js[a].hora).localeCompare(String(js[b].hora)));
+    h += `<div class="sec"><h2>Jogos do dia</h2><span>${js.length} jogos · ${js.filter((j) => j.apostada).length} apostados</span></div>`;
+    if (!js.length) h += '<div class="empty">Nenhum jogo na lista de hoje.</div>';
+    idx.forEach((i) => { h += cardJogo(js[i], i); });
+    return h;
+  }
+
+  function viewApostas() {
+    const d = data.hoje || {}, k = d.kpi || {};
+    const js = (d.jogos || []).map((j, i) => ({ j, i })).filter((x) => x.j.apostada);
+    const ms = (d.multiplas || []).filter((m) => m.apostada);
+    let h = `<div class="tiles two">
+      <div class="tile"><div class="l">Apostado hoje</div><div class="v sm">${esc(k['APOSTADO TOTAL'] || '—')}</div></div>
+      <div class="tile"><div class="l">Greens · Reds</div><div class="v sm">${esc(k['GREENS · REDS'] || '—')}</div></div>
+      <div class="tile"><div class="l">Lucro do dia</div><div class="v sm ${sgn(k['LUCRO DO DIA'])}">${esc(k['LUCRO DO DIA'] || '—')}</div></div>
+      <div class="tile"><div class="l">ROI do dia</div><div class="v sm ${sgn(k['ROI DO DIA'])}">${esc(k['ROI DO DIA'] || '—')}</div></div></div>`;
+    h += `<div class="sec"><h2>Simples</h2><span>${js.length} · stake fixa</span></div>`;
+    if (!js.length) h += '<div class="empty">Nenhuma simples marcada como apostada.</div>';
+    js.forEach(({ j, i }) => {
+      h += `<div class="card tap" data-jogo="${i}"><div class="row"><div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
+        ${j.resultado ? `<span class="res ${esc(j.resultado)}">${esc(j.resultado)}</span>` : '<span class="pill n">aberta</span>'}</div>
+        <div class="jogo">${esc(j.favorito)} <span class="meta">@${esc(j.odd)}</span></div>
+        <div class="fav">${esc(j.jogo)}</div>
+        <div class="nums"><div><div class="k">Stake</div><div class="n">${esc(j.stake)}</div></div>
+          <div><div class="k">Lucro</div><div class="n ${sgn(j.lucro)}">${esc(j.lucro || '—')}</div></div>
+          <div><div class="k">CLV</div><div class="n ${sgn(j.clv)}">${esc(j.clv || '—')}</div></div></div></div>`;
+    });
+    h += `<div class="sec"><h2>Múltiplas</h2><span>${ms.length}</span></div>`;
+    if (!ms.length) h += '<div class="empty">Nenhuma múltipla apostada hoje.</div>';
+    ms.forEach((m) => {
+      h += `<div class="card"><div class="row"><div class="meta">Múltipla ${esc(m.n)}</div>
+        ${m.resultado ? `<span class="res ${esc(m.resultado)}">${esc(m.resultado)}</span>` : '<span class="pill n">aberta</span>'}</div>
+        <div class="jogo" style="font-size:14px">${esc(m.pernas)}</div>
+        <div class="nums"><div><div class="k">Odd</div><div class="n">${esc(m.odd)}</div></div>
+          <div><div class="k">Stake</div><div class="n">${esc(m.stake)}</div></div>
+          <div><div class="k">Lucro</div><div class="n ${sgn(m.lucro)}">${esc(m.lucro || '—')}</div></div></div></div>`;
+    });
+    return h;
+  }
+
+  function viewPainel() {
+    const p = data.painel || {}, hist = (data.historico || []).filter((r) => /\d\d\/\d\d/.test(String(r['DATA'] || '')));
+    const lim = num(p['LIMITE (R$)']) || 2000, perda = num(p['PERDA ACUMULADA']) || 0, usado = Math.min(1, perda / lim);
+    let h = `<div class="tiles two">
+      <div class="tile"><div class="l">Lucro total</div><div class="v sm ${sgn(p['LUCRO TOTAL'])}">${esc(p['LUCRO TOTAL'] || '—')}</div></div>
+      <div class="tile"><div class="l">ROI</div><div class="v sm ${sgn(p['ROI (LUCRO / APOSTADO)'])}">${esc(p['ROI (LUCRO / APOSTADO)'] || '—')}</div></div>
+      <div class="tile"><div class="l">Banca atual</div><div class="v sm">${esc(p['BANCA ATUAL'] || '—')}</div></div>
+      <div class="tile"><div class="l">Crescimento</div><div class="v sm ${sgn(p['CRESCIMENTO DA BANCA'])}">${esc(p['CRESCIMENTO DA BANCA'] || '—')}</div></div></div>`;
+    h += `<div class="card"><div class="row"><div class="jogo" style="margin:0;font-size:14px">Limite de perda</div><span class="meta">${brl(lim)}</span></div>
+      <div class="bar"><div class="fill" style="width:${(usado * 100).toFixed(1)}%;background:${usado >= .75 ? 'var(--red)' : usado >= .5 ? 'var(--amber)' : 'var(--green)'}"></div>
+        <div class="mk" style="left:50%;background:var(--amber)"></div><div class="mk" style="left:75%;background:var(--red)"></div></div>
+      <div class="ticks"><span>0</span><span>${brl(lim * .5)}</span><span>${brl(lim * .75)}</span><span>${brl(lim)}</span></div>
+      <div class="meta" style="margin-top:8px">Perda acumulada ${brl(perda)} · ${esc(p['STATUS'] || '')}. A stake não muda.</div></div>`;
+    h += `<div class="tiles" style="margin-top:12px">
+      <div class="tile"><div class="l">Dias</div><div class="v sm">${esc(p['DIAS OPERADOS'] || '—')}</div></div>
+      <div class="tile"><div class="l">Dias +</div><div class="v sm pos">${esc(p['DIAS POSITIVOS'] || '—')}</div></div>
+      <div class="tile"><div class="l">Dias −</div><div class="v sm neg">${esc(p['DIAS NEGATIVOS'] || '—')}</div></div>
+      <div class="tile"><div class="l">Apostado</div><div class="v sm">${esc(p['APOSTADO TOTAL'] || '—')}</div></div>
+      <div class="tile"><div class="l">Múltiplas</div><div class="v sm ${sgn(p['LUCRO MÚLTIPLAS'])}">${esc(p['LUCRO MÚLTIPLAS'] || '—')}</div></div>
+      <div class="tile"><div class="l">CLV médio</div><div class="v sm ${sgn(p['CLV MÉDIO'])}">${esc(p['CLV MÉDIO'] || '—')}</div></div></div>`;
+    if (hist.length) {
+      const mx = Math.max(1, ...hist.map((r) => Math.abs(num(r['LUCRO DO DIA']) || 0)));
+      h += `<div class="sec"><h2>Dia a dia</h2><span>lucro do dia</span></div><div class="card">`;
+      hist.slice().reverse().forEach((r) => {
+        const n = num(r['LUCRO DO DIA']) || 0, w = Math.abs(n) / mx * 100;
+        h += `<div class="hist"><div class="dt">${esc(String(r['DATA'] || r['ABA']).slice(0, 5))}</div>
+          <div class="bw"><i style="width:${w.toFixed(0)}%;background:${n >= 0 ? 'var(--green)' : 'var(--red)'}"></i></div>
+          <div class="lu ${n >= 0 ? 'pos' : 'neg'}">${esc(r['LUCRO DO DIA'] || '—')}</div></div>`;
+      });
+      h += '</div>';
+    }
+    return h;
+  }
+
+  function viewAlertas() {
+    const al = data.alertas || [];
+    if (!al.length) return '<div class="empty">Nenhum alerta ainda.</div>';
+    let h = '';
+    al.forEach((a) => {
+      const m = String(a.msg || ''), t = m.includes('🟢') || m.startsWith('✅') ? 'g' : m.includes('🟡') || m.startsWith('⚠') || m.startsWith('🎯') ? 'a' : m.includes('🔴') || m.startsWith('❌') ? 'r' : '';
+      h += `<div class="card alert ${t}"><div class="row"><div class="when">${esc(a.quando)}</div>${a.jogo && a.jogo !== '—' ? `<div class="meta">${esc(a.jogo)}</div>` : ''}</div>
+        <div class="msg">${esc(m)}</div></div>`;
+    });
+    return h;
+  }
+
+  function openJogo(i) {
+    const j = (data.hoje.jogos || [])[i]; if (!j) return;
+    const t = tier(j);
+    const bg = document.createElement('div'); bg.className = 'sheet-bg';
+    const p = (k, v) => v ? `<div class="p"><b>${k}</b>${esc(v)}</div>` : '';
+    bg.innerHTML = `<div class="sheet"><div class="grab"></div>
+      <div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
+      <div class="jogo" style="font-size:20px">${esc(j.jogo)}</div>
+      <div style="margin:8px 0 2px"><span class="pill ${t}"><span class="d ${t}"></span>${tierTxt[t]} · favorito ${esc(j.favorito)}</span> ${j.apostada ? '<span class="pill b">apostada</span>' : ''}</div>
+      <div class="kv">
+        <div><div class="k">Odd ${esc(j.casa || 'Parimatch')}</div><div class="n">${esc(j.odd || '—')}</div></div>
+        <div><div class="k">Odd justa Pinnacle</div><div class="n">${esc(j.oddJusta || '—')}</div></div>
+        <div><div class="k">Alvo (EV +2%)</div><div class="n pos">${esc(j.oddMinima || '—')}</div></div>
+        <div><div class="k">EV puro (Pinnacle)</div><div class="n ${evClass(j.evPinnacle)}">${esc(j.evPinnacle || '—')}</div></div>
+        <div><div class="k">EV c/ pag. antecipado</div><div class="n ${evClass(j.evAntecipado)}">${esc(j.evAntecipado || '—')}</div></div>
+        <div><div class="k">Prob. estimada</div><div class="n">${esc(j.prob || '—')}</div></div>
+      </div>
+      ${p('Motivo', j.motivo)}${p('Contexto', j.alertaContexto || j.contexto)}${p('Critérios', j.criterios)}${p('A favor', j.aFavor)}${p('Contra', j.contra)}${p('Observação', j.obs)}
+      ${j.resultado ? p('Resultado', j.resultado + (j.lucro ? ' · ' + j.lucro : '')) : ''}
+      <div class="note" style="margin-top:12px">Stake fixa R$ 100. A aposta é feita por você na casa.</div>
+      <button class="btn ghost" type="button" id="closeS">Fechar</button></div>`;
+    document.body.appendChild(bg);
+    bg.addEventListener('click', (e) => { if (e.target === bg || e.target.id === 'closeS') bg.remove(); });
+  }
+
+  function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
+
+  // ================== EVENTOS ==================
+  document.querySelectorAll('nav button').forEach((b) => b.addEventListener('click', () => { tab = b.dataset.tab; localStorage.setItem(LS.tab, tab); render(); }));
+  $('#sync').addEventListener('click', () => load(true));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(false); });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+  render(); load(false);
+  timer = setInterval(() => { if (!document.hidden) load(false); }, REFRESH_MS);
+})();
+</script>
+</body>
+</html>
