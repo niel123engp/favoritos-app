@@ -3,7 +3,7 @@
 // @namespace    favoritos
 // @updateURL    https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
 // @downloadURL  https://niel123engp.github.io/favoritos-app/guardiao-parimatch.user.js
-// @version      2.4
+// @version      2.5
 // @description  Lê as odds 1x2 (margem 0%) dos jogos do dia e acompanha a movimentação dos jogos de margem 0% (piloto) na Parimatch, gravando na planilha "Favorito e odds de valor". Só lê; nunca aposta.
 // @match        https://parimatch-hub.bet/*
 // @match        https://packball.com/*
@@ -419,8 +419,9 @@
         try {
           const d = f.contentDocument; const n = d.querySelectorAll('a[href*="/events/"]').length;
           if (n > 0 && n === ult) r = lerLiga(d); ult = n;
-          if (!r && Date.now() - t0 > ms) r = lerLiga(d);
-        } catch (e) { if (Date.now() - t0 > ms) r = []; }
+          // aba em segundo plano: o Chrome freia o site dentro do iframe; se ainda não desenhou nada, espera até 150 s
+          if (!r && Date.now() - t0 > ms && (n > 0 || Date.now() - t0 > 150000)) r = lerLiga(d);
+        } catch (e) { if (Date.now() - t0 > 150000) r = []; }
         if (r) { clearInterval(iv); f.remove(); limparFila(); res({ url, jogos: r }); }
       }, 1200);
     });
