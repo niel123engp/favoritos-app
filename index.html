@@ -335,6 +335,15 @@
     h += `<div class="sec"><h2>Jogos do dia</h2><span>${js.length} jogos · ${js.filter((j) => j.apostada).length} apostados</span></div>`;
     if (!js.length) h += '<div class="empty">Nenhum jogo na lista de hoje.</div>';
     idx.forEach((i) => { h += cardJogo(js[i], i); });
+    // 19/11: lista completa dos próximos dias, igual à planilha (🟢 e 🔴, apostadas ou não)
+    (data.proximos || []).forEach((p, k) => {
+      const lista = fut.map((j, i) => i).filter((i) => fut[i]._ord === k);
+      if (!lista.length) return;
+      lista.sort((a, b) => (ordem[tier(fut[a])] - ordem[tier(fut[b])]) || String(fut[a].hora).localeCompare(String(fut[b].hora)));
+      const ng = lista.filter((i) => tier(fut[i]) === 'g').length;
+      h += `<div class="sec"><h2>${esc(fut[lista[0]]._dia)}</h2><span>${lista.length} jogos · ${ng} entra · ${lista.filter((i) => fut[i].apostada).length} apostados</span></div>`;
+      lista.forEach((i) => { h += cardJogo(fut[i], 'p' + i); });
+    });
     return h;
   }
 
