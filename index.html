@@ -175,7 +175,7 @@
   const brl = (n) => (n == null ? '—' : (n < 0 ? '-' : '') + 'R$ ' + Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
   const sgn = (s) => { const n = num(s); return n == null ? '' : n > 0 ? 'pos' : n < 0 ? 'neg' : ''; };
   const tier = (j) => { const d = String(j.decisao || j.obs || ''); return d.includes('🟢') ? 'g' : d.includes('🟡') ? 'a' : d.includes('🔴') ? 'r' : 'n'; };
-  const tierTxt = { g: 'Entra', a: 'Avaliar', r: 'Fora', n: 'Sem decisão' };
+  const tierTxt = { g: 'Entra', a: 'Avaliar', r: 'Fora', n: 'Aguardando' };
   const evClass = (s) => { const n = num(s); if (n == null) return ''; return n >= 2 ? 'pos' : n >= 0 ? 'mid' : 'neg'; };
 
   // ================== ENTRADAS DE VALOR ==================
@@ -195,16 +195,17 @@
   const evV = (j) => (j.evAtual != null ? (j.evAtual > 0 ? '+' : '') + String(j.evAtual).replace('.', ',') + '%' : j.ev);
   // 'agora' = decisão verde/amarela, odd atual ≥ alvo e EV ≥ 2% · 'espera' = boa decisão, preço ainda abaixo do alvo
   function valor(j) {
-    if (j.resultado || comecou(j)) return null;
-    const t = tier(j); if (t !== 'g' && t !== 'a') return null;
+    if (j.resultado || (!j._futuro && comecou(j))) return null;
+    const t = tier(j), d = String(j.decisao || j.obs || '');
     const odd = num(oddV(j)), alvo = num(j.oddMinima), ev = num(evV(j));
-    if (!alvo || !odd) return null;
-    if (odd && odd >= alvo && ev != null && ev >= 2) return 'agora';
-    return 'espera';
+    if (t === 'g' && odd) return 'agora';                       // 🟢 = a planilha já conferiu preço + PackBall
+    if (t === 'a') return (odd && alvo && odd >= alvo && ev != null && ev >= 2) ? 'agora' : 'espera';
+    if (/esperar pre\u00e7o|s\u00f3 se pagar|se subir para|entra s\u00f3 se/i.test(d) && alvo) return 'espera';   // 🔴 por preço: vira entrada se a odd subir
+    return null;
   }
   function textoEntrada(j) {
     const v = valor(j);
-    return `⚽ ${j.jogo} · ${j.hora}${j.liga ? ' · ' + j.liga : ''}\n` +
+    return `⚽ ${j.jogo} · ${j._dia ? j._dia + ' ' : ''}${j.hora}${j.liga ? ' · ' + j.liga : ''}\n` +
       (v === 'espera' ? `⏳ ${j.favorito} só se pagar ≥ @${j.oddMinima} (agora @${oddV(j) || '—'})\n` : `✅ ${j.favorito} vence @${oddV(j)} (Parimatch)\n🎯 Não entrar abaixo de @${j.oddMinima}\n📈 EV ${evV(j)}\n`) +
       `👉 ${linkAposta(j)}`;
   }
@@ -215,13 +216,15 @@
   const icoBet = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>';
   const icoShare = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
   const icoInfo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>';
+  const motivo = (j) => { const d = String(j.decisao || j.obs || ''); const m = d.split('·'); return m.length > 1 ? m.slice(1).join('·').replace(/·\s*critérios.*$/, '').trim().slice(0, 160) : ''; };
   function cardValor(j, i) {
     const v = valor(j);
     return `<div class="vcard ${v === 'espera' ? 'wait' : ''}">
-      <div class="vtop"><div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
+      <div class="vtop"><div class="meta">${j._dia ? esc(j._dia) + ' · ' : ''}${esc(j.hora)} · ${esc(j.liga)}</div>
         ${j.apostada ? '<span class="pill b">você já apostou</span>' : `<span class="pill ${v === 'agora' ? 'g' : 'a'}"><span class="d ${v === 'agora' ? 'g' : 'a'}"></span>${v === 'agora' ? 'Valor agora' : 'Esperando preço'}</span>`}</div>
       <div class="vpick">${esc(j.favorito)} <span class="o">@${esc(oddV(j) || '—')}</span></div>
       <div class="vsub">${esc(j.jogo)}${j.oddAtualEm ? ' · odd lida às ' + esc(j.oddAtualEm) : ''}</div>
+      ${motivo(j) ? `<div class="vsub" style="margin-top:4px;opacity:.85">${esc(motivo(j))}</div>` : ''}
       <div class="vline"><span>Mínimo <b>@${esc(j.oddMinima)}</b></span><span>EV <b class="${evClass(evV(j))}">${esc(evV(j) || '—')}</b></span>${j.apostada && j.oddAtual != null && num(j.odd) !== j.oddAtual ? `<span>Sua entrada <b>@${esc(j.odd)}</b></span>` : ''}${j.prob ? `<span>Chance <b>${esc(j.prob)}</b></span>` : ''}</div>
       <div class="acts">
         <a class="a-bet" href="${esc(linkAposta(j))}" target="_blank" rel="noopener">${icoBet}${v === 'agora' ? 'Apostar' : 'Abrir jogo'}</a>
@@ -263,9 +266,10 @@
     $('#htitle').textContent = titles[tab];
     m.innerHTML = ({ hoje: viewHoje, apostas: viewApostas, painel: viewPainel, alertas: viewAlertas })[tab]();
     m.querySelectorAll('[data-jogo]').forEach((c) => c.addEventListener('click', (e) => { e.stopPropagation(); openJogo(c.dataset.jogo); }));
-    m.querySelectorAll('[data-share]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); compartilhar(textoEntrada(data.hoje.jogos[b.dataset.share])); }));
+    window.futuros = futuros;
+    m.querySelectorAll('[data-share]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); const k = b.dataset.share; compartilhar(textoEntrada(String(k).startsWith('p') ? futuros()[+k.slice(1)] : data.hoje.jogos[k])); }));
     m.querySelectorAll('[data-shareall]').forEach((b) => b.addEventListener('click', () => {
-      const js = (data.hoje.jogos || []).filter((j) => valor(j) === 'agora');
+      const js = (data.hoje.jogos || []).filter((j) => valor(j) === 'agora').concat(futuros().filter((j) => valor(j) === 'agora'));
       if (!js.length) return;
       compartilhar('🔥 Entradas de valor · ' + ((data.hoje.kpi && data.hoje.kpi.DATA) || 'hoje') + '\n\n' + js.map(textoEntrada).join('\n\n') + '\n\nStake fixa · odd abaixo do mínimo = não entra.');
     }));
@@ -297,6 +301,12 @@
       </div></div>`;
   }
 
+  function futuros() {
+    const out = [];
+    (data && data.proximos || []).forEach((p, k) => (p.jogos || []).forEach((j) => out.push(Object.assign({}, j, { _futuro: true, _dia: (p.semana ? p.semana + ' ' : '') + p.data, _ord: k }))));
+    return out;
+  }
+
   function viewHoje() {
     const d = data.hoje || {}, js = d.jogos || [];
     if (!d.existe) return '<div class="empty">A aba de hoje ainda não foi criada.<br>Ela nasce às 22h do dia anterior.</div>';
@@ -309,6 +319,13 @@
       : `<div class="hero none"><div><div class="t">Nenhuma entrada com valor agora</div><div class="s">${espera.length ? espera.length + ' jogo(s) esperando o preço subir.' : 'O guardião atualiza as odds sozinho.'}</div></div></div>`;
     if (agora.length) { h += `<div class="sec"><h2>Entrar agora</h2><span>odd ≥ mínimo · EV ≥ 2%</span></div>`; agora.forEach((i) => { h += cardValor(js[i], i); }); }
     if (espera.length) { h += `<div class="sec"><h2>Esperando preço</h2><span>entra se a odd subir</span></div>`; espera.forEach((i) => { h += cardValor(js[i], i); }); }
+    // próximos dias: só o que é entrada (🟢) ou espera preço
+    const fut = futuros();
+    const fi = fut.map((j, i) => i).filter((i) => valor(fut[i]));
+    if (fi.length) {
+      h += `<div class="sec"><h2>Próximos dias</h2><span>${fi.filter((i) => valor(fut[i]) === 'agora').length} entrada(s) já com valor</span></div>`;
+      fi.sort((a, b) => (fut[a]._ord - fut[b]._ord) || String(fut[a].hora).localeCompare(String(fut[b].hora))).forEach((i) => { h += cardValor(fut[i], 'p' + i); });
+    }
     h += `<div class="tiles" style="margin-top:14px">
       <div class="tile"><div class="l"><span class="d g"></span>Entra</div><div class="v">${c.g}</div></div>
       <div class="tile"><div class="l"><span class="d a"></span>Avaliar</div><div class="v">${c.a}</div></div>
@@ -401,12 +418,12 @@
   }
 
   function openJogo(i) {
-    const j = (data.hoje.jogos || [])[i]; if (!j) return;
+    const j = String(i).startsWith('p') ? futuros()[+String(i).slice(1)] : (data.hoje.jogos || [])[i]; if (!j) return;
     const t = tier(j);
     const bg = document.createElement('div'); bg.className = 'sheet-bg';
     const p = (k, v) => v ? `<div class="p"><b>${k}</b>${esc(v)}</div>` : '';
     bg.innerHTML = `<div class="sheet"><div class="grab"></div>
-      <div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
+      <div class="meta">${j._dia ? esc(j._dia) + ' · ' : ''}${esc(j.hora)} · ${esc(j.liga)}</div>
       <div class="jogo" style="font-size:20px">${esc(j.jogo)}</div>
       <div style="margin:8px 0 2px"><span class="pill ${t}"><span class="d ${t}"></span>${tierTxt[t]} · favorito ${esc(j.favorito)}</span> ${j.apostada ? '<span class="pill b">apostada</span>' : ''}</div>
       <div class="kv">
