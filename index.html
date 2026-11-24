@@ -92,7 +92,7 @@
   .alert .when { font-size:11px; color:var(--muted2); }
 
   nav { position:fixed; left:0; right:0; bottom:0; z-index:6; display:flex; justify-content:space-around; align-items:center; padding:8px 8px calc(10px + var(--safe-b)); background:#0E1626; border-top:1px solid var(--border); }
-  nav button { display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:0; color:var(--muted); font-size:11px; font-weight:500; min-width:56px; min-height:46px; }
+  nav button { display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:0; color:var(--muted); font-size:11px; font-weight:500; min-width:50px; min-height:46px; }
   nav button.on { color:var(--green); font-weight:700; }
   nav svg { width:22px; height:22px; }
 
@@ -176,6 +176,7 @@
   <button type="button" data-tab="jogos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Jogos</button>
   <button type="button" data-tab="apostas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>Apostas</button>
   <button type="button" data-tab="painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Painel</button>
+  <button type="button" data-tab="report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Report</button>
   <button type="button" data-tab="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Alertas</button>
 </nav>
 
@@ -192,7 +193,7 @@
   let KEY = localStorage.getItem(LS.key) || '';
 
   let data = null, tab = localStorage.getItem(LS.tab) || 'hoje', timer = null;
-  if (!['hoje', 'jogos', 'apostas', 'painel', 'alertas'].includes(tab)) tab = 'hoje';
+  if (!['hoje', 'jogos', 'apostas', 'painel', 'report', 'alertas'].includes(tab)) tab = 'hoje';
   try { data = JSON.parse(localStorage.getItem(LS.data) || 'null'); } catch (e) { data = null; }
 
   const $ = (s) => document.querySelector(s);
@@ -290,9 +291,10 @@
     if (!data) { m.innerHTML = '<div class="empty">Carregando os dados da planilha…</div>'; return; }
     const d = data.hoje || {};
     $('#hdate').textContent = (d.kpi && d.kpi.DATA) ? d.kpi.DATA : ('dia ' + data.dia);
-    const titles = { hoje: 'Hoje', jogos: 'Todos os jogos', apostas: 'Apostas', painel: 'Painel', alertas: 'Alertas' };
+    const titles = { hoje: 'Hoje', jogos: 'Todos os jogos', apostas: 'Apostas', painel: 'Painel', report: 'Report do dia', alertas: 'Alertas' };
     $('#htitle').textContent = titles[tab];
-    m.innerHTML = ({ hoje: viewHoje, jogos: viewJogos, apostas: viewApostas, painel: viewPainel, alertas: viewAlertas })[tab]();
+    m.innerHTML = ({ hoje: viewHoje, jogos: viewJogos, apostas: viewApostas, painel: viewPainel, report: viewReport, alertas: viewAlertas })[tab]();
+    if (tab === 'report') bindReport();
     m.querySelectorAll('[data-jogo]').forEach((c) => c.addEventListener('click', (e) => { e.stopPropagation(); openJogo(c.dataset.jogo); }));
     window.futuros = futuros;
     m.querySelectorAll('[data-share]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); const k = b.dataset.share; compartilhar(textoEntrada(String(k).startsWith('p') ? futuros()[+k.slice(1)] : data.hoje.jogos[k])); }));
@@ -355,6 +357,43 @@
     });
     return h;
   }
+
+  // Report do dia: os 10 destaques e os fatos jogo a jogo (sequências, gols, escanteios, cartões, desfalques).
+  // Vem pronto da planilha (robô fixo, sem IA) em data.report; o app só mostra e filtra por tipo.
+  let repFiltro = 'todos';
+  const repTipos = [['todos', 'Tudo'], ['sequência', '🔥 Sequência'], ['gols', '⚽ Gols'], ['escanteios', '🚩 Escanteios'], ['cartões', '🟨 Cartões'], ['desfalques', '🏥 Desfalques'], ['má fase', '⚠️ Má fase'], ['aposta', '🎯 Com aposta']];
+  const repPassa = (f) => repFiltro === 'todos' || (repFiltro === 'aposta' ? !!f.aposta : f.tipo === repFiltro);
+  const repForca = (n) => (n >= 15 ? ['r', 'muito forte'] : n >= 13 ? ['a', 'forte'] : ['n', 'médio']);
+  const repFrase = (f) => (f.time ? `<b>${esc(f.time)}</b> ${esc(f.txt)}` : esc(String(f.txt).charAt(0).toUpperCase() + String(f.txt).slice(1)));
+  const repAposta = (a) => (a ? `<div class="meta" style="margin-top:6px;white-space:normal;color:var(--green)">🎯 ${esc(String(a).replace(/(\d)\.(\d)/g, '$1,$2'))}</div>` : '');
+  function viewReport() {
+    const r = data.report;
+    if (!r || !(r.jogos || []).length) return '<div class="empty">O report do dia ainda não foi gerado.<br>O robô grava de manhã, depois de ler o PackBall.</div>';
+    let h = `<div class="hero none"><div><div class="t">Report do dia ${esc(r.dia)}</div><div class="s">${(r.jogos || []).length} jogos da lista da DG · gerado ${esc(r.geradoEm || '')} · apoio para decidir, não é prova</div></div></div>`;
+    h += '<div class="chips">' + repTipos.map(([k, t]) => `<button type="button" class="chip ${repFiltro === k ? 'on' : ''}" data-rep="${k}">${t}</button>`).join('') + '</div>';
+    const top = (r.top || []).filter(repPassa);
+    if (top.length) {
+      h += `<div class="sec"><h2>Destaques do dia</h2><span>${top.length} mais fortes</span></div>`;
+      top.forEach((f, i) => {
+        const [c, t] = repForca(f.nota);
+        h += `<div class="card"><div class="row"><div class="meta">${i + 1} · ${esc(f.hora)} · ${esc(f.liga)}</div><span class="pill ${c}">${t}</span></div>
+          <div class="jogo" style="font-size:15px">${esc(f.icone)} ${repFrase(f)}</div>
+          <div class="fav">${esc(f.jogo)}</div>${repAposta(f.aposta)}</div>`;
+      });
+    }
+    h += `<div class="sec"><h2>Jogo a jogo</h2><span>por horário</span></div>`;
+    let n = 0;
+    (r.jogos || []).forEach((b) => {
+      const fs = (b.fatos || []).filter(repPassa); if (!fs.length) return; n++;
+      h += `<div class="card"><div class="row"><div class="meta">${esc(b.hora)} · ${esc(b.liga)}</div>${b.cor ? `<span class="pill n">${esc(String(b.cor).split(' ')[0])}</span>` : ''}</div>
+        <div class="jogo">${esc(b.jogo)}</div>
+        ${fs.map((f) => `<div class="fav" style="margin:6px 0 0;white-space:normal">${esc(f.icone)} ${repFrase(f)}${f.aposta ? ` <span style="color:var(--green)">→ ${esc(String(f.aposta).replace(/(\d)\.(\d)/g, '$1,$2'))}</span>` : ''}</div>`).join('')}
+        ${b.aposta ? `<div class="meta" style="margin-top:9px;white-space:normal">Melhor aposta do gerador: <b>${esc(String(b.aposta).replace(/(\d)\.(\d)/g, '$1,$2'))}</b></div>` : ''}</div>`;
+    });
+    if (!n) h += '<div class="empty">Nenhum jogo com esse tipo de informação hoje.</div>';
+    return h + '<p class="note" style="margin:10px 4px">Números dos últimos 10 jogos de cada time (PackBall). Chance e odd ao lado do 🎯 são do nosso gerador; confira a odd na casa.</p>';
+  }
+  function bindReport() { document.querySelectorAll('[data-rep]').forEach((b) => b.addEventListener('click', () => { repFiltro = b.dataset.rep; render(true); })); }
 
   function viewHoje() {
     const d = data.hoje || {}, js = d.jogos || [];
