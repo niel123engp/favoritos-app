@@ -361,11 +361,14 @@
   // Report do dia: os 10 destaques e os fatos jogo a jogo (sequências, gols, escanteios, cartões, desfalques).
   // Vem pronto da planilha (robô fixo, sem IA) em data.report; o app só mostra e filtra por tipo.
   let repFiltro = 'todos';
-  const repTipos = [['todos', 'Tudo'], ['sequência', '🔥 Sequência'], ['gols', '⚽ Gols'], ['escanteios', '🚩 Escanteios'], ['cartões', '🟨 Cartões'], ['desfalques', '🏥 Desfalques'], ['má fase', '⚠️ Má fase'], ['aposta', '🎯 Com aposta']];
-  const repPassa = (f) => repFiltro === 'todos' || (repFiltro === 'aposta' ? !!f.aposta : f.tipo === repFiltro);
+  const repTipos = [['todos', 'Tudo'], ['sequência', '🔥 Sequência'], ['gols', '⚽ Gols'], ['escanteios', '🚩 Escanteios'], ['cartões', '🟨 Cartões'], ['desfalques', '🏥 Desfalques'], ['má fase', '⚠️ Má fase'], ['aposta', '🎯 Com aposta'], ['ajuda', '✅ Testado']];
+  const repPassa = (f) => repFiltro === 'todos' || (repFiltro === 'aposta' ? !!f.aposta : repFiltro === 'ajuda' ? f.selo === 'ajuda' : f.tipo === repFiltro);
   const repForca = (n) => (n >= 15 ? ['r', 'muito forte'] : n >= 13 ? ['a', 'forte'] : ['n', 'médio']);
   const repFrase = (f) => (f.time ? `<b>${esc(f.time)}</b> ${esc(f.txt)}` : esc(String(f.txt).charAt(0).toUpperCase() + String(f.txt).slice(1)));
   const repAposta = (a) => (a ? `<div class="meta" style="margin-top:6px;white-space:normal;color:var(--green)">🎯 ${esc(String(a).replace(/(\d)\.(\d)/g, '$1,$2'))}</div>` : '');
+  // v2.0: cada fato traz o que ele rendeu em 10 mil jogos (hist) e um selo: 'ajuda' (muda a chance) ou 'na odd' (a casa já cobra por ele).
+  const repSelo = (f) => (f.selo === 'ajuda' ? '<span style="color:var(--green)">✅ testado: ajuda</span>' : f.selo === 'na odd' ? '<span>⚖️ já está na odd</span>' : '');
+  const repHist = (f) => (f.hist || repSelo(f) ? `<div class="meta" style="margin-top:4px;white-space:normal;font-size:11.5px">${repSelo(f)}${f.hist ? `${repSelo(f) ? ' · ' : ''}${esc(f.hist)}` : ''}</div>` : '');
   function viewReport() {
     const r = data.report;
     if (!r || !(r.jogos || []).length) return '<div class="empty">O report do dia ainda não foi gerado.<br>O robô grava de manhã, depois de ler o PackBall.</div>';
@@ -378,7 +381,7 @@
         const [c, t] = repForca(f.nota);
         h += `<div class="card"><div class="row"><div class="meta">${i + 1} · ${esc(f.hora)} · ${esc(f.liga)}</div><span class="pill ${c}">${t}</span></div>
           <div class="jogo" style="font-size:15px">${esc(f.icone)} ${repFrase(f)}</div>
-          <div class="fav">${esc(f.jogo)}</div>${repAposta(f.aposta)}</div>`;
+          <div class="fav">${esc(f.jogo)}</div>${repHist(f)}${repAposta(f.aposta)}</div>`;
       });
     }
     h += `<div class="sec"><h2>Jogo a jogo</h2><span>por horário</span></div>`;
@@ -387,11 +390,11 @@
       const fs = (b.fatos || []).filter(repPassa); if (!fs.length) return; n++;
       h += `<div class="card"><div class="row"><div class="meta">${esc(b.hora)} · ${esc(b.liga)}</div>${b.cor ? `<span class="pill n">${esc(String(b.cor).split(' ')[0])}</span>` : ''}</div>
         <div class="jogo">${esc(b.jogo)}</div>
-        ${fs.map((f) => `<div class="fav" style="margin:6px 0 0;white-space:normal">${esc(f.icone)} ${repFrase(f)}${f.aposta ? ` <span style="color:var(--green)">→ ${esc(String(f.aposta).replace(/(\d)\.(\d)/g, '$1,$2'))}</span>` : ''}</div>`).join('')}
+        ${fs.map((f) => `<div class="fav" style="margin:6px 0 0;white-space:normal">${esc(f.icone)} ${repFrase(f)}${f.aposta ? ` <span style="color:var(--green)">→ ${esc(String(f.aposta).replace(/(\d)\.(\d)/g, '$1,$2'))}</span>` : ''}${f.selo === 'ajuda' ? ' ✅' : ''}</div>`).join('')}
         ${b.aposta ? `<div class="meta" style="margin-top:9px;white-space:normal">Melhor aposta do gerador: <b>${esc(String(b.aposta).replace(/(\d)\.(\d)/g, '$1,$2'))}</b></div>` : ''}</div>`;
     });
     if (!n) h += '<div class="empty">Nenhum jogo com esse tipo de informação hoje.</div>';
-    return h + '<p class="note" style="margin:10px 4px">Números dos últimos 10 jogos de cada time (PackBall). Chance e odd ao lado do 🎯 são do nosso gerador; confira a odd na casa.</p>';
+    return h + '<p class="note" style="margin:10px 4px">Números dos últimos 10 jogos de cada time (PackBall). Chance e odd ao lado do 🎯 são do nosso gerador; confira a odd na casa. ✅ = informação que, em 10 mil jogos, mudou a chance de verdade; ⚖️ = a casa já desconta na odd.</p>';
   }
   function bindReport() { document.querySelectorAll('[data-rep]').forEach((b) => b.addEventListener('click', () => { repFiltro = b.dataset.rep; render(true); })); }
 
