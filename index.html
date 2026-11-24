@@ -337,6 +337,25 @@
     return out;
   }
 
+  // Múltiplas do dia (até 10): pernas, odd, chance, EV, stake e o embasamento. Vêm da aba do dia pela API; o app só mostra.
+  function blocoMultiplas(d) {
+    const ms = (d && d.multiplas) || [];
+    let h = `<div class="sec"><h2>Múltiplas do dia</h2><span>${ms.length} · stake fixa R$ 100</span></div>`;
+    if (!ms.length) return h + '<div class="empty">Nenhuma múltipla gerada para hoje ainda.</div>';
+    ms.forEach((m) => {
+      const pernas = (m.lista && m.lista.length ? m.lista : String(m.pernas || '').split(' + ')).map((p) => `<div class="fav" style="margin:2px 0">• ${esc(p)}</div>`).join('');
+      h += `<div class="card"><div class="row"><div class="meta">Múltipla ${esc(m.n)}</div>
+        ${m.resultado ? `<span class="res ${esc(m.resultado)}">${esc(m.resultado)}</span>` : (m.apostada ? '<span class="pill b">apostada</span>' : '<span class="pill n">aberta</span>')}</div>
+        ${pernas}
+        <div class="nums"><div><div class="k">Odd</div><div class="n">${esc(m.odd || '—')}</div></div>
+          <div><div class="k">Chance</div><div class="n">${esc(m.prob || '—')}</div></div>
+          <div><div class="k">EV</div><div class="n ${sgn(m.ev)}">${esc(m.ev || '—')}</div></div>
+          <div><div class="k">Stake</div><div class="n">${esc(m.stake || '—')}</div></div></div>
+        ${m.obs ? `<div class="meta" style="margin-top:8px;white-space:normal">${esc(m.obs)}</div>` : ''}</div>`;
+    });
+    return h;
+  }
+
   function viewHoje() {
     const d = data.hoje || {}, js = d.jogos || [];
     if (!d.existe) return '<div class="empty">A aba de hoje ainda não foi criada.<br>Ela nasce às 22h do dia anterior.</div>';
@@ -348,6 +367,7 @@
       : `<div class="hero none"><div><div class="t">Nenhuma entrada com valor agora</div><div class="s">${espera.length ? espera.length + ' jogo(s) esperando o preço subir.' : 'O guardião atualiza as odds sozinho.'}</div></div></div>`;
     if (agora.length) { h += `<div class="sec"><h2>Entrar agora</h2><span>odd ≥ mínimo · EV ≥ 2%</span></div>`; agora.forEach((i) => { h += cardValor(js[i], i); }); }
     if (espera.length) { h += `<div class="sec"><h2>Esperando preço</h2><span>entra se a odd subir</span></div>`; espera.forEach((i) => { h += cardValor(js[i], i); }); }
+    h += blocoMultiplas(d);
     // próximos dias: só o que é entrada (🟢) ou espera preço
     const fut = futuros();
     const fi = fut.map((j, i) => i).filter((i) => valor(fut[i]));
