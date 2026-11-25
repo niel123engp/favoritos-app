@@ -398,6 +398,22 @@
   }
   function bindReport() { document.querySelectorAll('[data-rep]').forEach((b) => b.addEventListener('click', () => { repFiltro = b.dataset.rep; render(true); })); }
 
+  // Favoritos fortes sem valor: lista à parte, vinda do report (data.report.fortes). Não é entrada de valor e nunca aparece como verde.
+  function blocoFortes() {
+    const r = data.report, fs = (r && String(r.dia) === String(data.dia) && r.fortes) || [];
+    if (!fs.length) return '';
+    const br = (x) => String(x).replace('.', ',');
+    let h = `<div class="sec"><h2>Favorito forte, preço abaixo do justo</h2><span>sem valor</span></div>
+      <p class="note" style="margin:0 4px 8px">Times com tendência forte de vitória, mas a odd paga menos que o justo. Não são entradas de valor. "Custo" é a perda média a cada R$ 100 nesse preço.</p>`;
+    fs.forEach((f) => {
+      h += `<div class="card"><div class="row"><div class="meta">${esc(f.hora)} · ${esc(f.liga)}</div><span class="pill n">sem valor</span></div>
+        <div class="jogo">${esc(f.jogo)}</div>
+        <div class="fav"><b>${esc(f.favorito)}</b> vence${f.visitante ? ' (visitante)' : ''} · odd ${br(f.odd)}${f.casa ? ' na ' + esc(f.casa) : ''}${f.justa ? ' · justa ' + br(f.justa) : ''}</div>
+        <div class="meta" style="margin-top:6px;white-space:normal;color:var(--red, #ef6b6b)">Custo: perde R$ ${br(Math.abs(f.custo).toFixed(2))} a cada R$ 100</div>
+        <div class="meta" style="margin-top:4px;white-space:normal">${esc((f.motivos || []).join(' · '))}</div></div>`;
+    });
+    return h;
+  }
   function viewHoje() {
     const d = data.hoje || {}, js = d.jogos || [];
     if (!d.existe) return '<div class="empty">A aba de hoje ainda não foi criada.<br>Ela nasce às 22h do dia anterior.</div>';
@@ -410,6 +426,7 @@
     if (agora.length) { h += `<div class="sec"><h2>Entrar agora</h2><span>odd ≥ mínimo · EV ≥ 2%</span></div>`; agora.forEach((i) => { h += cardValor(js[i], i); }); }
     if (espera.length) { h += `<div class="sec"><h2>Esperando preço</h2><span>entra se a odd subir</span></div>`; espera.forEach((i) => { h += cardValor(js[i], i); }); }
     h += blocoMultiplas(d);
+    h += blocoFortes();
     // próximos dias: só o que é entrada (🟢) ou espera preço
     const fut = futuros();
     const fi = fut.map((j, i) => i).filter((i) => valor(fut[i]));
