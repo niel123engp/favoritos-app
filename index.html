@@ -333,6 +333,31 @@
       </div></div>`;
   }
 
+  // ORDEM PADRÃO DO APP (pedido do Adriano em 25/11): tudo aparece pelo horário de início do jogo, do mais cedo ao mais tarde.
+  const hmin = (h) => { const m = String(h || '').match(/^(\d{1,2}):(\d{2})/); return m ? +m[1] * 60 + +m[2] : 9999; };
+  const porHoraDe = (f) => (a, b) => hmin(f(a).hora) - hmin(f(b).hora) || String(f(a).jogo || '').localeCompare(String(f(b).jogo || ''));
+  const ordHora = (arr) => arr.map((x, i) => [x, i]).sort((a, b) => hmin(a[0].hora) - hmin(b[0].hora) || a[1] - b[1]).map((x) => x[0]);
+  const nrm = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  // horário do jogo pelo nome (jogos de hoje): usado em alertas e múltiplas, que não trazem o horário
+  function horaDoJogo(nome, dia) {
+    const n = nrm(nome); if (!n || n === '—') return '';
+    const js = ((data.hoje && data.hoje.jogos) || []).map((j) => Object.assign({ dia: String(data.dia) }, j)).concat((data.report && data.report.jogos || []).map((j) => Object.assign({ dia: String(data.report.dia) }, j)), futuros());
+    for (const j of js) if ((dia == null || String(j.dia) === String(dia)) && j.hora && nrm(j.jogo) === n) return j.hora;
+    return '';
+  }
+  // primeiro jogo de uma múltipla: menor horário entre os jogos de hoje cujo time aparece nas pernas
+  function horaMultipla(m) {
+    const txt = ' ' + nrm((m.lista && m.lista.length ? m.lista.join(' + ') : m.pernas) || '').replace(/[^a-z0-9]+/g, ' ') + ' ';
+    let best = 9999, hora = '';
+    const js = ((data.hoje && data.hoje.jogos) || []).concat((data.report && String(data.report.dia) === String(data.dia) && data.report.jogos) || []);
+    js.forEach((j) => {
+      const times = String(j.jogo || '').split(/\s+x\s+/i).concat(j.favorito ? [j.favorito] : []);
+      const bate = times.some((t) => { const k = nrm(t).replace(/[^a-z0-9]+/g, ' ').trim(); if (!k) return false; if (txt.includes(' ' + k + ' ')) return true; return k.split(' ').some((w) => w.length >= 5 && txt.includes(' ' + w + ' ')); });
+      if (bate && hmin(j.hora) < best) { best = hmin(j.hora); hora = j.hora; }
+    });
+    return hora;
+  }
+  const ordMultiplas = (ms) => ms.map((m, i) => ({ m, i, h: horaMultipla(m) })).sort((a, b) => hmin(a.h) - hmin(b.h) || a.i - b.i);
   function futuros() {
     const out = [];
     (data && data.proximos || []).forEach((p, k) => (p.jogos || []).forEach((j) => out.push(Object.assign({}, j, { _futuro: true, dia: String(p.dia), _dia: (p.semana ? p.semana + ' ' : '') + p.data, _ord: k }))));
@@ -344,9 +369,9 @@
     const ms = (d && d.multiplas) || [];
     let h = `<div class="sec"><h2>Múltiplas do dia</h2><span>${ms.length} · stake fixa R$ 100</span></div>`;
     if (!ms.length) return h + '<div class="empty">Nenhuma múltipla gerada para hoje ainda.</div>';
-    ms.forEach((m) => {
+    ordMultiplas(ms).forEach(({ m, h: h1 }) => {
       const pernas = (m.lista && m.lista.length ? m.lista : String(m.pernas || '').split(' + ')).map((p) => `<div class="fav" style="margin:2px 0">• ${esc(p)}</div>`).join('');
-      h += `<div class="card"><div class="row"><div class="meta">Múltipla ${esc(m.n)}</div>
+      h += `<div class="card"><div class="row"><div class="meta">${h1 ? esc(h1) + ' · ' : ''}Múltipla ${esc(m.n)}</div>
         ${m.resultado ? `<span class="res ${esc(m.resultado)}">${esc(m.resultado)}</span>` : (m.apostada ? '<span class="pill b">apostada</span>' : '<span class="pill n">aberta</span>')}</div>
         ${pernas}
         <div class="nums"><div><div class="k">Odd</div><div class="n">${esc(m.odd || '—')}</div></div>
@@ -378,8 +403,8 @@
     let h = `<div class="sec"><h2>Conferência</h2><span>o que se confirmou</span></div>`;
     c.dias.forEach((d, i) => {
       h += `<details class="card"${i === 0 ? ' open' : ''}><summary style="cursor:pointer"><b>Dia ${esc(d.dia)}</b> · ✅ ${d.ok} · ❌ ${d.x}${d.sd ? ` · sem dado ${d.sd}` : ''}${cfPct(d)}</summary>`;
-      (d.jogos || []).forEach((j) => {
-        h += `<div style="margin-top:12px"><div class="row"><div class="jogo" style="font-size:14.5px">${esc(j.jogo)}</div>${j.placar ? `<span class="pill n">${esc(j.placar)}</span>` : ''}</div>`;
+      ordHora(d.jogos || []).forEach((j) => {
+        h += `<div style="margin-top:12px"><div class="row"><div class="jogo" style="font-size:14.5px">${j.hora ? `<span class="meta">${esc(j.hora)}</span> ` : ''}${esc(j.jogo)}</div>${j.placar ? `<span class="pill n">${esc(j.placar)}</span>` : ''}</div>`;
         h += (j.itens || []).map((it) => `<div class="fav" style="margin:5px 0 0;white-space:normal"><span style="color:${cfCor(it.res)}">${it.res === 'sem dado' ? '➖' : esc(it.res)}</span> ${esc(it.icone || '')} ${it.time && it.tipo !== 'perna de múltipla' ? `<b>${esc(it.time)}</b> ` : ''}${esc(it.txt)}<span class="meta" style="white-space:normal"> · ${/^Destaque|^Múltipla|^Favorito|^Aviso/.test(it.origem || '') ? esc(it.origem) + ' · ' : ''}${esc(it.det || '')}</span></div>`).join('');
         h += '</div>';
       });
@@ -398,19 +423,19 @@
     if (!r || !(r.jogos || []).length) return (blocoConferencia() || '') + '<div class="empty">O report do dia ainda não foi gerado.<br>O robô grava de manhã, depois de ler o PackBall.</div>';
     let h = `<div class="hero none"><div><div class="t">Report do dia ${esc(r.dia)}</div><div class="s">${(r.jogos || []).length} jogos da lista da DG · gerado ${esc(r.geradoEm || '')} · apoio para decidir, não é prova</div></div></div>`;
     h += '<div class="chips">' + repTipos.map(([k, t]) => `<button type="button" class="chip ${repFiltro === k ? 'on' : ''}" data-rep="${k}">${t}</button>`).join('') + '</div>';
-    const top = (r.top || []).filter(repPassa);
+    const top = ordHora((r.top || []).filter(repPassa));
     if (top.length) {
-      h += `<div class="sec"><h2>Destaques do dia</h2><span>${top.length} mais fortes</span></div>`;
+      h += `<div class="sec"><h2>Destaques do dia</h2><span>${top.length} mais fortes · por horário</span></div>`;
       top.forEach((f, i) => {
         const [c, t] = repForca(f.nota);
-        h += `<div class="card"><div class="row"><div class="meta">${i + 1} · ${esc(f.hora)} · ${esc(f.liga)}</div><span class="pill ${c}">${t}</span></div>
+        h += `<div class="card"><div class="row"><div class="meta">${esc(f.hora)} · ${esc(f.liga)}</div><span class="pill ${c}">${t}</span></div>
           <div class="jogo" style="font-size:15px">${esc(f.icone)} ${repFrase(f)}</div>
           <div class="fav">${esc(f.jogo)}</div>${repHist(f)}${repAposta(f.aposta)}</div>`;
       });
     }
     h += `<div class="sec"><h2>Jogo a jogo</h2><span>por horário</span></div>`;
     let n = 0;
-    (r.jogos || []).forEach((b) => {
+    ordHora(r.jogos || []).forEach((b) => {
       const fs = (b.fatos || []).filter(repPassa); if (!fs.length) return; n++;
       h += `<div class="card"><div class="row"><div class="meta">${esc(b.hora)} · ${esc(b.liga)}</div>${b.cor ? `<span class="pill n">${esc(String(b.cor).split(' ')[0])}</span>` : ''}</div>
         <div class="jogo">${esc(b.jogo)}</div>
@@ -430,7 +455,7 @@
     const br = (x) => String(x).replace('.', ',');
     let h = `<div class="sec"><h2>Favorito forte, preço abaixo do justo</h2><span>sem valor</span></div>
       <p class="note" style="margin:0 4px 8px">Times com tendência forte de vitória, mas a odd paga menos que o justo. Não são entradas de valor. "Custo" é a perda média a cada R$ 100 nesse preço.</p>`;
-    fs.forEach((f) => {
+    ordHora(fs).forEach((f) => {
       h += `<div class="card"><div class="row"><div class="meta">${esc(f.hora)} · ${esc(f.liga)}</div><span class="pill n">sem valor</span></div>
         <div class="jogo">${esc(f.jogo)}</div>
         <div class="fav"><b>${esc(f.favorito)}</b> vence${f.visitante ? ' (visitante)' : ''} · odd ${br(f.odd)}${f.casa ? ' na ' + esc(f.casa) : ''}${f.justa ? ' · justa ' + br(f.justa) : ''}</div>
@@ -442,8 +467,8 @@
   function viewHoje() {
     const d = data.hoje || {}, js = d.jogos || [];
     if (!d.existe) return '<div class="empty">A aba de hoje ainda não foi criada.<br>Ela nasce às 22h do dia anterior.</div>';
-    const porHora = (a, b) => String(js[a].hora).localeCompare(String(js[b].hora));
-    const agora = js.map((j, i) => i).filter((i) => valor(js[i]) === 'agora').sort((a, b) => (num(js[b].ev) || 0) - (num(js[a].ev) || 0));
+    const porHora = (a, b) => hmin(js[a].hora) - hmin(js[b].hora) || a - b;
+    const agora = js.map((j, i) => i).filter((i) => valor(js[i]) === 'agora').sort(porHora);
     const espera = js.map((j, i) => i).filter((i) => valor(js[i]) === 'espera').sort(porHora);
     let h = agora.length
       ? `<div class="hero"><div><div class="t">${agora.length} entrada${agora.length > 1 ? 's' : ''} de valor agora</div><div class="s">Toque em Apostar: abre o jogo na Parimatch.</div></div><button type="button" data-shareall="1">${icoShare.replace('<svg', '<svg style="width:15px;height:15px;vertical-align:-3px"')} Enviar</button></div>`
@@ -457,7 +482,7 @@
     const fi = fut.map((j, i) => i).filter((i) => valor(fut[i]));
     if (fi.length) {
       h += `<div class="sec"><h2>Próximos dias</h2><span>${fi.filter((i) => valor(fut[i]) === 'agora').length} entrada(s) já com valor</span></div>`;
-      fi.sort((a, b) => (fut[a]._ord - fut[b]._ord) || String(fut[a].hora).localeCompare(String(fut[b].hora))).forEach((i) => { h += cardValor(fut[i], 'p' + i); });
+      fi.sort((a, b) => (fut[a]._ord - fut[b]._ord) || hmin(fut[a].hora) - hmin(fut[b].hora)).forEach((i) => { h += cardValor(fut[i], 'p' + i); });
     }
     const hojeTodos = todos().filter((j) => String(j.dia) === String(data.dia));
     const cc = { g: 0, a: 0, r: 0, n: 0 }; hojeTodos.forEach((j) => { cc[tier(j)]++; });
@@ -484,7 +509,6 @@
     }
     return out;
   }
-  const hmin = (h) => { const m = String(h || '').match(/^(\d{1,2}):(\d{2})/); return m ? +m[1] * 60 + +m[2] : 9999; };
   function todos() {
     if (_todos && _todos.src === data) return _todos.list;
     const hj = (data.hoje && data.hoje.jogos) || [], fut = futuros(), st = {};
@@ -553,7 +577,7 @@
 
   function viewApostas() {
     const d = data.hoje || {}, k = d.kpi || {};
-    const js = (d.jogos || []).map((j, i) => ({ j, i })).filter((x) => x.j.apostada);
+    const js = (d.jogos || []).map((j, i) => ({ j, i })).filter((x) => x.j.apostada).sort((a, b) => hmin(a.j.hora) - hmin(b.j.hora) || a.i - b.i);
     const ms = (d.multiplas || []).filter((m) => m.apostada);
     let h = `<div class="tiles two">
       <div class="tile"><div class="l">Apostado hoje</div><div class="v sm">${esc(k['APOSTADO TOTAL'] || '—')}</div></div>
@@ -573,8 +597,8 @@
     });
     h += `<div class="sec"><h2>Múltiplas</h2><span>${ms.length}</span></div>`;
     if (!ms.length) h += '<div class="empty">Nenhuma múltipla apostada hoje.</div>';
-    ms.forEach((m) => {
-      h += `<div class="card"><div class="row"><div class="meta">Múltipla ${esc(m.n)}</div>
+    ordMultiplas(ms).forEach(({ m, h: h1 }) => {
+      h += `<div class="card"><div class="row"><div class="meta">${h1 ? esc(h1) + ' · ' : ''}Múltipla ${esc(m.n)}</div>
         ${m.resultado ? `<span class="res ${esc(m.resultado)}">${esc(m.resultado)}</span>` : '<span class="pill n">aberta</span>'}</div>
         <div class="jogo" style="font-size:14px">${esc(m.pernas)}</div>
         <div class="nums"><div><div class="k">Odd</div><div class="n">${esc(m.odd)}</div></div>
@@ -621,10 +645,14 @@
   function viewAlertas() {
     const al = data.alertas || [];
     if (!al.length) return '<div class="empty">Nenhum alerta ainda.</div>';
+    // dia mais novo primeiro; dentro do dia, pelo horário do jogo do alerta (sem jogo: pelo horário do próprio alerta)
+    const qd = (a) => { const m = String(a.quando || '').match(/(\d{1,2})\/(\d{1,2})(?:\D+(\d{1,2}:\d{2}))?/); return m ? { dia: +m[2] * 100 + +m[1], d: String(+m[1]), hora: m[3] || '' } : { dia: 0, d: null, hora: '' }; };
+    const lst = al.map((a, i) => { const q = qd(a), hj = horaDoJogo(a.jogo, q.d); return { a, i, dia: q.dia, hj, h: hmin(hj || q.hora) }; })
+      .sort((x, y) => y.dia - x.dia || x.h - y.h || x.i - y.i);
     let h = '';
-    al.forEach((a) => {
+    lst.forEach(({ a, hj }) => {
       const m = String(a.msg || ''), t = m.includes('🟢') || m.startsWith('✅') ? 'g' : m.includes('🟡') || m.startsWith('⚠') || m.startsWith('🎯') ? 'a' : m.includes('🔴') || m.startsWith('❌') ? 'r' : '';
-      h += `<div class="card alert ${t}"><div class="row"><div class="when">${esc(a.quando)}</div>${a.jogo && a.jogo !== '—' ? `<div class="meta">${esc(a.jogo)}</div>` : ''}</div>
+      h += `<div class="card alert ${t}"><div class="row"><div class="when">${esc(a.quando)}</div>${a.jogo && a.jogo !== '—' ? `<div class="meta">${hj ? 'jogo ' + esc(hj) + ' · ' : ''}${esc(a.jogo)}</div>` : ''}</div>
         <div class="msg">${esc(m)}</div></div>`;
     });
     return h;
