@@ -369,9 +369,33 @@
   // v2.0: cada fato traz o que ele rendeu em 10 mil jogos (hist) e um selo: 'ajuda' (muda a chance) ou 'na odd' (a casa já cobra por ele).
   const repSelo = (f) => (f.selo === 'ajuda' ? '<span style="color:var(--green)">✅ testado: ajuda</span>' : f.selo === 'na odd' ? '<span>⚖️ já está na odd</span>' : '');
   const repHist = (f) => (f.hist || repSelo(f) ? `<div class="meta" style="margin-top:4px;white-space:normal;font-size:11.5px">${repSelo(f)}${f.hist ? `${repSelo(f) ? ' · ' : ''}${esc(f.hist)}` : ''}</div>` : '');
+  // Conferência do fim do dia (data.report.conferencia): ✅ confirmou, ❌ não aconteceu, "sem dado" quando não dá para checar. Só medição.
+  const cfCor = (res) => (res === '✅' ? 'var(--green)' : res === '❌' ? 'var(--red, #e5484d)' : 'inherit');
+  const cfPct = (o) => (o.pct === null || o.pct === undefined ? '' : ` · ${o.pct}% de acerto`);
+  function blocoConferencia() {
+    const c = data.report && data.report.conferencia;
+    if (!c || !(c.dias || []).length) return '';
+    let h = `<div class="sec"><h2>Conferência</h2><span>o que se confirmou</span></div>`;
+    c.dias.forEach((d, i) => {
+      h += `<details class="card"${i === 0 ? ' open' : ''}><summary style="cursor:pointer"><b>Dia ${esc(d.dia)}</b> · ✅ ${d.ok} · ❌ ${d.x}${d.sd ? ` · sem dado ${d.sd}` : ''}${cfPct(d)}</summary>`;
+      (d.jogos || []).forEach((j) => {
+        h += `<div style="margin-top:12px"><div class="row"><div class="jogo" style="font-size:14.5px">${esc(j.jogo)}</div>${j.placar ? `<span class="pill n">${esc(j.placar)}</span>` : ''}</div>`;
+        h += (j.itens || []).map((it) => `<div class="fav" style="margin:5px 0 0;white-space:normal"><span style="color:${cfCor(it.res)}">${it.res === 'sem dado' ? '➖' : esc(it.res)}</span> ${esc(it.icone || '')} ${it.time && it.tipo !== 'perna de múltipla' ? `<b>${esc(it.time)}</b> ` : ''}${esc(it.txt)}<span class="meta" style="white-space:normal"> · ${/^Destaque|^Múltipla|^Favorito|^Aviso/.test(it.origem || '') ? esc(it.origem) + ' · ' : ''}${esc(it.det || '')}</span></div>`).join('');
+        h += '</div>';
+      });
+      h += '</details>';
+    });
+    const tp = (c.tipos || []).filter((t) => t.ok + t.x > 0);
+    if (tp.length) {
+      h += `<details class="card"><summary style="cursor:pointer"><b>Acertos por tipo (acumulado)</b> · ✅ ${c.total.ok} · ❌ ${c.total.x}${cfPct(c.total)}</summary>`;
+      h += tp.map((t) => `<div class="row" style="margin-top:8px"><div class="fav" style="margin:0">${esc(t.tipo)}</div><div class="meta">✅ ${t.ok} · ❌ ${t.x} · <b>${t.pct}%</b></div></div>`).join('');
+      h += `<p class="note" style="margin:10px 0 0">Poucos dias ainda: só dá para confiar depois de 2 a 4 semanas de medição.</p></details>`;
+    }
+    return h + `<p class="note" style="margin:6px 4px 14px">Conferido pelo robô com o resultado real (atualizado ${esc(c.atualizado || '')}). ➖ = não deu para conferir. É só medição: não muda cor nem aposta.</p>`;
+  }
   function viewReport() {
     const r = data.report;
-    if (!r || !(r.jogos || []).length) return '<div class="empty">O report do dia ainda não foi gerado.<br>O robô grava de manhã, depois de ler o PackBall.</div>';
+    if (!r || !(r.jogos || []).length) return (blocoConferencia() || '') + '<div class="empty">O report do dia ainda não foi gerado.<br>O robô grava de manhã, depois de ler o PackBall.</div>';
     let h = `<div class="hero none"><div><div class="t">Report do dia ${esc(r.dia)}</div><div class="s">${(r.jogos || []).length} jogos da lista da DG · gerado ${esc(r.geradoEm || '')} · apoio para decidir, não é prova</div></div></div>`;
     h += '<div class="chips">' + repTipos.map(([k, t]) => `<button type="button" class="chip ${repFiltro === k ? 'on' : ''}" data-rep="${k}">${t}</button>`).join('') + '</div>';
     const top = (r.top || []).filter(repPassa);
@@ -394,6 +418,7 @@
         ${b.aposta ? `<div class="meta" style="margin-top:9px;white-space:normal">Melhor aposta do gerador: <b>${esc(String(b.aposta).replace(/(\d)\.(\d)/g, '$1,$2'))}</b></div>` : ''}</div>`;
     });
     if (!n) h += '<div class="empty">Nenhum jogo com esse tipo de informação hoje.</div>';
+    h += blocoConferencia();
     return h + '<p class="note" style="margin:10px 4px">Números dos últimos 10 jogos de cada time (PackBall). Chance e odd ao lado do 🎯 são do nosso gerador; confira a odd na casa. ✅ = informação que, em 10 mil jogos, mudou a chance de verdade; ⚖️ = a casa já desconta na odd.</p>';
   }
   function bindReport() { document.querySelectorAll('[data-rep]').forEach((b) => b.addEventListener('click', () => { repFiltro = b.dataset.rep; render(true); })); }
