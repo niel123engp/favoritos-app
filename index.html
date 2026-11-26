@@ -155,6 +155,56 @@
   .tiles.four .tile{padding:10px 10px}.tiles.four .tile .v{font-size:21px}
   .warn{background:var(--amber-bg);border:1px solid rgba(251,191,36,.35);color:var(--amber);border-radius:12px;padding:9px 12px;font-size:12px;line-height:1.4;margin-bottom:10px}
   .toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(84px + var(--safe-b)); background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:12px; font-size:13px; z-index:30; }
+
+  /* ===== reorganização 26/11: ficha da proposta, odd grande, selo de atualização ===== */
+  .sync.fg .dot{background:var(--green)} .sync.fa .dot{background:var(--amber)} .sync.fr .dot{background:var(--red)} .sync.fn .dot{background:var(--muted2)}
+  .sync.fr{border-color:rgba(248,113,113,.5);color:var(--red)} .sync.fa{border-color:rgba(251,191,36,.45);color:var(--amber)}
+  .sec h2{display:flex;align-items:center;gap:7px} .sec span{text-align:right}
+  .empty.sm{padding:16px 10px;font-size:13px;background:var(--surface);border:1px dashed var(--border);border-radius:14px;margin-bottom:10px}
+  .hr{color:var(--text);font-weight:800;font-size:13.5px}
+  .pc{background:var(--surface);border:1px solid var(--border);border-left:5px solid var(--muted2);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+  .pc.g{border-left-color:var(--green)} .pc.a{border-left-color:var(--amber)} .pc.r{border-left-color:var(--red)} .pc.b{border-left-color:var(--blue)}
+  .jg{font-size:13px;color:var(--muted);margin-top:6px;font-weight:500}
+  .ent,.sug{display:flex;justify-content:space-between;align-items:stretch;gap:10px;margin-top:8px}
+  .ent .k,.sug .k,.ob .k{font-size:10px;letter-spacing:.06em;color:var(--muted2);font-weight:700}
+  .ent .e{font-size:19px;font-weight:800;letter-spacing:-.01em;line-height:1.2;margin-top:1px}
+  .k2{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .ob{flex:none;min-width:78px;text-align:center;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:6px 10px;display:flex;flex-direction:column;justify-content:center}
+  .ob .o{font-size:25px;font-weight:800;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .pc.g .ob{border-color:rgba(52,211,153,.5)} .pc.g .ob .o{color:var(--green)} .pc.a .ob .o{color:var(--amber)}
+  .sug{background:var(--bg);border:1px dashed var(--border);border-radius:12px;padding:8px 10px;margin-top:10px}
+  .sug .e{font-size:15px;font-weight:700;margin-top:1px} .sug .ob{border:0;padding:0 2px;min-width:64px} .sug .ob .o{font-size:19px}
+  .mot{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .lido{font-size:11.5px;font-weight:600} .lido.fg{color:var(--green)} .lido.fa{color:var(--amber)} .lido.fr{color:var(--red)} .lido.fn{color:var(--muted)}
+  .vsub{margin-top:8px}
+  .vd{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border-radius:10px;background:var(--surface2);font-size:13px}
+  .vd.ok{background:var(--green-bg);color:var(--green)} .vd.no{background:var(--red-bg);color:var(--red)}
+  .placar{flex:none;font-weight:800;font-size:13px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:2px 8px;color:var(--text);white-space:nowrap}
+  .acts .a-bet.a{background:var(--amber);color:#3A2A02} .acts .a-bet.r{background:var(--surface2);color:var(--text)}
+  .acts button{font-size:13px}
+  .tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border-radius:6px;padding:2px 6px;background:var(--surface2);color:var(--muted);margin-top:3px}
+  .tag.t{background:var(--blue-bg);color:var(--blue)}
+  .gv .on{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+  .gv .pill{padding:3px 8px;margin-top:4px}
+  details>summary{list-style:none;cursor:pointer} details>summary::-webkit-details-marker{display:none}
+  details.grp>summary .sec span::after{content:" ▾"} details.grp[open]>summary .sec span::after{content:" ▴"}
+  details.mais{margin-top:6px} details.mais>summary{font-size:12px;color:var(--blue);font-weight:700;padding:4px 0}
+  .upbox{padding:10px 14px} .upbox summary{font-size:13px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .up{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px}
+  .pernas{margin-top:8px;border-top:1px solid var(--border)}
+  .pn{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)}
+  .pi{flex:none;width:22px;height:22px;border-radius:50%;background:var(--surface2);color:var(--muted);font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .pt{flex:1;font-size:15px;font-weight:700;line-height:1.25} .pt .k2{font-weight:500}
+  .po{flex:none;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+  .ap{margin-top:12px} .apb{height:6px;background:var(--bg);border-radius:999px;overflow:hidden;margin-top:5px} .apb i{display:block;height:100%;border-radius:999px}
+  .chips.subs{position:sticky;top:62px;z-index:4;background:var(--bg);padding-top:6px;margin-top:-6px}
+  .chips.subs .chip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+  .u5{display:inline-flex;gap:3px;vertical-align:middle} .u5 i{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .u5 i.g{background:var(--green)} .u5 i.a{background:var(--amber)} .u5 i.r{background:var(--red)}
+  .rx{display:flex;column-gap:6px;align-items:center;font-size:11.5px;margin-top:3px;flex-wrap:wrap} .rx .rn{font-weight:700;max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .rx .rp{color:var(--muted)}
+  .rxt{width:100%;border-collapse:collapse;font-size:12.5px} .rxt th{font-size:10px;color:var(--muted2);font-weight:700;text-align:left;padding:4px 4px;text-transform:uppercase;letter-spacing:.04em}
+  .rxt td{padding:7px 4px;border-top:1px solid var(--border)} .rxt td:first-child{max-width:130px}
+  nav button{position:relative;flex:1} .nb{position:absolute;top:0;left:calc(50% + 6px);background:var(--blue);color:#0B1220;font-size:10px;font-weight:800;border-radius:999px;min-width:16px;height:16px;line-height:16px;padding:0 4px}
 </style>
 </head>
 <body>
@@ -163,7 +213,7 @@
   <div class="hrow">
     <div>
       <div class="hdate" id="hdate">—</div>
-      <h1 id="htitle">Hoje</h1>
+      <h1 id="htitle">Apostar</h1>
     </div>
     <button class="sync loading" id="sync" type="button" aria-label="Atualizar"><span class="dot"></span><span id="synctxt">carregando…</span></button>
   </div>
@@ -172,28 +222,36 @@
 <main id="main"><div class="empty">Carregando…</div></main>
 
 <nav>
-  <button type="button" data-tab="hoje" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Hoje</button>
+  <button type="button" data-tab="apostar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>Apostar</button>
+  <button type="button" data-tab="multiplas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><rect x="3" y="10.5" width="18" height="5" rx="1.5"/><rect x="3" y="17" width="18" height="4" rx="1.5"/></svg>Múltiplas<span class="nb hidden" id="nbm"></span></button>
   <button type="button" data-tab="jogos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Jogos</button>
-  <button type="button" data-tab="apostas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>Apostas</button>
-  <button type="button" data-tab="painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Painel</button>
-  <button type="button" data-tab="report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Report</button>
-  <button type="button" data-tab="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Alertas</button>
+  <button type="button" data-tab="analise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Análise</button>
+  <button type="button" data-tab="conta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Conta</button>
 </nav>
 
 <script>
 (() => {
   // ================== CONFIG ==================
   const API_URL = 'https://script.google.com/macros/s/AKfycbz1ZowgfolCmH6HWEH49olOa4p2WZASaI8r8uNgl922SOBMxCg10GNOQ5dB_phDy83L-w/exec';
-  const LS = { key: 'fav.key', data: 'fav.data', at: 'fav.at', tab: 'fav.tab' };
+  const LS = { key: 'fav.key', data: 'fav.data', at: 'fav.at', tab: 'fav.tab', sub: 'fav.sub' };
   const REFRESH_MS = 60 * 1000;
+  const STAKE = 'R$ 100';
 
   // chave: vem no link (#k=...) uma vez e fica guardada no aparelho
   const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
   if (hash.get('k')) { localStorage.setItem(LS.key, hash.get('k')); history.replaceState(null, '', location.pathname); }
   let KEY = localStorage.getItem(LS.key) || '';
 
-  let data = null, tab = localStorage.getItem(LS.tab) || 'hoje', timer = null;
-  if (!['hoje', 'jogos', 'apostas', 'painel', 'report', 'alertas'].includes(tab)) tab = 'hoje';
+  // ABAS: Apostar · Múltiplas · Jogos · Análise · Conta. Os nomes antigos guardados no aparelho são convertidos.
+  const TABS = ['apostar', 'multiplas', 'jogos', 'analise', 'conta'];
+  const SUB = { analise: 'destaques', conta: 'apostas' };
+  try { Object.assign(SUB, JSON.parse(localStorage.getItem(LS.sub) || '{}')); } catch (e) {}
+  let data = null, tab = localStorage.getItem(LS.tab) || 'apostar', offline = false, carregando = false;
+  const antigo = { hoje: ['apostar'], report: ['analise'], apostas: ['conta', 'apostas'], painel: ['conta', 'painel'], alertas: ['conta', 'alertas'] }[tab];
+  if (antigo) { tab = antigo[0]; if (antigo[1]) SUB.conta = antigo[1]; }
+  if (!TABS.includes(tab)) tab = 'apostar';
+  if (!['destaques', 'jogos', 'acertos'].includes(SUB.analise)) SUB.analise = 'destaques';
+  if (!['apostas', 'painel', 'alertas'].includes(SUB.conta)) SUB.conta = 'apostas';
   try { data = JSON.parse(localStorage.getItem(LS.data) || 'null'); } catch (e) { data = null; }
 
   const $ = (s) => document.querySelector(s);
@@ -201,307 +259,39 @@
   const num = (s) => { if (typeof s === 'number') return s; const t = String(s ?? '').replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.'); const n = parseFloat(t); return isNaN(n) ? null : n; };
   const brl = (n) => (n == null ? '—' : (n < 0 ? '-' : '') + 'R$ ' + Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
   const sgn = (s) => { const n = num(s); return n == null ? '' : n > 0 ? 'pos' : n < 0 ? 'neg' : ''; };
-  const tier = (j) => { const d = String(j.decisao || j.obs || ''); return d.includes('🟢') ? 'g' : d.includes('🟡') ? 'a' : d.includes('🔴') ? 'r' : 'n'; };
-  const tierTxt = { g: 'Entra', a: 'Avaliar', r: 'Fora', n: 'Cinza' };
-  const corNome = { g: 'Verde', a: 'Amarelo', r: 'Vermelho', n: 'Cinza' };
   const evClass = (s) => { const n = num(s); if (n == null) return ''; return n >= 2 ? 'pos' : n >= 0 ? 'mid' : 'neg'; };
+  // ODD: sempre com 2 casas e vírgula ("1,10", nunca "1,1" nem "1.1"). Aceita número, "1,93" ou "1.93".
+  const oddN = (s) => { if (typeof s === 'number') return s; const t = String(s ?? '').trim().replace(/^@/, ''); if (!t) return null; const n = parseFloat(t.includes(',') ? t.replace(/\./g, '').replace(',', '.') : t); return isNaN(n) || n <= 1 ? null : n; };
+  const odd = (s) => { const n = oddN(s); return n == null ? '—' : n.toFixed(2).replace('.', ','); };
+  const cap = (t) => { t = String(t || '').trim(); return t.charAt(0).toUpperCase() + t.slice(1); };
 
-  // ================== ENTRADAS DE VALOR ==================
-  const PM = 'https://parimatch-hub.bet';
-  const linkAposta = (j) => j.eventId ? PM + '/pt/events/x-' + encodeURIComponent(j.eventId) : PM + '/pt/sports/football';
-  // jogo já começou? (só vale para a aba de hoje; 00:00 = virada da noite, ainda não começou)
-  function comecou(j) {
-    const now = new Date();
-    if (String(data && data.dia) !== String(now.getDate())) return false;
-    const m = String(j.hora || '').match(/^(\d{1,2}):(\d{2})/); if (!m) return false;
-    if (+m[1] === 0 && +m[2] === 0) return false;
-    const ini = new Date(); ini.setHours(+m[1], +m[2], 0, 0);
-    return now >= ini;
-  }
-  // odd e EV atuais: a última leitura do guardião (a planilha guarda a odd de entrada quando a aposta já foi feita)
-  const oddV = (j) => (j.oddAtual != null ? String(j.oddAtual).replace('.', ',') : j.odd);
-  const evV = (j) => (j.evAtual != null ? (j.evAtual > 0 ? '+' : '') + String(j.evAtual).replace('.', ',') + '%' : j.ev);
-  // 'agora' = decisão verde/amarela, odd atual ≥ alvo e EV ≥ 2% · 'espera' = boa decisão, preço ainda abaixo do alvo
-  function valor(j) {
-    if (j.resultado || (!j._futuro && comecou(j))) return null;
-    const t = tier(j), d = String(j.decisao || j.obs || '');
-    const odd = num(oddV(j)), alvo = num(j.oddMinima), ev = num(evV(j));
-    if (t === 'g' && odd) return 'agora';                       // 🟢 = a planilha já conferiu preço + PackBall
-    if (t === 'a') return (odd && alvo && odd >= alvo && ev != null && ev >= 2) ? 'agora' : 'espera';
-    if (/esperar pre\u00e7o|s\u00f3 se pagar|se subir para|entra s\u00f3 se/i.test(d) && alvo) return 'espera';   // 🔴 por preço: vira entrada se a odd subir
-    return null;
-  }
-  function textoEntrada(j) {
-    const v = valor(j);
-    return `⚽ ${j.jogo} · ${j._dia ? j._dia + ' ' : ''}${j.hora}${j.liga ? ' · ' + j.liga : ''}\n` +
-      (v === 'espera' ? `⏳ ${j.favorito} só se pagar ≥ @${j.oddMinima} (agora @${oddV(j) || '—'})\n` : `✅ ${j.favorito} vence @${oddV(j)} (Parimatch)\n🎯 Não entrar abaixo de @${j.oddMinima}\n📈 EV ${evV(j)}\n`) +
-      `👉 ${linkAposta(j)}`;
-  }
-  async function compartilhar(txt) {
-    try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
-    try { await navigator.clipboard.writeText(txt); toast('Copiado. Cole no WhatsApp.'); } catch (e) { location.href = 'https://wa.me/?text=' + encodeURIComponent(txt); }
-  }
-  const icoBet = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>';
-  const icoShare = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
-  const icoInfo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>';
-  const motivo = (j) => { const d = String(j.decisao || j.obs || ''); const m = d.split('·'); return m.length > 1 ? m.slice(1).join('·').replace(/·\s*critérios.*$/, '').trim().slice(0, 160) : ''; };
-  function cardValor(j, i) {
-    const v = valor(j);
-    return `<div class="vcard ${v === 'espera' ? 'wait' : ''}">
-      <div class="vtop"><div class="meta">${j._dia ? esc(j._dia) + ' · ' : ''}${esc(j.hora)} · ${esc(j.liga)}</div>
-        ${j.apostada ? '<span class="pill b">você já apostou</span>' : `<span class="pill ${v === 'agora' ? 'g' : 'a'}"><span class="d ${v === 'agora' ? 'g' : 'a'}"></span>${v === 'agora' ? 'Valor agora' : 'Esperando preço'}</span>`}</div>
-      <div class="vpick">${esc(j.favorito)} <span class="o">@${esc(oddV(j) || '—')}</span></div>
-      <div class="vsub">${esc(j.jogo)}${j.oddAtualEm ? ' · odd lida às ' + esc(j.oddAtualEm) : ''}</div>
-      ${motivo(j) ? `<div class="vsub" style="margin-top:4px;opacity:.85">${esc(motivo(j))}</div>` : ''}
-      <div class="vline"><span>Mínimo <b>@${esc(j.oddMinima)}</b></span><span>EV <b class="${evClass(evV(j))}">${esc(evV(j) || '—')}</b></span>${j.apostada && j.oddAtual != null && num(j.odd) !== j.oddAtual ? `<span>Sua entrada <b>@${esc(j.odd)}</b></span>` : ''}${j.prob ? `<span>Chance <b>${esc(j.prob)}</b></span>` : ''}</div>
-      <div class="acts">
-        <a class="a-bet" href="${esc(linkAposta(j))}" target="_blank" rel="noopener">${icoBet}${v === 'agora' ? 'Apostar' : 'Abrir jogo'}</a>
-        <button type="button" class="a-share" data-share="${i}" aria-label="Compartilhar">${icoShare}</button>
-        <button type="button" class="a-info" data-jogo="${i}" aria-label="Detalhes">${icoInfo}</button>
-      </div></div>`;
-  }
+  // UM NOME SÓ PARA CADA COR (a cor vem pronta da planilha, aba Decisão; o app não decide nada)
+  const tier = (j) => { const d = String(j.decisao || j.obs || j.cor || ''); return d.includes('🟢') ? 'g' : d.includes('🟡') ? 'a' : d.includes('🔴') ? 'r' : 'n'; };
+  const NOME = { g: 'Proposta', a: 'Avaliar', r: 'Fora', n: 'Sem leitura' };
+  const pill = (t, txt) => `<span class="pill ${t}"><span class="d ${t}"></span>${txt || NOME[t]}</span>`;
 
-  // ================== DADOS ==================
-  async function load(manual) {
-    const sy = $('#sync'), st = $('#synctxt');
-    if (!KEY) { render(); return; }
-    sy.classList.add('loading'); sy.classList.remove('off'); st.textContent = 'atualizando…';
-    try {
-      const r = await fetch(API_URL + '?k=' + encodeURIComponent(KEY) + '&_=' + Date.now(), { cache: 'no-store' });
-      const j = await r.json();
-      if (!j.ok) throw new Error(j.erro || 'erro');
-      data = j; localStorage.setItem(LS.data, JSON.stringify(j)); localStorage.setItem(LS.at, String(Date.now()));
-      sy.classList.remove('loading'); st.textContent = 'atualizado ' + j.geradoEm.slice(-5);
-      render(true);
-    } catch (e) {
-      sy.classList.remove('loading'); sy.classList.add('off');
-      st.textContent = data ? 'sem conexão · ' + (data.geradoEm || '').slice(-5) : 'sem conexão';
-      if (String(e.message).includes('chave')) { KEY = ''; localStorage.removeItem(LS.key); }
-      render();
-      if (manual) toast('Não consegui atualizar. Mostrando a última leitura.');
-    }
+  // ================== HORÁRIO E "ATUALIZADO HÁ X" ==================
+  // Os horários da planilha são de Brasília; o relógio usado aqui também, mesmo se o aparelho estiver em outro fuso.
+  const agora = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+  function quando(s) {   // "26/11 14:07" ou "26/11/2026 14:57"
+    const m = String(s || '').match(/(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?\D+(\d{1,2}):(\d{2})/); if (!m) return null;
+    const n = agora(), d = new Date(m[3] ? +m[3] : n.getFullYear(), +m[2] - 1, +m[1], +m[4], +m[5]);
+    if (!m[3] && d - n > 30 * 864e5) d.setFullYear(d.getFullYear() - 1);
+    return d;
   }
+  const minDesde = (s) => { const d = quando(s); return d ? Math.max(0, Math.round((agora() - d) / 60000)) : null; };
+  const ha = (m) => (m == null ? '' : m < 1 ? 'agora' : m < 60 ? `há ${m} min` : m < 1440 ? `há ${Math.floor(m / 60)} h${m % 60 && m < 600 ? ' ' + String(m % 60).padStart(2, '0') : ''}` : `há ${Math.floor(m / 1440)} dia${m >= 2880 ? 's' : ''}`);
+  const frescor = (m) => (m == null ? 'n' : m <= 30 ? 'g' : m <= 120 ? 'a' : 'r');   // só aviso visual: até 30 min, até 2 h, mais que 2 h
+  const hhmm = (s) => { const m = String(s || '').match(/(\d{1,2}:\d{2})\s*$/); return m ? m[1] : String(s || ''); };
 
-  // ================== TELAS ==================
-  function render(keep) {
-    const y0 = window.scrollY;
-    document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));
-    const m = $('#main');
-    if (!KEY) { $('#htitle').textContent = 'Favoritos'; $('#hdate').textContent = 'configuração'; m.innerHTML = viewKey(); bindKey(); return; }
-    if (!data) { m.innerHTML = '<div class="empty">Carregando os dados da planilha…</div>'; return; }
-    const d = data.hoje || {};
-    $('#hdate').textContent = (d.kpi && d.kpi.DATA) ? d.kpi.DATA : ('dia ' + data.dia);
-    const titles = { hoje: 'Hoje', jogos: 'Todos os jogos', apostas: 'Apostas', painel: 'Painel', report: 'Report do dia', alertas: 'Alertas' };
-    $('#htitle').textContent = titles[tab];
-    m.innerHTML = ({ hoje: viewHoje, jogos: viewJogos, apostas: viewApostas, painel: viewPainel, report: viewReport, alertas: viewAlertas })[tab]();
-    if (tab === 'report') bindReport();
-    m.querySelectorAll('[data-jogo]').forEach((c) => c.addEventListener('click', (e) => { e.stopPropagation(); openJogo(c.dataset.jogo); }));
-    window.futuros = futuros;
-    m.querySelectorAll('[data-share]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); const k = b.dataset.share; compartilhar(textoEntrada(String(k).startsWith('p') ? futuros()[+k.slice(1)] : data.hoje.jogos[k])); }));
-    m.querySelectorAll('[data-shareall]').forEach((b) => b.addEventListener('click', () => {
-      const js = (data.hoje.jogos || []).filter((j) => valor(j) === 'agora').concat(futuros().filter((j) => valor(j) === 'agora'));
-      if (!js.length) return;
-      compartilhar('🔥 Entradas de valor · ' + ((data.hoje.kpi && data.hoje.kpi.DATA) || 'hoje') + '\n\n' + js.map(textoEntrada).join('\n\n') + '\n\nStake fixa · odd abaixo do mínimo = não entra.');
-    }));
-    m.querySelectorAll('[data-gotab]').forEach((b) => b.addEventListener('click', () => { tab = b.dataset.gotab; localStorage.setItem(LS.tab, tab); render(); }));
-    if (tab === 'jogos') bindJogos();
-    window.scrollTo(0, keep ? y0 : 0);
-  }
-
-  function viewKey() {
-    return `<div class="card"><div class="jogo">Conectar à planilha</div>
-      <p class="note">Cole a chave de acesso que você recebeu. Ela fica só neste aparelho.</p>
-      <input id="keyin" placeholder="chave de acesso" autocomplete="off">
-      <button class="btn" id="keybtn" type="button">Entrar</button></div>`;
-  }
-  function bindKey() { $('#keybtn').onclick = () => { const v = $('#keyin').value.trim(); if (!v) return; KEY = v; localStorage.setItem(LS.key, v); load(true); }; }
-
-  function cardJogo(j, i) {
-    const t = tier(j);
-    const alvo = j.oddMinima || '—';
-    const ev = j.ev || j.evAntecipado || '—';   // EV da fórmula da planilha (recalcula com a odd ao vivo)
-    const res = j.resultado ? `<span class="res ${esc(j.resultado)}">${esc(j.resultado)}</span>` : '';
-    return `<div class="card tap ${j.apostada ? 'bet' : ''}" data-jogo="${i}">
-      <div class="row"><div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
-        <div style="display:flex;gap:6px;align-items:center">${res}${j.apostada ? '<span class="pill b">apostada</span>' : ''}<span class="pill ${t}"><span class="d ${t}"></span>${tierTxt[t]}</span></div></div>
-      <div class="jogo">${esc(j.jogo)}</div>
-      <div class="fav">Favorito: <b>${esc(j.favorito)}</b> ${j.lado ? '· ' + esc(j.lado.toLowerCase()) : ''}</div>
-      <div class="nums">
-        <div><div class="k">Odd ${esc(j.casa || 'Parimatch')}</div><div class="n">${esc(j.odd || '—')}</div></div>
-        <div><div class="k">Alvo (EV +2%)</div><div class="n">${esc(alvo)}</div></div>
-        <div><div class="k">EV</div><div class="n ${evClass(ev)}">${esc(ev)}</div></div>
-      </div></div>`;
-  }
-
-  // ORDEM PADRÃO DO APP (pedido do Adriano em 25/11): tudo aparece pelo horário de início do jogo, do mais cedo ao mais tarde.
+  // ORDEM PADRÃO DO APP (pedido do Adriano em 25/11): tudo pelo horário de início do jogo, do mais cedo ao mais tarde.
   const hmin = (h) => { const m = String(h || '').match(/^(\d{1,2}):(\d{2})/); return m ? +m[1] * 60 + +m[2] : 9999; };
-  const porHoraDe = (f) => (a, b) => hmin(f(a).hora) - hmin(f(b).hora) || String(f(a).jogo || '').localeCompare(String(f(b).jogo || ''));
   const ordHora = (arr) => arr.map((x, i) => [x, i]).sort((a, b) => hmin(a[0].hora) - hmin(b[0].hora) || a[1] - b[1]).map((x) => x[0]);
-  const nrm = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  // horário do jogo pelo nome (jogos de hoje): usado em alertas e múltiplas, que não trazem o horário
-  function horaDoJogo(nome, dia) {
-    const n = nrm(nome); if (!n || n === '—') return '';
-    const js = ((data.hoje && data.hoje.jogos) || []).map((j) => Object.assign({ dia: String(data.dia) }, j)).concat((data.report && data.report.jogos || []).map((j) => Object.assign({ dia: String(data.report.dia) }, j)), futuros());
-    for (const j of js) if ((dia == null || String(j.dia) === String(dia)) && j.hora && nrm(j.jogo) === n) return j.hora;
-    return '';
-  }
-  // primeiro jogo de uma múltipla: menor horário entre os jogos de hoje cujo time aparece nas pernas
-  function horaMultipla(m) {
-    const txt = ' ' + nrm((m.lista && m.lista.length ? m.lista.join(' + ') : m.pernas) || '').replace(/[^a-z0-9]+/g, ' ') + ' ';
-    let best = 9999, hora = '';
-    const js = ((data.hoje && data.hoje.jogos) || []).concat((data.report && String(data.report.dia) === String(data.dia) && data.report.jogos) || []);
-    js.forEach((j) => {
-      const times = String(j.jogo || '').split(/\s+x\s+/i).concat(j.favorito ? [j.favorito] : []);
-      const bate = times.some((t) => { const k = nrm(t).replace(/[^a-z0-9]+/g, ' ').trim(); if (!k) return false; if (txt.includes(' ' + k + ' ')) return true; return k.split(' ').some((w) => w.length >= 5 && txt.includes(' ' + w + ' ')); });
-      if (bate && hmin(j.hora) < best) { best = hmin(j.hora); hora = j.hora; }
-    });
-    return hora;
-  }
-  const ordMultiplas = (ms) => ms.map((m, i) => ({ m, i, h: horaMultipla(m) })).sort((a, b) => hmin(a.h) - hmin(b.h) || a.i - b.i);
-  function futuros() {
-    const out = [];
-    (data && data.proximos || []).forEach((p, k) => (p.jogos || []).forEach((j) => out.push(Object.assign({}, j, { _futuro: true, dia: String(p.dia), _dia: (p.semana ? p.semana + ' ' : '') + p.data, _ord: k }))));
-    return out;
-  }
-
-  // Múltiplas do dia (até 10): pernas, odd, chance, EV, stake e o embasamento. Vêm da aba do dia pela API; o app só mostra.
-  function blocoMultiplas(d) {
-    const ms = (d && d.multiplas) || [];
-    let h = `<div class="sec"><h2>Múltiplas do dia</h2><span>${ms.length} · stake fixa R$ 100</span></div>`;
-    if (!ms.length) return h + '<div class="empty">Nenhuma múltipla gerada para hoje ainda.</div>';
-    ordMultiplas(ms).forEach(({ m, h: h1 }) => {
-      const pernas = (m.lista && m.lista.length ? m.lista : String(m.pernas || '').split(' + ')).map((p) => `<div class="fav" style="margin:2px 0">• ${esc(p)}</div>`).join('');
-      h += `<div class="card"><div class="row"><div class="meta">${h1 ? esc(h1) + ' · ' : ''}Múltipla ${esc(m.n)}</div>
-        ${m.resultado ? `<span class="res ${esc(m.resultado)}">${esc(m.resultado)}</span>` : (m.apostada ? '<span class="pill b">apostada</span>' : '<span class="pill n">aberta</span>')}</div>
-        ${pernas}
-        <div class="nums"><div><div class="k">Odd</div><div class="n">${esc(m.odd || '—')}</div></div>
-          <div><div class="k">Chance</div><div class="n">${esc(m.prob || '—')}</div></div>
-          <div><div class="k">EV</div><div class="n ${sgn(m.ev)}">${esc(m.ev || '—')}</div></div>
-          <div><div class="k">Stake</div><div class="n">${esc(m.stake || '—')}</div></div></div>
-        ${m.obs ? `<div class="meta" style="margin-top:8px;white-space:normal">${esc(m.obs)}</div>` : ''}</div>`;
-    });
-    return h;
-  }
-
-  // Report do dia: os 10 destaques e os fatos jogo a jogo (sequências, gols, escanteios, cartões, desfalques).
-  // Vem pronto da planilha (robô fixo, sem IA) em data.report; o app só mostra e filtra por tipo.
-  let repFiltro = 'todos';
-  const repTipos = [['todos', 'Tudo'], ['sequência', '🔥 Sequência'], ['gols', '⚽ Gols'], ['escanteios', '🚩 Escanteios'], ['cartões', '🟨 Cartões'], ['desfalques', '🏥 Desfalques'], ['má fase', '⚠️ Má fase'], ['aposta', '🎯 Com aposta'], ['ajuda', '✅ Testado']];
-  const repPassa = (f) => repFiltro === 'todos' || (repFiltro === 'aposta' ? !!f.aposta : repFiltro === 'ajuda' ? f.selo === 'ajuda' : f.tipo === repFiltro);
-  const repForca = (n) => (n >= 15 ? ['r', 'muito forte'] : n >= 13 ? ['a', 'forte'] : ['n', 'médio']);
-  const repFrase = (f) => (f.time ? `<b>${esc(f.time)}</b> ${esc(f.txt)}` : esc(String(f.txt).charAt(0).toUpperCase() + String(f.txt).slice(1)));
-  const repAposta = (a) => (a ? `<div class="meta" style="margin-top:6px;white-space:normal;color:var(--green)">🎯 ${esc(String(a).replace(/(\d)\.(\d)/g, '$1,$2'))}</div>` : '');
-  // v2.0: cada fato traz o que ele rendeu em 10 mil jogos (hist) e um selo: 'ajuda' (muda a chance) ou 'na odd' (a casa já cobra por ele).
-  const repSelo = (f) => (f.selo === 'ajuda' ? '<span style="color:var(--green)">✅ testado: ajuda</span>' : f.selo === 'na odd' ? '<span>⚖️ já está na odd</span>' : '');
-  const repHist = (f) => (f.hist || repSelo(f) ? `<div class="meta" style="margin-top:4px;white-space:normal;font-size:11.5px">${repSelo(f)}${f.hist ? `${repSelo(f) ? ' · ' : ''}${esc(f.hist)}` : ''}</div>` : '');
-  // Conferência do fim do dia (data.report.conferencia): ✅ confirmou, ❌ não aconteceu, "sem dado" quando não dá para checar. Só medição.
-  const cfCor = (res) => (res === '✅' ? 'var(--green)' : res === '❌' ? 'var(--red, #e5484d)' : 'inherit');
-  const cfPct = (o) => (o.pct === null || o.pct === undefined ? '' : ` · ${o.pct}% de acerto`);
-  function blocoConferencia() {
-    const c = data.report && data.report.conferencia;
-    if (!c || !(c.dias || []).length) return '';
-    let h = `<div class="sec"><h2>Conferência</h2><span>o que se confirmou</span></div>`;
-    c.dias.forEach((d, i) => {
-      h += `<details class="card"${i === 0 ? ' open' : ''}><summary style="cursor:pointer"><b>Dia ${esc(d.dia)}</b> · ✅ ${d.ok} · ❌ ${d.x}${d.sd ? ` · sem dado ${d.sd}` : ''}${cfPct(d)}</summary>`;
-      ordHora(d.jogos || []).forEach((j) => {
-        h += `<div style="margin-top:12px"><div class="row"><div class="jogo" style="font-size:14.5px">${j.hora ? `<span class="meta">${esc(j.hora)}</span> ` : ''}${esc(j.jogo)}</div>${j.placar ? `<span class="pill n">${esc(j.placar)}</span>` : ''}</div>`;
-        h += (j.itens || []).map((it) => `<div class="fav" style="margin:5px 0 0;white-space:normal"><span style="color:${cfCor(it.res)}">${it.res === 'sem dado' ? '➖' : esc(it.res)}</span> ${esc(it.icone || '')} ${it.time && it.tipo !== 'perna de múltipla' ? `<b>${esc(it.time)}</b> ` : ''}${esc(it.txt)}<span class="meta" style="white-space:normal"> · ${/^Destaque|^Múltipla|^Favorito|^Aviso/.test(it.origem || '') ? esc(it.origem) + ' · ' : ''}${esc(it.det || '')}</span></div>`).join('');
-        h += '</div>';
-      });
-      h += '</details>';
-    });
-    const tp = (c.tipos || []).filter((t) => t.ok + t.x > 0);
-    if (tp.length) {
-      h += `<details class="card"><summary style="cursor:pointer"><b>Acertos por tipo (acumulado)</b> · ✅ ${c.total.ok} · ❌ ${c.total.x}${cfPct(c.total)}</summary>`;
-      h += tp.map((t) => `<div class="row" style="margin-top:8px"><div class="fav" style="margin:0">${esc(t.tipo)}</div><div class="meta">✅ ${t.ok} · ❌ ${t.x} · <b>${t.pct}%</b></div></div>`).join('');
-      h += `<p class="note" style="margin:10px 0 0">Poucos dias ainda: só dá para confiar depois de 2 a 4 semanas de medição.</p></details>`;
-    }
-    return h + `<p class="note" style="margin:6px 4px 14px">Conferido pelo robô com o resultado real (atualizado ${esc(c.atualizado || '')}). ➖ = não deu para conferir. É só medição: não muda cor nem aposta.</p>`;
-  }
-  function viewReport() {
-    const r = data.report;
-    if (!r || !(r.jogos || []).length) return (blocoConferencia() || '') + '<div class="empty">O report do dia ainda não foi gerado.<br>O robô grava de manhã, depois de ler o PackBall.</div>';
-    let h = `<div class="hero none"><div><div class="t">Report do dia ${esc(r.dia)}</div><div class="s">${(r.jogos || []).length} jogos da lista da DG · gerado ${esc(r.geradoEm || '')} · apoio para decidir, não é prova</div></div></div>`;
-    h += '<div class="chips">' + repTipos.map(([k, t]) => `<button type="button" class="chip ${repFiltro === k ? 'on' : ''}" data-rep="${k}">${t}</button>`).join('') + '</div>';
-    const top = ordHora((r.top || []).filter(repPassa));
-    if (top.length) {
-      h += `<div class="sec"><h2>Destaques do dia</h2><span>${top.length} mais fortes · por horário</span></div>`;
-      top.forEach((f, i) => {
-        const [c, t] = repForca(f.nota);
-        h += `<div class="card"><div class="row"><div class="meta">${esc(f.hora)} · ${esc(f.liga)}</div><span class="pill ${c}">${t}</span></div>
-          <div class="jogo" style="font-size:15px">${esc(f.icone)} ${repFrase(f)}</div>
-          <div class="fav">${esc(f.jogo)}</div>${repHist(f)}${repAposta(f.aposta)}</div>`;
-      });
-    }
-    h += `<div class="sec"><h2>Jogo a jogo</h2><span>por horário</span></div>`;
-    let n = 0;
-    ordHora(r.jogos || []).forEach((b) => {
-      const fs = (b.fatos || []).filter(repPassa); if (!fs.length) return; n++;
-      h += `<div class="card"><div class="row"><div class="meta">${esc(b.hora)} · ${esc(b.liga)}</div>${b.cor ? `<span class="pill n">${esc(String(b.cor).split(' ')[0])}</span>` : ''}</div>
-        <div class="jogo">${esc(b.jogo)}</div>
-        ${fs.map((f) => `<div class="fav" style="margin:6px 0 0;white-space:normal">${esc(f.icone)} ${repFrase(f)}${f.aposta ? ` <span style="color:var(--green)">→ ${esc(String(f.aposta).replace(/(\d)\.(\d)/g, '$1,$2'))}</span>` : ''}${f.selo === 'ajuda' ? ' ✅' : ''}</div>`).join('')}
-        ${b.aposta ? `<div class="meta" style="margin-top:9px;white-space:normal">Melhor aposta do gerador: <b>${esc(String(b.aposta).replace(/(\d)\.(\d)/g, '$1,$2'))}</b></div>` : ''}</div>`;
-    });
-    if (!n) h += '<div class="empty">Nenhum jogo com esse tipo de informação hoje.</div>';
-    h += blocoConferencia();
-    return h + '<p class="note" style="margin:10px 4px">Números dos últimos 10 jogos de cada time (PackBall). Chance e odd ao lado do 🎯 são do nosso gerador; confira a odd na casa. ✅ = informação que, em 10 mil jogos, mudou a chance de verdade; ⚖️ = a casa já desconta na odd.</p>';
-  }
-  function bindReport() { document.querySelectorAll('[data-rep]').forEach((b) => b.addEventListener('click', () => { repFiltro = b.dataset.rep; render(true); })); }
-
-  // Favoritos fortes sem valor: lista à parte, vinda do report (data.report.fortes). Não é entrada de valor e nunca aparece como verde.
-  function blocoFortes() {
-    const r = data.report, fs = (r && String(r.dia) === String(data.dia) && r.fortes) || [];
-    if (!fs.length) return '';
-    const br = (x) => String(x).replace('.', ',');
-    let h = `<div class="sec"><h2>Favorito forte, preço abaixo do justo</h2><span>sem valor</span></div>
-      <p class="note" style="margin:0 4px 8px">Times com tendência forte de vitória, mas a odd paga menos que o justo. Não são entradas de valor. "Custo" é a perda média a cada R$ 100 nesse preço.</p>`;
-    ordHora(fs).forEach((f) => {
-      h += `<div class="card"><div class="row"><div class="meta">${esc(f.hora)} · ${esc(f.liga)}</div><span class="pill n">sem valor</span></div>
-        <div class="jogo">${esc(f.jogo)}</div>
-        <div class="fav"><b>${esc(f.favorito)}</b> vence${f.visitante ? ' (visitante)' : ''} · odd ${br(f.odd)}${f.casa ? ' na ' + esc(f.casa) : ''}${f.justa ? ' · justa ' + br(f.justa) : ''}</div>
-        <div class="meta" style="margin-top:6px;white-space:normal;color:var(--red, #ef6b6b)">Custo: perde R$ ${br(Math.abs(f.custo).toFixed(2))} a cada R$ 100</div>
-        <div class="meta" style="margin-top:4px;white-space:normal">${esc((f.motivos || []).join(' · '))}</div></div>`;
-    });
-    return h;
-  }
-  function viewHoje() {
-    const d = data.hoje || {}, js = d.jogos || [];
-    if (!d.existe) return '<div class="empty">A aba de hoje ainda não foi criada.<br>Ela nasce às 22h do dia anterior.</div>';
-    const porHora = (a, b) => hmin(js[a].hora) - hmin(js[b].hora) || a - b;
-    const agora = js.map((j, i) => i).filter((i) => valor(js[i]) === 'agora').sort(porHora);
-    const espera = js.map((j, i) => i).filter((i) => valor(js[i]) === 'espera').sort(porHora);
-    let h = agora.length
-      ? `<div class="hero"><div><div class="t">${agora.length} entrada${agora.length > 1 ? 's' : ''} de valor agora</div><div class="s">Toque em Apostar: abre o jogo na Parimatch.</div></div><button type="button" data-shareall="1">${icoShare.replace('<svg', '<svg style="width:15px;height:15px;vertical-align:-3px"')} Enviar</button></div>`
-      : `<div class="hero none"><div><div class="t">Nenhuma entrada com valor agora</div><div class="s">${espera.length ? espera.length + ' jogo(s) esperando o preço subir.' : 'O guardião atualiza as odds sozinho.'}</div></div></div>`;
-    if (agora.length) { h += `<div class="sec"><h2>Entrar agora</h2><span>odd ≥ mínimo · EV ≥ 2%</span></div>`; agora.forEach((i) => { h += cardValor(js[i], i); }); }
-    if (espera.length) { h += `<div class="sec"><h2>Esperando preço</h2><span>entra se a odd subir</span></div>`; espera.forEach((i) => { h += cardValor(js[i], i); }); }
-    h += blocoMultiplas(d);
-    h += blocoFortes();
-    // próximos dias: só o que é entrada (🟢) ou espera preço
-    const fut = futuros();
-    const fi = fut.map((j, i) => i).filter((i) => valor(fut[i]));
-    if (fi.length) {
-      h += `<div class="sec"><h2>Próximos dias</h2><span>${fi.filter((i) => valor(fut[i]) === 'agora').length} entrada(s) já com valor</span></div>`;
-      fi.sort((a, b) => (fut[a]._ord - fut[b]._ord) || hmin(fut[a].hora) - hmin(fut[b].hora)).forEach((i) => { h += cardValor(fut[i], 'p' + i); });
-    }
-    const hojeTodos = todos().filter((j) => String(j.dia) === String(data.dia));
-    const cc = { g: 0, a: 0, r: 0, n: 0 }; hojeTodos.forEach((j) => { cc[tier(j)]++; });
-    h += `<div class="tiles four" style="margin-top:14px">
-      <div class="tile"><div class="l"><span class="d g"></span>Verde</div><div class="v">${cc.g}</div></div>
-      <div class="tile"><div class="l"><span class="d a"></span>Amar.</div><div class="v">${cc.a}</div></div>
-      <div class="tile"><div class="l"><span class="d r"></span>Verm.</div><div class="v">${cc.r}</div></div>
-      <div class="tile"><div class="l"><span class="d n"></span>Cinza</div><div class="v">${cc.n}</div></div></div>`;
-    h += `<button class="btn" type="button" data-gotab="jogos">Ver todos os jogos (${hojeTodos.length} hoje)</button>`;
-    return h;
-  }
-
-  // ================== TODOS OS JOGOS ==================
-  // Fonte: data.todos (aba Decisão inteira, vinda da API). Sem ela, cai para o que a API antiga manda (até 15 jogos/dia).
-  const Z = { dia: null, cor: 'all', q: '' };
-  let _todos = null;
+  const porHora = (a, b) => hmin(a.j.hora) - hmin(b.j.hora) || String(a.j.jogo).localeCompare(String(b.j.jogo));
+  const nrm = (t) => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const ddmm = (d) => String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
   function diasInfo() {   // dia do mês -> { off, label } para hoje..+7
-    const out = {}, sem = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'], base = new Date();
+    const out = {}, sem = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'], base = agora();
     for (let off = 0; off <= 7; off++) {
       const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() + off);
       const k = String(d.getDate()); if (out[k]) continue;
@@ -509,105 +299,545 @@
     }
     return out;
   }
+  // jogo já começou? (00:00 = virada da noite, ainda não começou). Dia que já passou conta como começado.
+  function comecou(j) {
+    const info = diasInfo()[String(j.dia)];
+    if (!info) return true;
+    if (info.off > 0) return false;
+    const m = String(j.hora || '').match(/^(\d{1,2}):(\d{2})/); if (!m) return false;
+    if (+m[1] === 0 && +m[2] === 0) return false;
+    const n = agora();
+    return n.getHours() * 60 + n.getMinutes() >= +m[1] * 60 + +m[2];
+  }
+
+  // ================== MESMO JOGO COM NOME DIFERENTE ==================
+  // "São Paulo FC x Clube do Remo" e "São Paulo x Remo" são o mesmo jogo: compara os times sem as palavras de enfeite.
+  const ENFEITE = { fc: 1, cf: 1, sc: 1, ac: 1, afc: 1, ec: 1, se: 1, cd: 1, ca: 1, fk: 1, sk: 1, if: 1, bk: 1, clube: 1, club: 1, do: 1, de: 1, da: 1, the: 1 };
+  const toks = (t) => nrm(t).replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter((w) => w && !ENFEITE[w]);
+  const contido = (a, b) => a.length > 0 && b.length > 0 && (a.every((w) => b.includes(w)) || b.every((w) => a.includes(w)));
+  const mesmoTime = (a, b) => contido(toks(a), toks(b));
+  const lados = (jogo) => { const p = String(jogo || '').split(/\s+x\s+/i); return p.length === 2 ? p : null; };
+  function mesmoJogo(a, b) {
+    if (a === b) return true;
+    const x = lados(a), y = lados(b);
+    return !!(x && y && mesmoTime(x[0], y[0]) && mesmoTime(x[1], y[1]));
+  }
+
+  // ================== DADOS ==================
+  async function load(manual) {
+    if (!KEY) { render(); return; }
+    carregando = true; pintaSync();
+    try {
+      const r = await fetch(API_URL + '?k=' + encodeURIComponent(KEY) + '&_=' + Date.now(), { cache: 'no-store' });
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.erro || 'erro');
+      data = j; offline = false; carregando = false;
+      try { localStorage.setItem(LS.data, JSON.stringify(j)); localStorage.setItem(LS.at, String(Date.now())); } catch (e) {}
+      render(true);
+    } catch (e) {
+      carregando = false; offline = true;
+      if (String(e.message).includes('chave')) { KEY = ''; localStorage.removeItem(LS.key); }
+      render(true);
+      if (manual) toast('Não consegui atualizar. Mostrando a última leitura.');
+    }
+  }
+
+  function futuros() {
+    const out = [];
+    (data && data.proximos || []).forEach((p, k) => (p.jogos || []).forEach((j) => out.push(Object.assign({}, j, { _futuro: true, dia: String(p.dia), _ord: k }))));
+    return out;
+  }
+  // TODOS OS JOGOS: data.todos (aba Decisão inteira). Aposta, resultado e link vêm da aba do dia. Sem data.todos, cai para a aba do dia.
+  let _todos = null;
   function todos() {
     if (_todos && _todos.src === data) return _todos.list;
     const hj = (data.hoje && data.hoje.jogos) || [], fut = futuros(), st = {};
     hj.forEach((j) => { st[String(data.dia) + '|' + j.jogo] = j; });
     fut.forEach((j) => { st[String(j.dia) + '|' + j.jogo] = j; });
-    let rows;
+    let rows, parcial = false;
     if (Array.isArray(data.todos)) {
       rows = data.todos.map((r) => {
         const o = Object.assign({}, r, { dia: String(r.dia) });
-        const s0 = st[o.dia + '|' + o.jogo];   // aposta, resultado, odd ao vivo e link vêm da aba do dia
-        if (s0) ['apostada', 'resultado', 'lucro', 'oddAtual', 'oddAtualEm', 'evAtual', 'eventId', 'stake', 'clv', 'oddFech'].forEach((k) => { if (s0[k] != null && s0[k] !== '') o[k] = s0[k]; });
-        if (o.dia !== String(data.dia)) o._futuro = true;
+        const s0 = st[o.dia + '|' + o.jogo];
+        if (s0) ['apostada', 'resultado', 'lucro', 'eventId', 'stake', 'clv', 'oddFech', 'lado', 'prob'].forEach((k) => { if (s0[k] != null && s0[k] !== '') o[k] = s0[k]; });
         if (!o.odd && o.oddDG) o.odd = o.oddDG;
         return o;
       });
-      _todos = { src: data, list: rows, parcial: false };
     } else {
-      rows = hj.map((j) => Object.assign({}, j, { dia: String(data.dia) })).concat(fut);
-      _todos = { src: data, list: rows, parcial: true };
+      rows = hj.map((j) => Object.assign({}, j, { dia: String(data.dia) })).concat(fut); parcial = true;
     }
-    return _todos.list;
+    _todos = { src: data, list: rows, parcial };
+    return rows;
   }
+  const doDia = (dia) => todos().map((j, i) => ({ j, i })).filter((x) => x.j.dia === String(dia)).sort(porHora);
+  function acha(dia, jogo, hora) {   // linha da Decisão para um jogo citado em outro lugar (Report, conferência)
+    const l = todos();
+    for (let i = 0; i < l.length; i++) if (l[i].dia === String(dia) && l[i].jogo === jogo) return { j: l[i], i };
+    for (let i = 0; i < l.length; i++) if (l[i].dia === String(dia) && (!hora || !l[i].hora || l[i].hora === hora) && mesmoJogo(l[i].jogo, jogo)) return { j: l[i], i };
+    return null;
+  }
+
+  // ================== A ENTRADA, ESCRITA COMO NA CASA ==================
+  const entrada = (j) => (j.favorito ? `${j.favorito} vence` : '—');
+  const MERCADO = 'Resultado final';
+  const casaDe = (j) => j.casa || j.casaOdd || '';
+  const PM = 'https://parimatch-hub.bet';
+  const linkAposta = (j) => (j.eventId ? PM + '/pt/events/x-' + encodeURIComponent(j.eventId) : PM + '/pt/sports/football');
+  const ehPM = (j) => !casaDe(j) || /parimatch/i.test(casaDe(j));
+  // sugestão do gerador: "menos de 4,5 gols (84% · 1.16)" -> entrada, chance e odd de referência
+  function sugestao(txt) {
+    const s = String(txt || '').trim(); if (!s) return null;
+    const m = s.match(/^(.*?)\s*\((\d+(?:[.,]\d+)?)\s*%\s*·\s*@?([\d.,]+)\)\s*$/);
+    const o = m ? { txt: cap(m[1]), chance: m[2].replace('.', ',') + '%', odd: oddN(m[3]) } : { txt: cap(s), chance: '', odd: null };
+    o.teste = /escanteio|cart[aãoõ]/i.test(o.txt);   // escanteios e cartões: só medição até liberar
+    return o;
+  }
+  // perna de múltipla: "Stoke City marca gol (1,23)" -> texto e odd da perna
+  function perna(txt) {
+    const s = String(txt || '').trim(), m = s.match(/^(.*?)\s*\(@?(\d+[.,]\d+)\)\s*$/);
+    return m ? { txt: m[1], odd: oddN(m[2]) } : { txt: s, odd: null };
+  }
+
+  // ================== RESULTADO LIGADO À PROPOSTA ==================
+  // Placar: conferência do robô (data.report.conferencia). O app só compara o placar com a entrada "favorito vence".
+  let _conf = null;
+  function confDe(j) {
+    const c = data.report && data.report.conferencia;
+    if (!c || !(c.dias || []).length) return null;
+    if (!_conf || _conf.src !== data) _conf = { src: data, m: new Map() };
+    const k = j.dia + '|' + j.jogo;
+    if (_conf.m.has(k)) return _conf.m.get(k);
+    let out = null;
+    for (const d of c.dias) {
+      if (String(parseInt(d.dia, 10)) !== String(j.dia)) continue;
+      out = (d.jogos || []).find((x) => x.jogo === j.jogo) || (d.jogos || []).find((x) => (!x.hora || !j.hora || x.hora === j.hora) && mesmoJogo(x.jogo, j.jogo)) || null;
+      if (out) break;
+    }
+    _conf.m.set(k, out); return out;
+  }
+  function resultado(j) {   // { placar, r: 'v' venceu | 'e' empatou | 'd' perdeu } do favorito
+    const c = confDe(j), m = c && String(c.placar || '').match(/(\d+)\s*x\s*(\d+)/);
+    if (!m) return null;
+    const p = lados(j.jogo); let lado = /^fora/i.test(String(j.lado || '')) ? 'f' : /^casa/i.test(String(j.lado || '')) ? 'c' : null;
+    if (!lado && p && j.favorito) { const c1 = mesmoTime(j.favorito, p[0]), f1 = mesmoTime(j.favorito, p[1]); lado = c1 && !f1 ? 'c' : f1 && !c1 ? 'f' : null; }
+    if (!lado) return { placar: c.placar, r: null };
+    const gf = lado === 'c' ? +m[1] : +m[2], gc = lado === 'c' ? +m[2] : +m[1];
+    return { placar: c.placar, r: gf > gc ? 'v' : gf === gc ? 'e' : 'd' };
+  }
+  const RTXT = { v: 'venceu', e: 'empatou', d: 'perdeu' };
+  // frase do resultado conforme a cor: proposta que venceu = acertou; "Fora" em que o favorito não venceu = acertou ao ficar fora
+  function veredito(j) {
+    const r = resultado(j); if (!r) return null;
+    const t = tier(j); let ok = null, txt = '';
+    if (r.r) {
+      if (t === 'g' || t === 'a') { ok = r.r === 'v'; txt = ok ? `${NOME[t]} acertou: ${j.favorito} venceu` : `${NOME[t]} errou: ${j.favorito} ${RTXT[r.r]}`; }
+      else if (t === 'r') { ok = r.r !== 'v'; txt = ok ? `Fora acertou: ${j.favorito} ${RTXT[r.r]}` : `Fora errou: ${j.favorito} venceu`; }
+      else txt = `${j.favorito} ${RTXT[r.r]}`;
+    }
+    return { placar: r.placar, ok, txt, t };
+  }
+  function linhaVeredito(j) {
+    const v = veredito(j);
+    if (!v) return (j.resultado ? `<div class="vd"><span class="res ${esc(j.resultado)}">${esc(j.resultado)}</span>${j.lucro ? ' ' + esc(j.lucro) : ''}</div>` : '');
+    return `<div class="vd ${v.ok === true ? 'ok' : v.ok === false ? 'no' : ''}"><b>${v.ok === true ? '✅' : v.ok === false ? '❌' : '➖'} ${esc(v.txt || 'Jogo encerrado')}</b><span class="placar">${esc(v.placar)}</span></div>`;
+  }
+  function placarCores(dia) {   // acertos do dia por cor, só dos jogos que o robô já conferiu
+    const c = { g: [0, 0], a: [0, 0], r: [0, 0] };
+    doDia(dia).forEach(({ j }) => { const v = veredito(j); if (v && v.ok != null && c[v.t]) c[v.t][v.ok ? 0 : 1]++; });
+    return c;
+  }
+  function blocoPlacarCores() {
+    const c = placarCores(data.dia), tot = c.g[0] + c.g[1] + c.a[0] + c.a[1] + c.r[0] + c.r[1];
+    if (!tot) return '';
+    const t = (k, l) => `<div class="tile"><div class="l"><span class="d ${k}"></span>${l}</div><div class="v sm">✅ ${c[k][0]} · ❌ ${c[k][1]}</div></div>`;
+    return `<div class="sec"><h2>Placar de hoje por cor</h2><span>${tot} jogo(s) conferido(s)</span></div>
+      <div class="tiles">${t('g', 'Propostas')}${t('a', 'Avaliar')}${t('r', 'Fora')}</div>
+      <p class="note" style="margin:-6px 4px 12px">Proposta e Avaliar acertam quando o favorito vence. Fora acerta quando o favorito não vence. Só medição.</p>`;
+  }
+
+  // ================== RAIO-X DOS TIMES (últimos 5, tabela, chance pela odd x o que o time fez) ==================
+  // Só informação: não muda cor nem decisão. Lê j.raio quando a planilha mandar:
+  //   raio: { casa: { ult5: 'VVEDV', pos: 3, v10: 5, e10: 3, d10: 2, n10: 10 }, fora: { ... },
+  //           prob: { c: 52, e: 26, f: 22, fonte: 'Pinnacle sem margem' }, odds: { c: 1.90, e: 3.40, f: 4.20 } }
+  // Enquanto não manda, mostra o que já existe para o favorito (forma e % de vitórias que vêm no texto da decisão) e "—" no resto.
+  const pc = (n) => (n == null || isNaN(n) ? '—' : Math.round(n) + '%');
+  function raio(j) {
+    const r = j.raio || {}, p = lados(j.jogo) || ['Casa', 'Fora'], out = { casa: Object.assign({ nome: p[0] }, r.casa), fora: Object.assign({ nome: p[1] }, r.fora), prob: Object.assign({}, r.prob), completo: !!j.raio };
+    if (r.odds && out.prob.c == null) {   // sem probabilidade pronta: tira a margem das 3 odds
+      const a = [oddN(r.odds.c), oddN(r.odds.e), oddN(r.odds.f)];
+      if (a.every(Boolean)) { const s = a.reduce((t, o) => t + 1 / o, 0); out.prob = { c: 100 / a[0] / s, e: 100 / a[1] / s, f: 100 / a[2] / s, fonte: r.odds.fonte || 'odds sem a margem' }; }
+    }
+    // o que dá para saber hoje, só do favorito
+    const lf = /^fora/i.test(String(j.lado || '')) ? 'fora' : /^casa/i.test(String(j.lado || '')) ? 'casa' : (j.favorito && mesmoTime(j.favorito, p[1]) && !mesmoTime(j.favorito, p[0])) ? 'fora' : (j.favorito && mesmoTime(j.favorito, p[0])) ? 'casa' : null;
+    out.fav = lf;
+    if (lf) {
+      const t = String(j.aFavor || '') + ' • ' + String(j.contra || ''), f = out[lf], k = lf === 'casa' ? 'c' : 'f';
+      const m1 = t.match(/Forma:\s*(\d+) de (\d+) pontos nos últimos (\d+) jogos/i); if (m1 && !f.ult5) f.pts = `${m1[1]} de ${m1[2]} pts`;
+      const m2 = t.match(/vence (\d+)% dos jogos vs (\d+)% esperado pelo preço/i); if (m2) { if (f.v10 == null) f.vencePct = +m2[1]; if (out.prob[k] == null) { out.prob[k] = +m2[2]; out.prob.fonte = out.prob.fonte || 'referência da decisão'; } }
+      if (out.prob[k] == null) { const j0 = oddN(j.oddJusta), o = oddN(j.odd); if (j0) { out.prob[k] = 100 / j0; out.prob.fonte = 'odd justa'; } else if (o) { out.prob[k] = 100 / o; out.prob.fonte = 'odd da casa, com margem'; } }
+    }
+    ['casa', 'fora'].forEach((s) => { const f = out[s]; if (f.n10 && f.v10 != null) f.vencePct = f.v10 / f.n10 * 100; if (f.n10 && f.e10 != null) f.empPct = f.e10 / f.n10 * 100; });
+    return out;
+  }
+  const bolas = (s) => (s ? '<span class="u5">' + String(s).toUpperCase().replace(/[^VEDWL]/g, '').slice(0, 5).split('').map((c) => `<i class="${c === 'V' || c === 'W' ? 'g' : c === 'E' ? 'a' : 'r'}" title="${c === 'V' || c === 'W' ? 'vitória' : c === 'E' ? 'empate' : 'derrota'}"></i>`).join('') + '</span>' : '');
+  // comparação: o que a odd diz x o que o time fez. Diferença de 10 pontos ou mais ganha cor (só destaque visual).
+  const difCls = (odd, fez) => (odd == null || fez == null ? '' : fez - odd >= 10 ? 'pos' : odd - fez >= 10 ? 'neg' : '');
+  function raioLinhas(j) {   // versão curta, para a lista de jogos
+    const r = raio(j), l = (f, p) => `<div class="rx"><span class="rn">${esc(f.nome)}</span>${bolas(f.ult5) || (f.pts ? `<span class="meta">${esc(f.pts)}</span>` : '<span class="meta">—</span>')}<span class="meta">${f.pos ? f.pos + 'º' : ''}</span><span class="rp">· odd diz ${pc(p)} · venceu <b class="${difCls(p, f.vencePct)}">${pc(f.vencePct)}</b></span></div>`;
+    if (!r.completo && !r.fav) return '';
+    if (!r.completo) return l(r[r.fav], r.prob[r.fav === 'casa' ? 'c' : 'f']);
+    return l(r.casa, r.prob.c) + l(r.fora, r.prob.f) + (r.prob.e != null ? `<div class="rx"><span class="meta">Casa ${pc(r.prob.c)} · Empate ${pc(r.prob.e)} · Fora ${pc(r.prob.f)}${r.prob.fonte ? ' · ' + esc(r.prob.fonte) : ''}</span></div>` : '');
+  }
+  function raioTabela(j) {   // versão completa, na ficha do jogo
+    const r = raio(j), emp = (r.casa.empPct != null && r.fora.empPct != null) ? (r.casa.empPct + r.fora.empPct) / 2 : null;
+    const tr = (nome, f, p, fez) => `<tr><td><b>${esc(nome)}</b></td><td>${f ? (bolas(f.ult5) || esc(f.pts || '—')) : ''}</td><td>${f ? (f.pos ? f.pos + 'º' : '—') : ''}</td><td>${pc(p)}</td><td class="${difCls(p, fez)}"><b>${pc(fez)}</b></td></tr>`;
+    return `<div class="p"><b>Raio-X dos times</b></div><table class="rxt"><tr><th></th><th>Últimos 5</th><th>Tabela</th><th>Odd diz</th><th>Fez</th></tr>
+      ${tr(r.casa.nome + ' vence', r.casa, r.prob.c, r.casa.vencePct)}${tr('Empate', null, r.prob.e, emp)}${tr(r.fora.nome + ' vence', r.fora, r.prob.f, r.fora.vencePct)}</table>
+      <div class="note" style="margin-top:6px"><span class="u5"><i class="g"></i></span> vitória <span class="u5"><i class="a"></i></span> empate <span class="u5"><i class="r"></i></span> derrota · "Odd diz": chance pelo preço${r.prob.fonte ? ' (' + esc(r.prob.fonte) + ')' : ''}. "Fez": quanto o time venceu nos últimos jogos. Amostra pequena, só informação. — = a planilha ainda não manda esse dado.</div>`;
+  }
+
+  // ================== SELO "ATUALIZADO" ==================
+  // A hora que vale é a da última leitura das decisões (coluna "atualizado" da aba Decisão), não a hora em que o app abriu.
+  function idadeDecisoes() {
+    const l = todos().filter((j) => j.atualizado);
+    const vivos = l.filter((j) => !comecou(j));
+    const base = vivos.length ? vivos : l;
+    let novo = null, velho = null;
+    base.forEach((j) => { const m = minDesde(j.atualizado); if (m == null) return; if (novo == null || m < novo) novo = m; if (velho == null || m > velho) velho = m; });
+    return { novo, velho, n: base.length };
+  }
+  function pintaSync() {
+    const sy = $('#sync'), st = $('#synctxt');
+    sy.className = 'sync';
+    if (carregando) { sy.classList.add('loading'); st.textContent = 'atualizando…'; return; }
+    if (!data) { sy.classList.add('off'); st.textContent = offline ? 'sem conexão' : '—'; return; }
+    const i = idadeDecisoes(), m = i.novo != null ? i.novo : minDesde(data.geradoEm);
+    sy.classList.add('f' + frescor(m)); if (offline) sy.classList.add('off');
+    st.textContent = (offline ? 'sem conexão · ' : '') + 'dados ' + (ha(m) || '—');
+  }
+  function blocoAtualizacao() {
+    const i = idadeDecisoes(), r = data.report || {}, c = r.conferencia || {}, ia = r.ia || {};
+    const lin = (nome, quandoTxt, extra) => { const m = minDesde(quandoTxt); return quandoTxt ? `<div class="up"><span class="d ${frescor(m)}"></span><div><b>${nome}</b> ${esc(hhmm(quandoTxt))} <span class="meta">· ${ha(m)}${extra ? ' · ' + extra : ''}</span></div></div>` : ''; };
+    const dec = i.novo != null ? `<div class="up"><span class="d ${frescor(i.novo)}"></span><div><b>Decisões e odds</b> <span class="meta">mais nova ${ha(i.novo)}${i.velho != null && i.velho !== i.novo ? ' · mais antiga ' + ha(i.velho) : ''}</span></div></div>` : '';
+    return `<details class="card upbox"><summary><span class="d ${frescor(i.novo)}"></span> <b>O que está atualizado</b> <span class="meta">· decisões ${ha(i.novo) || 'sem horário'}</span></summary>
+      ${dec}${lin('Análise do dia', r.geradoEm)}${lin('Notícias', ia.atualizado)}${lin('Conferência', c.atualizado)}${lin('Aba do dia', data.hoje && data.hoje.kpi && data.hoje.kpi['ÚLTIMA ATUALIZAÇÃO'])}${lin('App buscou na planilha', data.geradoEm, offline ? 'sem conexão agora' : '')}
+      <p class="note" style="margin:8px 0 0">Verde: até 30 min. Amarelo: até 2 h. Vermelho: mais de 2 h, confira a odd na casa antes de apostar.</p></details>`;
+  }
+  const lido = (j) => { const m = minDesde(j.atualizado); return j.atualizado ? `<span class="lido f${frescor(m)}">odd lida ${esc(hhmm(j.atualizado))} · ${ha(m)}${frescor(m) === 'r' && !comecou(j) ? ' · confira na casa' : ''}</span>` : ''; };
+
+  // ================== FICHA DA PROPOSTA ==================
+  const icoBet = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>';
+  const icoShare = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
+  const motivo = (j) => { if (j.motivo) return String(j.motivo); const d = String(j.decisao || j.obs || ''); const m = d.split('·'); return m.length > 1 ? m.slice(1).join('·').replace(/·\s*critérios.*$/, '').trim() : ''; };
+  const diaLabel = (j) => { const i = diasInfo()[String(j.dia)]; return i && i.off > 0 ? i.label + ' · ' : ''; };
+  function textoEntrada(j) {
+    return `⚽ ${j.jogo} · ${diaLabel(j)}${j.hora}${j.liga ? ' · ' + j.liga : ''}\n` +
+      `${tier(j) === 'g' ? '✅ Proposta' : tier(j) === 'a' ? '🟡 Para avaliar' : 'ℹ️'}: ${entrada(j)} @${odd(j.odd)}${casaDe(j) ? ' (' + casaDe(j) + ')' : ''}\n` +
+      `${MERCADO} · stake ${STAKE}` + (ehPM(j) && j.eventId ? `\n👉 ${linkAposta(j)}` : '');
+  }
+  function ficha(j, i, extra) {
+    const t = tier(j), aberto = !comecou(j) && !j.resultado;
+    return `<div class="pc ${t}">
+      <div class="row"><div class="meta">${diaLabel(j)}<b class="hr">${esc(j.hora)}</b> · ${esc(j.liga)}</div>${j.apostada ? '<span class="pill b">você apostou</span>' : pill(t, extra)}</div>
+      <div class="jg">${esc(j.jogo)}</div>
+      <div class="ent"><div><div class="k">ENTRADA</div><div class="e">${esc(entrada(j))}</div><div class="k2">${MERCADO} · ${esc(casaDe(j) || 'casa da DG')} · stake ${STAKE}</div></div>
+        <div class="ob"><div class="k">ODD</div><div class="o">${odd(j.odd)}</div></div></div>
+      <div class="vline${/^valor/i.test(motivo(j)) ? ' hidden' : ''}">${j.valor ? `<span>Valor <b class="${evClass(j.valor)}">${esc(j.valor)}</b></span>` : ''}${j.nota ? `<span>Nota <b>${esc(j.nota)}</b></span>` : ''}${j.oddJusta ? `<span>Justa <b>${odd(j.oddJusta)}</b></span>` : ''}</div>
+      ${motivo(j) ? `<div class="mot">${esc(motivo(j))}</div>` : ''}
+      ${aberto ? `<div class="vsub">${lido(j)}</div>` : linhaVeredito(j) || '<div class="vsub">Jogo começou. Resultado ainda não conferido.</div>'}
+      <div class="acts">
+        ${aberto && ehPM(j) ? `<a class="a-bet ${t}" href="${esc(linkAposta(j))}" target="_blank" rel="noopener">${icoBet}Abrir na Parimatch</a>` : `<button type="button" class="a-share" data-z="${i}">Ver ficha completa</button>`}
+        <button type="button" class="a-share" data-share="${i}" aria-label="Compartilhar">${icoShare}</button>
+        ${aberto && ehPM(j) ? `<button type="button" class="a-info" data-z="${i}">Ficha</button>` : ''}
+      </div></div>`;
+  }
+  const sec = (t, s) => `<div class="sec"><h2>${t}</h2><span>${s || ''}</span></div>`;
+
+  // Sugestões do gerador (Report do dia): observação, não é proposta. Um item por jogo; nomes duplicados são unidos.
+  function repJogos() {   // jogos do report sem duplicata, com a cor da Decisão (uma fonte só para a cor)
+    const r = data.report; if (!r || !(r.jogos || []).length) return [];
+    const out = [];
+    ordHora(r.jogos).forEach((b) => {
+      const a = acha(r.dia, b.jogo, b.hora);
+      const ja = out.find((x) => (a && x.z && x.z.i === a.i) || (!a && x.b.jogo === b.jogo));
+      if (ja) { (b.fatos || []).forEach((f) => { if (!ja.fatos.some((g) => g.txt === f.txt && g.time === f.time)) ja.fatos.push(f); }); if (!ja.aposta && b.aposta) ja.aposta = b.aposta; return; }
+      out.push({ b, z: a, fatos: (b.fatos || []).slice(), aposta: b.aposta, nome: a ? a.j.jogo : b.jogo, t: a ? tier(a.j) : tier(b), j: a ? a.j : { dia: String(r.dia), hora: b.hora, jogo: b.jogo } });
+    });
+    return out;
+  }
+  function blocoObservacao() {
+    const itens = [];
+    repJogos().forEach((x) => {
+      if (comecou(x.j)) return;
+      const s = sugestao(x.aposta); if (s) itens.push({ x, s });
+      x.fatos.filter((f) => (f.tipo === 'escanteios' || f.tipo === 'cartões') && f.selo === 'ajuda').forEach((f) => itens.push({ x, s: { txt: cap(String(f.txt).split(':')[0]), det: String(f.txt).split(':').slice(1).join(':').trim(), chance: '', odd: null, teste: true, ico: f.icone } }));
+    });
+    if (!itens.length) return '';
+    return `<details class="grp"><summary>${sec('Observação: não é proposta', itens.length + ' · toque para abrir')}</summary>
+      <p class="note" style="margin:0 4px 8px">Sugestões do gerador pelos números dos times. A odd é de referência: confira na casa. Escanteios e cartões estão <b>em teste</b> (só medindo, sem apostar).</p>
+      ${itens.map(({ x, s }) => `<div class="gr n"${x.z ? ` data-z="${x.z.i}"` : ''}><div class="gt">${esc(x.j.hora)}</div>
+        <div class="gm"><div class="gj">${s.ico ? esc(s.ico) + ' ' : ''}${esc(s.txt)}</div><div class="gs">${esc(x.nome)}${s.chance ? ' · chance ' + esc(s.chance) : ''}</div>${s.det ? `<div class="gx">${esc(s.det)}</div>` : ''}</div>
+        <div class="gv">${s.odd ? `<div class="on">${odd(s.odd)}</div><div class="k">odd ref.</div>` : ''}<span class="tag ${s.teste ? 't' : ''}">${s.teste ? 'em teste' : 'observação'}</span></div></div>`).join('')}</details>`;
+  }
+  // Favoritos fortes sem valor: lista à parte (data.report.fortes). Não é entrada de valor e nunca aparece como verde.
+  function blocoFortes() {
+    const r = data.report, fs = (r && String(r.dia) === String(data.dia) && r.fortes) || [];
+    if (!fs.length) return '';
+    let h = sec('Sem valor: favorito forte, preço ruim', fs.length) + `<p class="note" style="margin:0 4px 8px">Tendência forte de vitória, mas a odd paga menos que o justo. Não são propostas. "Custo" é a perda média a cada R$ 100.</p>`;
+    ordHora(fs).forEach((f) => {
+      h += `<div class="gr n"><div class="gt">${esc(f.hora)}</div>
+        <div class="gm"><div class="gj">${esc(f.favorito)} vence${f.visitante ? ' (visitante)' : ''}</div><div class="gs">${esc(f.jogo)} · ${esc(f.liga)}${f.casa ? ' · ' + esc(f.casa) : ''}</div>
+          <div class="gx" style="color:var(--red)">Custo: perde R$ ${Math.abs(f.custo).toFixed(2).replace('.', ',')} a cada R$ 100${f.justa ? ' · justa ' + odd(f.justa) : ''}</div>
+          <div class="gx">${esc((f.motivos || []).join(' · '))}</div></div>
+        <div class="gv"><div class="on">${odd(f.odd)}</div><div class="k">odd</div><span class="tag">sem valor</span></div></div>`;
+    });
+    return h;
+  }
+
+  // ================== TELA APOSTAR ==================
+  function viewApostar() {
+    const hj = doDia(data.dia), info = diasInfo();
+    if (!hj.length && !(data.hoje && data.hoje.existe)) return blocoAtualizacao() + '<div class="empty">Ainda não há jogos de hoje na planilha.<br>A aba do dia nasce às 22h do dia anterior.</div>';
+    const fora = (j) => !!j.resultado || comecou(j);
+    const ab = hj.filter((x) => !fora(x.j));
+    const props = ab.filter((x) => tier(x.j) === 'g'), aval = ab.filter((x) => tier(x.j) === 'a');
+    const espera = ab.filter((x) => tier(x.j) === 'r' && /esperar preço|só se pagar|se subir para|entra só se/i.test(String(x.j.decisao || '') + ' ' + motivo(x.j)));
+    const passados = hj.filter((x) => fora(x.j) && (tier(x.j) === 'g' || tier(x.j) === 'a'));
+    const fut = todos().map((j, i) => ({ j, i })).filter((x) => info[x.j.dia] && info[x.j.dia].off > 0 && (tier(x.j) === 'g' || tier(x.j) === 'a')).sort((a, b) => info[a.j.dia].off - info[b.j.dia].off || porHora(a, b));
+    let h = props.length
+      ? `<div class="hero"><div><div class="t">${props.length} proposta${props.length > 1 ? 's' : ''} para apostar agora</div><div class="s">${aval.length ? aval.length + ' para avaliar · ' : ''}${ab.length} jogo(s) de hoje ainda por começar</div></div><button type="button" data-shareall="1">Enviar</button></div>`
+      : `<div class="hero none"><div><div class="t">Nenhuma proposta para apostar agora</div><div class="s">${aval.length ? aval.length + ' jogo(s) para avaliar. ' : ''}${ab.length} de ${hj.length} jogos de hoje ainda por começar.</div></div></div>`;
+    h += blocoAtualizacao();
+    h += sec('<span class="d g"></span> Propostas para apostar', props.length + ' · verde · stake ' + STAKE);
+    h += props.length ? props.map((x) => ficha(x.j, x.i)).join('') : '<div class="empty sm">Nenhum jogo verde por começar hoje.</div>';
+    if (aval.length) h += sec('<span class="d a"></span> Para avaliar', aval.length + ' · amarelo · você decide') + aval.map((x) => ficha(x.j, x.i)).join('');
+    if (espera.length) h += sec('<span class="d r"></span> Esperando preço', 'fora por preço: só se a odd subir') + espera.map((x) => ficha(x.j, x.i, 'Fora por preço')).join('');
+    if (fut.length) h += sec('Próximos dias', fut.length + ' já com cor') + fut.map((x) => ficha(x.j, x.i)).join('');
+    h += blocoObservacao();
+    h += blocoFortes();
+    if (passados.length) h += sec('Já começaram ou terminaram', passados.length + ' · o que foi proposto hoje') + passados.map((x) => ficha(x.j, x.i)).join('');
+    h += blocoPlacarCores();
+    const cc = { g: 0, a: 0, r: 0, n: 0 }; hj.forEach((x) => { cc[tier(x.j)]++; });
+    h += sec('Todos os jogos de hoje', hj.length + ' analisados');
+    h += `<div class="tiles four">${['g', 'a', 'r', 'n'].map((k) => `<div class="tile"><div class="l"><span class="d ${k}"></span>${NOME[k]}</div><div class="v">${cc[k]}</div></div>`).join('')}</div>`;
+    h += `<button class="btn ghost" type="button" data-gotab="jogos">Ver todos os jogos</button>`;
+    return h;
+  }
+
+  // ================== TELA MÚLTIPLAS ==================
+  // Vêm da aba do dia (data.hoje.multiplas). O resultado de cada perna vem da conferência do robô.
+  function horaMultipla(m) {   // primeiro jogo da múltipla: menor horário entre os jogos de hoje citados nas pernas
+    const txt = ' ' + nrm((m.lista && m.lista.length ? m.lista.join(' + ') : m.pernas) || '').replace(/[^a-z0-9]+/g, ' ') + ' ';
+    let best = 9999, hora = '';
+    doDia(data.dia).forEach(({ j }) => {
+      const times = String(j.jogo || '').split(/\s+x\s+/i).concat(j.favorito ? [j.favorito] : []);
+      const bate = times.some((t) => { const k = toks(t).join(' '); if (!k) return false; if (txt.includes(' ' + k + ' ')) return true; return k.split(' ').some((w) => w.length >= 5 && txt.includes(' ' + w + ' ')); });
+      if (bate && hmin(j.hora) < best) { best = hmin(j.hora); hora = j.hora; }
+    });
+    return hora;
+  }
+  function confMultiplas() {   // { 'dd/mm': { n: { pernas:[item], inteira:item } } } a partir da conferência
+    const out = {}, c = data.report && data.report.conferencia;
+    ((c && c.dias) || []).forEach((d) => (d.jogos || []).forEach((jg) => (jg.itens || []).forEach((it) => {
+      const m = String(it.origem || '').match(/^M[úu]ltipla\s*(\d+)/i); if (!m) return;
+      const o = ((out[d.dia] = out[d.dia] || {})[m[1]] = out[d.dia][m[1]] || { pernas: [], inteira: null });
+      if (/inteira/i.test(it.tipo || '')) o.inteira = Object.assign({ jogo: jg.jogo, placar: jg.placar }, it); else o.pernas.push(Object.assign({ jogo: jg.jogo, placar: jg.placar, hora: jg.hora }, it));
+    })));
+    return out;
+  }
+  const resIco = (r) => (r === '✅' || r === '❌' ? r : '➖');
+  function viewMultiplas() {
+    const ms = (data.hoje && data.hoje.multiplas) || [], cm = confMultiplas(), c = data.report && data.report.conferencia;
+    const hojeK = Object.keys(cm).find((k) => String(parseInt(k, 10)) === String(data.dia));
+    const lst = ms.map((m, i) => ({ m, i, h: horaMultipla(m) })).sort((a, b) => hmin(a.h) - hmin(b.h) || a.i - b.i);
+    const nowM = agora().getHours() * 60 + agora().getMinutes();
+    const ab = lst.filter((x) => !x.m.resultado && !(x.h && hmin(x.h) <= nowM));
+    let h = ab.length
+      ? `<div class="hero"><div><div class="t">${ab.length} múltipla${ab.length > 1 ? 's' : ''} aberta${ab.length > 1 ? 's' : ''} para hoje</div><div class="s">Stake ${STAKE} cada. Monte na casa com as entradas abaixo.</div></div></div>`
+      : `<div class="hero none"><div><div class="t">Nenhuma múltipla aberta agora</div><div class="s">${ms.length ? ms.length + ' de hoje já começaram ou terminaram.' : 'Só entra múltipla com a conta a favor. Em dia fraco vem uma ou nenhuma.'}</div></div></div>`;
+    const card = ({ m, h: h1 }) => {
+      const pn = (m.lista && m.lista.length ? m.lista : String(m.pernas || '').split(' + ')).map(perna);
+      const cf = hojeK && cm[hojeK][String(parseInt(String(m.n).replace(/\D/g, ''), 10))];
+      const achaP = (p) => cf && cf.pernas.find((it) => { const a = nrm(it.txt), b = nrm(p.txt); return a.startsWith(b) || b.startsWith(nrm(it.confere || '\u0000')) || a.includes(b); });
+      const st = num(m.stake) || 100, o = oddN(m.odd);
+      const comec = h1 && hmin(h1) <= nowM;
+      return `<div class="pc ${m.resultado ? 'n' : 'b'}"><div class="row"><div class="meta">Múltipla ${esc(m.n)}${h1 ? ' · 1º jogo <b class="hr">' + esc(h1) + '</b>' : ''}</div>
+        ${m.resultado ? `<span class="res ${esc(m.resultado)}">${esc(m.resultado)}</span>` : m.apostada ? '<span class="pill b">você apostou</span>' : comec ? '<span class="pill n">já começou</span>' : '<span class="pill b">aberta</span>'}</div>
+        <div class="pernas">${pn.map((p, k) => { const it = achaP(p); return `<div class="pn"><span class="pi">${it ? resIco(it.res) : k + 1}</span><div class="pt">${esc(cap(p.txt))}${it && it.det ? `<div class="k2">${esc(it.jogo)} ${esc(it.placar || '')} · ${esc(it.det)}</div>` : ''}</div><span class="po">${p.odd ? odd(p.odd) : ''}</span></div>`; }).join('')}</div>
+        <div class="ent"><div><div class="k">${pn.length} ENTRADAS NA MESMA APOSTA</div><div class="k2">Stake ${esc(m.stake || STAKE)}${o ? ' · retorno ' + brl(st * o) : ''}${m.prob ? ' · chance ' + esc(m.prob) : ''}${m.ev ? ' · EV ' + esc(m.ev) : ''}</div></div>
+          <div class="ob"><div class="k">ODD TOTAL</div><div class="o">${odd(m.odd)}</div></div></div>
+        ${cf && cf.inteira ? `<div class="vd ${cf.inteira.res === '✅' ? 'ok' : cf.inteira.res === '❌' ? 'no' : ''}"><b>${resIco(cf.inteira.res)} Múltipla ${cf.inteira.res === '✅' ? 'acertou' : cf.inteira.res === '❌' ? 'errou' : 'sem conferência'}</b><span class="placar">${esc(cf.inteira.det || '')}</span></div>` : ''}
+        ${m.lucro ? `<div class="vsub">Lucro <b class="${sgn(m.lucro)}">${esc(m.lucro)}</b></div>` : ''}
+        ${m.obs ? `<div class="mot">${esc(m.obs)}</div>` : ''}</div>`;
+    };
+    h += sec('Múltiplas de hoje', ms.length + ' · pelo 1º jogo');
+    h += lst.length ? lst.map(card).join('') : '<div class="empty sm">Nenhuma múltipla lançada para hoje.</div>';
+    // dias anteriores: o que o robô conferiu
+    const ant = Object.keys(cm).filter((k) => k !== hojeK || !ms.length);
+    if (ant.length) {
+      h += sec('Múltiplas conferidas', 'resultado de cada entrada');
+      ant.forEach((dk) => Object.keys(cm[dk]).sort((a, b) => a - b).forEach((n) => {
+        const o = cm[dk][n], ok = o.pernas.filter((p) => p.res === '✅').length, x = o.pernas.filter((p) => p.res === '❌').length;
+        const r = o.inteira ? o.inteira.res : (x ? '❌' : ok === o.pernas.length && ok ? '✅' : '➖');
+        h += `<div class="pc n"><div class="row"><div class="meta">Dia ${esc(dk)} · Múltipla ${esc(n)}</div><span class="pill ${r === '✅' ? 'g' : r === '❌' ? 'r' : 'n'}">${r === '✅' ? '✅ acertou' : r === '❌' ? '❌ errou' : 'sem resultado'}</span></div>
+          <div class="pernas">${ordHora(o.pernas).map((p) => { const q = perna(p.txt); return `<div class="pn"><span class="pi">${resIco(p.res)}</span><div class="pt">${esc(cap(q.txt))}<div class="k2">${esc(p.jogo)} ${esc(p.placar || '')}${p.det ? ' · ' + esc(p.det) : ''}</div></div><span class="po">${q.odd ? odd(q.odd) : ''}</span></div>`; }).join('')}</div></div>`;
+      }));
+    }
+    const tp = ((c && c.tipos) || []).find((t) => /perna/i.test(t.tipo));
+    if (tp && tp.ok + tp.x > 0) h += `<p class="note" style="margin:6px 4px 14px">Acumulado das entradas de múltipla: ✅ ${tp.ok} · ❌ ${tp.x}${tp.pct != null ? ' · ' + tp.pct + '% de acerto' : ''}. Amostra pequena ainda.</p>`;
+    return h + '<p class="note" style="margin:6px 4px 14px">A mesma aposta não repete entre múltiplas. Jogos e odds da lista da DG; confira a odd na casa.</p>';
+  }
+
+  // ================== TELA JOGOS ==================
+  const Z = { dia: null, cor: 'all', q: '' };
   function viewJogos() {
     const all = todos(), info = diasInfo();
     const dias = [...new Set(all.map((j) => String(j.dia)))].filter((d) => info[d]).sort((a, b) => info[a].off - info[b].off);
     if (!dias.length) return '<div class="empty">Nenhum jogo na planilha ainda.</div>';
     if (!Z.dia || !dias.includes(Z.dia)) Z.dia = dias[0];
-    let h = _todos.parcial ? '<div class="warn">Lista parcial: a planilha manda só até 15 jogos por dia para o app. Quando a API completa for ligada, todos aparecem aqui.</div>' : '';
+    let h = _todos.parcial ? '<div class="warn">Lista parcial: a planilha mandou só os jogos da aba do dia.</div>' : '';
     h += '<div class="chips">' + dias.map((d) => `<button type="button" class="chip ${Z.dia === d ? 'on' : ''}" data-zdia="${d}">${esc(info[d].label)} <small>${all.filter((j) => String(j.dia) === d).length}</small></button>`).join('') + '</div>';
     h += `<input class="search" id="zq" type="search" placeholder="Buscar jogo, time ou liga" autocomplete="off" value="${esc(Z.q)}">`;
     h += '<div class="chips" id="zcores"></div><div id="zlista"></div>';
     return h;
   }
   function pintaJogos() {
-    const all = todos(), q = Z.q.trim().toLowerCase();
-    const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-    const nq = norm(q);
-    const base = all.map((j, i) => ({ j, i })).filter((x) => String(x.j.dia) === Z.dia && (!nq || norm(x.j.jogo + ' ' + x.j.liga + ' ' + x.j.favorito).includes(nq)));
+    if (!$('#zlista')) return;
+    const nq = nrm(Z.q.trim());
+    const base = todos().map((j, i) => ({ j, i })).filter((x) => String(x.j.dia) === Z.dia && (!nq || nrm(x.j.jogo + ' ' + x.j.liga + ' ' + x.j.favorito).includes(nq)));
     const cnt = { g: 0, a: 0, r: 0, n: 0 }; base.forEach((x) => { cnt[tier(x.j)]++; });
     const apo = base.filter((x) => x.j.apostada).length;
-    const cores = [['all', 'Todos', base.length, ''], ['g', 'Verde', cnt.g, 'g'], ['a', 'Amarelo', cnt.a, 'a'], ['r', 'Vermelho', cnt.r, 'r'], ['n', 'Cinza', cnt.n, 'n'], ['apo', 'Apostados', apo, 'b']];
+    const cores = [['all', 'Todos', base.length, ''], ['g', 'Propostas', cnt.g, 'g'], ['a', 'Avaliar', cnt.a, 'a'], ['r', 'Fora', cnt.r, 'r'], ['n', 'Sem leitura', cnt.n, 'n'], ['apo', 'Apostados', apo, 'b']];
     $('#zcores').innerHTML = cores.map(([k, l, n, c]) => `<button type="button" class="chip ${Z.cor === k ? 'on' : ''} ${c}" data-zcor="${k}">${c ? `<span class="d ${c}"></span>` : ''}${l} <small>${n}</small></button>`).join('');
-    const lista = base.filter((x) => Z.cor === 'all' || (Z.cor === 'apo' ? x.j.apostada : tier(x.j) === Z.cor)).sort((a, b) => hmin(a.j.hora) - hmin(b.j.hora) || String(a.j.jogo).localeCompare(String(b.j.jogo)));
+    const lista = base.filter((x) => Z.cor === 'all' || (Z.cor === 'apo' ? x.j.apostada : tier(x.j) === Z.cor)).sort(porHora);
     $('#zlista').innerHTML = lista.length ? lista.map(({ j, i }) => {
-      const t = tier(j), mot = j.motivo || motivo(j);
-      const off = j.resultado || (!j._futuro && comecou(j));
-      const v = j.valor || j.evAntecipado;
-      return `<div class="gr ${t} ${off ? 'off' : ''}" data-z="${i}">
+      const t = tier(j), mot = motivo(j), off = j.resultado || comecou(j), v = veredito(j);
+      return `<div class="gr ${t} ${off && !v ? 'off' : ''}" data-z="${i}">
         <div class="gt">${esc(j.hora)}</div>
         <div class="gm"><div class="gj">${esc(j.jogo)}</div>
-          <div class="gs">${esc(j.liga)}${j.favorito ? ' · <b>' + esc(j.favorito) + '</b>' : ''}${j.odd ? ' @' + esc(j.odd) : ''}${j.casa ? ' ' + esc(j.casa) : ''}</div>
-          ${mot ? `<div class="gx">${esc(mot)}</div>` : ''}</div>
-        <div class="gv"><span class="pill ${t}" style="padding:3px 8px"><span class="d ${t}"></span>${corNome[t]}</span>
-          ${j.nota ? `<div class="n">${esc(j.nota)}</div><div class="k">nota</div>` : (v ? `<div class="n ${evClass(v)}">${esc(v)}</div><div class="k">valor</div>` : '')}
-          ${j.apostada ? '<div class="k" style="color:var(--blue)">apostada</div>' : ''}${j.resultado ? `<div class="k">${esc(j.resultado)}</div>` : ''}</div></div>`;
+          <div class="gs">${j.favorito ? '<b>' + esc(entrada(j)) + '</b> · ' : ''}${esc(casaDe(j) || '')}${casaDe(j) ? ' · ' : ''}${esc(j.liga)}</div>
+          ${v ? `<div class="gx ${v.ok === true ? 'pos' : v.ok === false ? 'neg' : ''}" style="font-weight:700">${v.ok === true ? '✅' : v.ok === false ? '❌' : '➖'} ${esc(v.placar)} · ${esc(v.txt)}</div>` : mot ? `<div class="gx">${esc(mot)}</div>` : ''}
+          ${raioLinhas(j)}
+          <div class="gx">${(v || !/^valor/i.test(mot)) && j.valor ? 'valor ' + esc(j.valor) + ' · ' : ''}${(v || !/^valor/i.test(mot)) && j.nota ? 'nota ' + esc(j.nota) + ' · ' : ''}${j.atualizado ? 'odd lida ' + esc(hhmm(j.atualizado)) : ''}</div></div>
+        <div class="gv"><div class="on">${odd(j.odd)}</div><div class="k">odd</div>${pill(t)}
+          ${j.apostada ? '<div class="k" style="color:var(--blue)">apostada</div>' : ''}</div></div>`;
     }).join('') : '<div class="empty">Nenhum jogo com esse filtro.</div>';
   }
-  function bindJogos() {
-    pintaJogos();
-    const m = $('#main');
-    m.querySelectorAll('[data-zdia]').forEach((b) => b.addEventListener('click', () => { Z.dia = b.dataset.zdia; render(); }));
-    $('#zq').addEventListener('input', (e) => { Z.q = e.target.value; pintaJogos(); });
-    $('#zcores').addEventListener('click', (e) => { const b = e.target.closest('[data-zcor]'); if (!b) return; Z.cor = b.dataset.zcor; pintaJogos(); });
-    $('#zlista').addEventListener('click', (e) => { const r = e.target.closest('[data-z]'); if (r) openJogo('z' + r.dataset.z); });
+
+  // ================== TELA ANÁLISE (Report do dia + acertos) ==================
+  let repFiltro = 'todos';
+  const repTipos = [['todos', 'Tudo'], ['sequência', '🔥 Sequência'], ['gols', '⚽ Gols'], ['escanteios', '🚩 Escanteios'], ['cartões', '🟨 Cartões'], ['desfalques', '🏥 Desfalques'], ['má fase', '⚠️ Má fase'], ['aposta', '🎯 Com sugestão'], ['ajuda', '✅ Testado']];
+  const repPassa = (f) => repFiltro === 'todos' || (repFiltro === 'aposta' ? !!f.aposta : repFiltro === 'ajuda' ? f.selo === 'ajuda' : f.tipo === repFiltro);
+  const repForca = (n) => (n >= 15 ? ['r', 'muito forte'] : n >= 13 ? ['a', 'forte'] : ['n', 'médio']);
+  const repFrase = (f) => (f.time ? `<b>${esc(f.time)}</b> ${esc(f.txt)}` : esc(cap(f.txt)));
+  const repSelo = (f) => (f.selo === 'ajuda' ? '<span style="color:var(--green)">✅ testado: ajuda</span>' : f.selo === 'na odd' ? '<span>⚖️ já está na odd</span>' : '');
+  const repHist = (f) => (f.hist || repSelo(f) ? `<div class="gx" style="-webkit-line-clamp:3">${repSelo(f)}${f.hist ? `${repSelo(f) ? ' · ' : ''}${esc(f.hist)}` : ''}</div>` : '');
+  function sugLinha(txt, rot) {   // a sugestão em destaque: entrada, odd de referência e etiqueta
+    const s = sugestao(txt); if (!s) return '';
+    return `<div class="sug"><div><div class="k">${rot || 'SUGESTÃO DO GERADOR'} · ${s.teste ? 'EM TESTE' : 'OBSERVAÇÃO'}</div><div class="e">${esc(s.txt)}</div>${s.chance ? `<div class="k2">chance ${esc(s.chance)} · não é proposta</div>` : ''}</div>${s.odd ? `<div class="ob"><div class="k">ODD REF.</div><div class="o">${odd(s.odd)}</div></div>` : ''}</div>`;
+  }
+  const cfCor = (res) => (res === '✅' ? 'var(--green)' : res === '❌' ? 'var(--red)' : 'inherit');
+  const cfPct = (o) => (o.pct === null || o.pct === undefined ? '' : ` · ${o.pct}% de acerto`);
+  function blocoConferencia() {
+    const c = data.report && data.report.conferencia;
+    if (!c || !(c.dias || []).length) return '<div class="empty sm">A conferência ainda não rodou.</div>';
+    let h = sec('Conferência das informações', 'atualizada ' + esc(hhmm(c.atualizado)) + ' · ' + ha(minDesde(c.atualizado)));
+    c.dias.forEach((d, i) => {
+      h += `<details class="card"${i === 0 ? ' open' : ''}><summary style="cursor:pointer"><b>Dia ${esc(d.dia)}</b> · ✅ ${d.ok} · ❌ ${d.x}${d.sd ? ` · sem dado ${d.sd}` : ''}${cfPct(d)}</summary>`;
+      ordHora(d.jogos || []).forEach((j) => {
+        h += `<div style="margin-top:12px"><div class="row"><div class="jogo" style="font-size:14.5px;margin:0">${j.hora ? `<span class="meta">${esc(j.hora)}</span> ` : ''}${esc(j.jogo)}</div>${j.placar ? `<span class="placar">${esc(j.placar)}</span>` : ''}</div>`;
+        h += (j.itens || []).map((it) => `<div class="fav" style="margin:5px 0 0;white-space:normal"><span style="color:${cfCor(it.res)}">${it.res === 'sem dado' ? '➖' : esc(it.res)}</span> ${esc(it.icone || '')} ${it.time && it.tipo !== 'perna de múltipla' ? `<b>${esc(it.time)}</b> ` : ''}${esc(it.txt)}<span class="meta" style="white-space:normal"> · ${/^Destaque|^Múltipla|^Favorito|^Aviso/.test(it.origem || '') ? esc(it.origem) + ' · ' : ''}${esc(it.det || '')}</span></div>`).join('');
+        h += '</div>';
+      });
+      h += '</details>';
+    });
+    return h + `<p class="note" style="margin:6px 4px 14px">Conferido pelo robô com o resultado real. ➖ = não deu para conferir. É só medição: não muda cor nem aposta.</p>`;
+  }
+  // Aprendizado: por enquanto só a contagem da amostra por tipo. Nada muda sozinho; sugestão de ajuste só com amostra e com aprovação.
+  function blocoAprendizado() {
+    const c = data.report && data.report.conferencia, tp = ((c && c.tipos) || []).filter((t) => t.ok + t.x > 0);
+    if (!tp.length) return '';
+    const META = 50;
+    let h = sec('Aprendizado: o que acerta mais', 'medindo · nada muda sozinho');
+    h += `<div class="card"><div class="row"><b>Total</b><span class="meta">✅ ${c.total.ok} · ❌ ${c.total.x}${cfPct(c.total)}</span></div>`;
+    tp.slice().sort((a, b) => (b.ok + b.x) - (a.ok + a.x)).forEach((t) => {
+      const n = t.ok + t.x, w = Math.min(100, n / META * 100);
+      h += `<div class="ap"><div class="row"><div class="fav" style="margin:0"><b>${esc(cap(t.tipo))}</b></div><div class="meta">✅ ${t.ok} · ❌ ${t.x} · <b>${t.pct}%</b></div></div>
+        <div class="apb"><i style="width:${w.toFixed(0)}%;background:${n >= META ? 'var(--green)' : 'var(--muted2)'}"></i></div>
+        <div class="k2">${n >= META ? 'amostra suficiente para avaliar' : `amostra ${n} de ${META}: ainda cedo para concluir`}</div></div>`;
+    });
+    return h + `<p class="note" style="margin:10px 0 0">O sistema está juntando acertos e erros por tipo de informação. Por time, liga e característica entra quando a planilha mandar. Com amostra suficiente, o robô sugere ajustes e você aprova. Nada muda sem o seu ok.</p></div>`;
+  }
+  function viewAnalise() {
+    const r = data.report, s = SUB.analise;
+    let h = '<div class="chips subs">' + [['destaques', 'Destaques'], ['jogos', 'Jogo a jogo'], ['acertos', 'Acertos']].map(([k, t]) => `<button type="button" class="chip ${s === k ? 'on' : ''}" data-sub="${k}">${t}</button>`).join('') + '</div>';
+    if (s === 'acertos') return h + blocoPlacarCores() + blocoAprendizado() + blocoConferencia();
+    if (!r || !(r.jogos || []).length) return h + '<div class="empty">A análise do dia ainda não foi gerada.<br>O robô grava de manhã, depois de ler o PackBall.</div>';
+    const m = minDesde(r.geradoEm);
+    h += `<div class="hero none"><div><div class="t">Análise do dia ${esc(r.dia)} · ${(r.jogos || []).length} jogos da DG</div><div class="s"><span class="d ${frescor(m)}"></span> gerada ${esc(hhmm(r.geradoEm))} · ${ha(m)} · apoio para decidir, não é proposta</div></div></div>`;
+    h += '<div class="chips">' + repTipos.map(([k, t]) => `<button type="button" class="chip ${repFiltro === k ? 'on' : ''}" data-rep="${k}">${t}</button>`).join('') + '</div>';
+    if (s === 'destaques') {
+      const top = ordHora((r.top || []).filter(repPassa));
+      h += sec('Destaques do dia', top.length + ' mais fortes · por horário');
+      if (!top.length) h += '<div class="empty sm">Nenhum destaque com esse filtro.</div>';
+      top.forEach((f) => {
+        const [c, t] = repForca(f.nota);
+        h += `<div class="card"><div class="row"><div class="meta"><b class="hr">${esc(f.hora)}</b> · ${esc(f.liga)}</div><span class="pill ${c}">${t}</span></div>
+          <div class="jogo" style="font-size:15px">${esc(f.icone)} ${repFrase(f)}</div>
+          <div class="fav">${esc(f.jogo)}</div>${repHist(f)}${sugLinha(f.aposta)}</div>`;
+      });
+      return h + '<p class="note" style="margin:10px 4px">✅ = informação que, em 10 mil jogos, mudou a chance de verdade. ⚖️ = a casa já desconta na odd.</p>';
+    }
+    h += sec('Jogo a jogo', 'por horário · cor da decisão');
+    let n = 0;
+    repJogos().forEach((x) => {
+      const fs = x.fatos.filter(repPassa); if (!fs.length) return; n++;
+      const li = (f) => `<div class="fav" style="margin:6px 0 0;white-space:normal">${esc(f.icone)} ${repFrase(f)}${f.selo === 'ajuda' ? ' ✅' : ''}${f.aposta ? ` <span class="meta" style="white-space:normal">· sugere ${esc(sugestao(f.aposta).txt.toLowerCase())}${sugestao(f.aposta).odd ? ' @' + odd(sugestao(f.aposta).odd) : ''}</span>` : ''}</div>`;
+      h += `<div class="card"${x.z ? ` data-z="${x.z.i}"` : ''}><div class="row"><div class="meta"><b class="hr">${esc(x.j.hora)}</b> · ${esc(x.b.liga)}</div>${pill(x.t)}</div>
+        <div class="jogo">${esc(x.nome)}</div>
+        ${x.z && x.j.favorito ? `<div class="gs" style="margin-top:3px">Decisão: <b>${esc(entrada(x.j))}</b> @${odd(x.j.odd)} · ${NOME[x.t]}</div>` : ''}
+        ${x.z ? linhaVeredito(x.j) : ''}
+        ${fs.slice(0, 3).map(li).join('')}
+        ${fs.length > 3 ? `<details class="mais"><summary>mais ${fs.length - 3} informações</summary>${fs.slice(3).map(li).join('')}</details>` : ''}
+        ${sugLinha(x.aposta)}</div>`;
+    });
+    if (!n) h += '<div class="empty sm">Nenhum jogo com esse tipo de informação hoje.</div>';
+    return h + '<p class="note" style="margin:10px 4px">Números dos últimos 10 jogos de cada time (PackBall). Chance e odd da sugestão são do nosso gerador: confira a odd na casa.</p>';
   }
 
+  // ================== TELA CONTA (apostas, painel, alertas) ==================
   function viewApostas() {
     const d = data.hoje || {}, k = d.kpi || {};
-    const js = (d.jogos || []).map((j, i) => ({ j, i })).filter((x) => x.j.apostada).sort((a, b) => hmin(a.j.hora) - hmin(b.j.hora) || a.i - b.i);
+    const js = doDia(data.dia).filter((x) => x.j.apostada);
     const ms = (d.multiplas || []).filter((m) => m.apostada);
     let h = `<div class="tiles two">
       <div class="tile"><div class="l">Apostado hoje</div><div class="v sm">${esc(k['APOSTADO TOTAL'] || '—')}</div></div>
       <div class="tile"><div class="l">Greens · Reds</div><div class="v sm">${esc(k['GREENS · REDS'] || '—')}</div></div>
       <div class="tile"><div class="l">Lucro do dia</div><div class="v sm ${sgn(k['LUCRO DO DIA'])}">${esc(k['LUCRO DO DIA'] || '—')}</div></div>
       <div class="tile"><div class="l">ROI do dia</div><div class="v sm ${sgn(k['ROI DO DIA'])}">${esc(k['ROI DO DIA'] || '—')}</div></div></div>`;
-    h += `<div class="sec"><h2>Simples</h2><span>${js.length} · stake fixa</span></div>`;
-    if (!js.length) h += '<div class="empty">Nenhuma simples marcada como apostada.</div>';
+    h += sec('Simples apostadas', js.length + ' · stake fixa');
+    if (!js.length) h += '<div class="empty sm">Nenhuma simples marcada como apostada hoje.</div>';
     js.forEach(({ j, i }) => {
-      h += `<div class="card tap" data-jogo="${i}"><div class="row"><div class="meta">${esc(j.hora)} · ${esc(j.liga)}</div>
+      h += `<div class="card tap" data-z="${i}"><div class="row"><div class="meta"><b class="hr">${esc(j.hora)}</b> · ${esc(j.liga)}</div>
         ${j.resultado ? `<span class="res ${esc(j.resultado)}">${esc(j.resultado)}</span>` : '<span class="pill n">aberta</span>'}</div>
-        <div class="jogo">${esc(j.favorito)} <span class="meta">@${esc(j.odd)}</span></div>
-        <div class="fav">${esc(j.jogo)}</div>
-        <div class="nums"><div><div class="k">Stake</div><div class="n">${esc(j.stake)}</div></div>
+        <div class="jogo">${esc(entrada(j))} <span class="meta">@${odd(j.odd)}</span></div>
+        <div class="fav">${esc(j.jogo)}</div>${linhaVeredito(j)}
+        <div class="nums"><div><div class="k">Stake</div><div class="n">${esc(j.stake || STAKE)}</div></div>
           <div><div class="k">Lucro</div><div class="n ${sgn(j.lucro)}">${esc(j.lucro || '—')}</div></div>
           <div><div class="k">CLV</div><div class="n ${sgn(j.clv)}">${esc(j.clv || '—')}</div></div></div></div>`;
     });
-    h += `<div class="sec"><h2>Múltiplas</h2><span>${ms.length}</span></div>`;
-    if (!ms.length) h += '<div class="empty">Nenhuma múltipla apostada hoje.</div>';
-    ordMultiplas(ms).forEach(({ m, h: h1 }) => {
-      h += `<div class="card"><div class="row"><div class="meta">${h1 ? esc(h1) + ' · ' : ''}Múltipla ${esc(m.n)}</div>
+    h += sec('Múltiplas apostadas', String(ms.length));
+    if (!ms.length) h += '<div class="empty sm">Nenhuma múltipla apostada hoje.</div>';
+    ms.map((m, i) => ({ m, i, h: horaMultipla(m) })).sort((a, b) => hmin(a.h) - hmin(b.h) || a.i - b.i).forEach(({ m, h: h1 }) => {
+      h += `<div class="card"><div class="row"><div class="meta">${h1 ? '<b class="hr">' + esc(h1) + '</b> · ' : ''}Múltipla ${esc(m.n)}</div>
         ${m.resultado ? `<span class="res ${esc(m.resultado)}">${esc(m.resultado)}</span>` : '<span class="pill n">aberta</span>'}</div>
         <div class="jogo" style="font-size:14px">${esc(m.pernas)}</div>
-        <div class="nums"><div><div class="k">Odd</div><div class="n">${esc(m.odd)}</div></div>
+        <div class="nums"><div><div class="k">Odd</div><div class="n">${odd(m.odd)}</div></div>
           <div><div class="k">Stake</div><div class="n">${esc(m.stake)}</div></div>
           <div><div class="k">Lucro</div><div class="n ${sgn(m.lucro)}">${esc(m.lucro || '—')}</div></div></div></div>`;
     });
     return h;
   }
-
   function viewPainel() {
     const p = data.painel || {}, hist = (data.historico || []).filter((r) => /\d\d\/\d\d/.test(String(r['DATA'] || '')));
     const lim = num(p['LIMITE (R$)']) || 2000, perda = num(p['PERDA ACUMULADA']) || 0, usado = Math.min(1, perda / lim);
@@ -630,7 +860,7 @@
       <div class="tile"><div class="l">CLV médio</div><div class="v sm ${sgn(p['CLV MÉDIO'])}">${esc(p['CLV MÉDIO'] || '—')}</div></div></div>`;
     if (hist.length) {
       const mx = Math.max(1, ...hist.map((r) => Math.abs(num(r['LUCRO DO DIA']) || 0)));
-      h += `<div class="sec"><h2>Dia a dia</h2><span>lucro do dia</span></div><div class="card">`;
+      h += sec('Dia a dia', 'lucro do dia') + '<div class="card">';
       hist.slice().reverse().forEach((r) => {
         const n = num(r['LUCRO DO DIA']) || 0, w = Math.abs(n) / mx * 100;
         h += `<div class="hist"><div class="dt">${esc(String(r['DATA'] || r['ABA']).slice(0, 5))}</div>
@@ -641,64 +871,124 @@
     }
     return h;
   }
-
   function viewAlertas() {
     const al = data.alertas || [];
     if (!al.length) return '<div class="empty">Nenhum alerta ainda.</div>';
     // dia mais novo primeiro; dentro do dia, pelo horário do jogo do alerta (sem jogo: pelo horário do próprio alerta)
     const qd = (a) => { const m = String(a.quando || '').match(/(\d{1,2})\/(\d{1,2})(?:\D+(\d{1,2}:\d{2}))?/); return m ? { dia: +m[2] * 100 + +m[1], d: String(+m[1]), hora: m[3] || '' } : { dia: 0, d: null, hora: '' }; };
-    const lst = al.map((a, i) => { const q = qd(a), hj = horaDoJogo(a.jogo, q.d); return { a, i, dia: q.dia, hj, h: hmin(hj || q.hora) }; })
+    const lst = al.map((a, i) => { const q = qd(a), z = a.jogo && a.jogo !== '—' && q.d ? acha(q.d, a.jogo) : null, hj = z ? z.j.hora : ''; return { a, i, dia: q.dia, hj, h: hmin(hj || q.hora) }; })
       .sort((x, y) => y.dia - x.dia || x.h - y.h || x.i - y.i);
-    let h = '';
-    lst.forEach(({ a, hj }) => {
+    let h = '', ult = null;
+    lst.forEach(({ a, hj, dia }) => {
+      if (dia !== ult) { ult = dia; h += sec('Dia ' + String(dia % 100).padStart(2, '0') + '/' + String(Math.floor(dia / 100)).padStart(2, '0'), 'pelo horário do jogo'); }
       const m = String(a.msg || ''), t = m.includes('🟢') || m.startsWith('✅') ? 'g' : m.includes('🟡') || m.startsWith('⚠') || m.startsWith('🎯') ? 'a' : m.includes('🔴') || m.startsWith('❌') ? 'r' : '';
-      h += `<div class="card alert ${t}"><div class="row"><div class="when">${esc(a.quando)}</div>${a.jogo && a.jogo !== '—' ? `<div class="meta">${hj ? 'jogo ' + esc(hj) + ' · ' : ''}${esc(a.jogo)}</div>` : ''}</div>
+      h += `<div class="card alert ${t}"><div class="row"><div class="when">enviado ${esc(a.quando)}</div>${a.jogo && a.jogo !== '—' ? `<div class="meta">${hj ? 'jogo ' + esc(hj) + ' · ' : ''}${esc(a.jogo)}</div>` : ''}</div>
         <div class="msg">${esc(m)}</div></div>`;
     });
     return h;
   }
+  function viewConta() {
+    const s = SUB.conta, n = (data.alertas || []).length;
+    return '<div class="chips subs">' + [['apostas', 'Minhas apostas'], ['painel', 'Painel'], ['alertas', 'Alertas' + (n ? ` <small>${n}</small>` : '')]].map(([k, t]) => `<button type="button" class="chip ${s === k ? 'on' : ''}" data-sub="${k}">${t}</button>`).join('') + '</div>' +
+      ({ apostas: viewApostas, painel: viewPainel, alertas: viewAlertas })[s]();
+  }
 
+  // ================== FICHA COMPLETA DO JOGO ==================
   function openJogo(i) {
-    const k = String(i), j = k.startsWith('z') ? todos()[+k.slice(1)] : k.startsWith('p') ? futuros()[+k.slice(1)] : (data.hoje.jogos || [])[i]; if (!j) return;
+    const j = todos()[+i]; if (!j) return;
     const t = tier(j);
     const bg = document.createElement('div'); bg.className = 'sheet-bg';
-    const p = (k, v) => v ? `<div class="p"><b>${k}</b>${esc(v)}</div>` : '';
+    const p = (k, v) => (v ? `<div class="p"><b>${k}</b>${esc(v)}</div>` : '');
+    const kv = (k, v, cls) => (v && v !== '—' ? `<div><div class="k">${k}</div><div class="n ${cls || ''}">${esc(v)}</div></div>` : '');
     bg.innerHTML = `<div class="sheet"><div class="grab"></div>
-      <div class="meta">${j._dia ? esc(j._dia) + ' · ' : ''}${esc(j.hora)} · ${esc(j.liga)}</div>
+      <div class="row"><div class="meta">${diaLabel(j)}<b class="hr">${esc(j.hora)}</b> · ${esc(j.liga)}</div>${pill(t)}</div>
       <div class="jogo" style="font-size:20px">${esc(j.jogo)}</div>
-      <div style="margin:8px 0 2px"><span class="pill ${t}"><span class="d ${t}"></span>${tierTxt[t]} · favorito ${esc(j.favorito)}</span> ${j.apostada ? '<span class="pill b">apostada</span>' : ''}</div>
+      <div class="ent" style="margin-top:10px"><div><div class="k">ENTRADA</div><div class="e">${esc(entrada(j))}</div><div class="k2">${MERCADO} · ${esc(casaDe(j) || 'casa da DG')} · stake ${STAKE}</div></div>
+        <div class="ob"><div class="k">ODD</div><div class="o">${odd(j.odd)}</div></div></div>
+      ${linhaVeredito(j)}
+      <div class="vsub">${comecou(j) ? '' : lido(j) + ' '}${j.apostada ? '<span style="color:var(--blue)">você apostou</span>' : ''}</div>
       <div class="kv">
-        <div><div class="k">Melhor odd · ${esc(j.casa || 'Parimatch')}</div><div class="n">${esc(j.odd || '—')}</div></div>
-        <div><div class="k">Nota (0–100)</div><div class="n">${esc(j.nota || '—')}</div></div>
-        <div><div class="k">Valor</div><div class="n ${evClass(j.valor)}">${esc(j.valor || '—')}</div></div>
-        <div><div class="k">Odd-alvo verde · amarelo</div><div class="n">${esc(j.alvoVerde || '—')} · ${esc(j.alvoAmarelo || '—')}</div></div>
-        <div><div class="k">Odd justa Pinnacle</div><div class="n">${esc(j.oddJusta || '—')}</div></div>
-        <div><div class="k">Alvo (EV +2%)</div><div class="n pos">${esc(j.oddMinima || '—')}</div></div>
-        <div><div class="k">EV puro (Pinnacle)</div><div class="n ${evClass(j.evPinnacle)}">${esc(j.evPinnacle || '—')}</div></div>
-        <div><div class="k">EV atual (odd ao vivo)</div><div class="n ${evClass(j.ev)}">${esc(j.ev || '—')}</div></div>
-        <div><div class="k">Prob. estimada</div><div class="n">${esc(j.prob || '—')}</div></div>
+        ${kv('Valor (com antecipado)', j.valor || j.valorNovo, evClass(j.valor || j.valorNovo))}${kv('Nota (0 a 100)', j.nota || j.cenario)}
+        ${kv('Odd justa', j.oddJusta ? odd(j.oddJusta) : '')}${kv('Odd-alvo verde', (j.alvoVerde || j.oddAlvo) ? odd(j.alvoVerde || j.oddAlvo) : '')}
+        ${kv('Odd-alvo amarelo', (j.alvoAmarelo || j.oddAlvoAmarelo) ? odd(j.alvoAmarelo || j.oddAlvoAmarelo) : '')}${kv('Alvo (EV +2%)', j.oddMinima ? odd(j.oddMinima) : '')}
+        ${kv('EV puro (Pinnacle)', j.evPinnacle, evClass(j.evPinnacle))}${kv('EV pelo método', j.evMetodo, evClass(j.evMetodo))}
+        ${kv('Prob. estimada', j.prob)}${kv('Critérios', j.criterios)}
       </div>
-      ${p('Motivo', j.motivo || motivo(j))}${p('Dimensões', j.dims)}${p('Referência de preço', j.ref)}${p('Contexto', j.alertaContexto || j.contexto)}${p('Critérios', j.criterios)}${p('A favor', j.aFavor)}${p('Contra', j.contra)}${p('Observação', j.obs)}
-      ${j.resultado ? p('Resultado', j.resultado + (j.lucro ? ' · ' + j.lucro : '')) : ''}
-      <div class="note" style="margin-top:12px">Stake fixa R$ 100. A aposta é feita por você na casa.</div>
-      ${(!j.casa || /parimatch/i.test(j.casa)) ? `<a class="btn" style="display:block;text-align:center;text-decoration:none" href="${esc(linkAposta(j))}" target="_blank" rel="noopener">Abrir na Parimatch</a>` : ''}
+      ${raioTabela(j)}
+      ${p('Motivo da cor', motivo(j))}${p('Dimensões da nota', j.dims || j.dimensoes)}${p('Referência de preço', j.ref || j.referencia)}${p('Contexto', j.alertaContexto || j.contexto)}${p('A favor', j.aFavor)}${p('Contra', j.contra)}
+      ${j.resultado ? p('Sua aposta', j.resultado + (j.lucro ? ' · ' + j.lucro : '')) : ''}
+      <div class="note" style="margin-top:12px">Stake fixa ${STAKE}. A aposta é feita por você na casa.</div>
+      ${ehPM(j) ? `<a class="btn" style="display:block;text-align:center;text-decoration:none" href="${esc(linkAposta(j))}" target="_blank" rel="noopener">Abrir na Parimatch</a>` : ''}
       <button class="btn ghost" type="button" id="shareS">Compartilhar</button>
       <button class="btn ghost" type="button" id="closeS">Fechar</button></div>`;
     document.body.appendChild(bg);
     bg.querySelector('#shareS').addEventListener('click', () => compartilhar(textoEntrada(j)));
     bg.addEventListener('click', (e) => { if (e.target === bg || e.target.id === 'closeS') bg.remove(); });
   }
-
+  async function compartilhar(txt) {
+    try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+    try { await navigator.clipboard.writeText(txt); toast('Copiado. Cole no WhatsApp.'); } catch (e) { location.href = 'https://wa.me/?text=' + encodeURIComponent(txt); }
+  }
   function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
 
-  // ================== EVENTOS ==================
-  document.querySelectorAll('nav button').forEach((b) => b.addEventListener('click', () => { tab = b.dataset.tab; localStorage.setItem(LS.tab, tab); render(); }));
+  // ================== MONTAGEM ==================
+  function viewKey() {
+    return `<div class="card"><div class="jogo">Conectar à planilha</div>
+      <p class="note">Cole a chave de acesso que você recebeu. Ela fica só neste aparelho.</p>
+      <input id="keyin" placeholder="chave de acesso" autocomplete="off">
+      <button class="btn" id="keybtn" type="button">Entrar</button></div>`;
+  }
+  const TIT = { apostar: 'Apostar', multiplas: 'Múltiplas', jogos: 'Todos os jogos', analise: 'Análise', conta: 'Conta' };
+  const VIEW = { apostar: viewApostar, multiplas: viewMultiplas, jogos: viewJogos, analise: viewAnalise, conta: viewConta };
+  function render(keep) {
+    const y0 = window.scrollY, m = $('#main');
+    // não redesenha por cima de quem está digitando na busca ou com um bloco aberto pela pessoa
+    const abertos = keep ? [...m.querySelectorAll('details')].map((d, i) => (d.open ? i : -1)).filter((i) => i >= 0) : null;
+    document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));
+    pintaSync();
+    if (!KEY) { $('#htitle').textContent = 'Favoritos'; $('#hdate').textContent = 'configuração'; m.innerHTML = viewKey(); $('#keybtn').onclick = () => { const v = $('#keyin').value.trim(); if (!v) return; KEY = v; localStorage.setItem(LS.key, v); load(true); }; return; }
+    if (!data) { m.innerHTML = '<div class="empty">Carregando os dados da planilha…</div>'; return; }
+    const d = data.hoje || {};
+    $('#hdate').textContent = (d.kpi && d.kpi.DATA) ? d.kpi.DATA : ('dia ' + data.dia);
+    $('#htitle').textContent = TIT[tab];
+    if (keep && tab === 'jogos' && document.activeElement && document.activeElement.id === 'zq') { pintaJogos(); return; }
+    let html;
+    try { html = VIEW[tab](); } catch (e) { console.error(e); html = `<div class="empty">Não consegui montar esta tela.<br><span class="meta">${esc(e.message)}</span></div>`; }
+    m.innerHTML = html;
+    const ms = (data.hoje && data.hoje.multiplas || []).filter((x) => !x.resultado).length, bm = $('#nbm');
+    if (bm) { bm.textContent = ms || ''; bm.classList.toggle('hidden', !ms); }
+    if (tab === 'jogos') { pintaJogos(); $('#zq').addEventListener('input', (e) => { Z.q = e.target.value; pintaJogos(); }); }
+    if (abertos) { const ds = m.querySelectorAll('details'); if (ds.length) abertos.forEach((i) => { if (ds[i]) ds[i].open = true; }); }
+    window.scrollTo(0, keep ? y0 : 0);
+  }
+  const vai = (t) => { tab = t; localStorage.setItem(LS.tab, tab); render(); };
+
+  // ================== EVENTOS (um ouvinte só para a tela toda) ==================
+  $('#main').addEventListener('click', (e) => {
+    const q = (s) => e.target.closest(s);
+    let b;
+    if ((b = q('[data-share]'))) { e.stopPropagation(); return compartilhar(textoEntrada(todos()[+b.dataset.share])); }
+    if (q('[data-shareall]')) {
+      const js = doDia(data.dia).filter((x) => tier(x.j) === 'g' && !comecou(x.j) && !x.j.resultado).map((x) => x.j);
+      if (js.length) compartilhar('🔥 Propostas para apostar · ' + ((data.hoje.kpi && data.hoje.kpi.DATA) || 'hoje') + '\n\n' + js.map(textoEntrada).join('\n\n'));
+      return;
+    }
+    if (q('a')) return;
+    if ((b = q('[data-gotab]'))) return vai(b.dataset.gotab);
+    if ((b = q('[data-sub]'))) { SUB[tab] = b.dataset.sub; localStorage.setItem(LS.sub, JSON.stringify(SUB)); return render(); }
+    if ((b = q('[data-rep]'))) { repFiltro = b.dataset.rep; return render(true); }
+    if ((b = q('[data-zdia]'))) { Z.dia = b.dataset.zdia; return render(); }
+    if ((b = q('[data-zcor]'))) { Z.cor = b.dataset.zcor; return pintaJogos(); }
+    if (q('summary') || q('details.mais')) return;
+    if ((b = q('[data-z]'))) return openJogo(b.dataset.z);
+  });
+  document.querySelectorAll('nav button').forEach((b) => b.addEventListener('click', () => vai(b.dataset.tab)));
   $('#sync').addEventListener('click', () => load(true));
   document.addEventListener('visibilitychange', () => { if (!document.hidden) load(false); });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 
   render(); load(false);
-  timer = setInterval(() => { if (!document.hidden) load(false); }, REFRESH_MS);
+  setInterval(() => { if (!document.hidden) load(false); }, REFRESH_MS);
 })();
 </script>
 </body>
