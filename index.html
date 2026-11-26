@@ -250,8 +250,16 @@
 
   // chave: vem no link (#k=...) uma vez e fica guardada no aparelho
   const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
-  if (hash.get('k')) { localStorage.setItem(LS.key, hash.get('k')); history.replaceState(null, '', location.pathname); }
-  let KEY = localStorage.getItem(LS.key) || '';
+  // LINK PESSOAL (#k=...): no iPhone, o Safari e o ícone da Tela de Início guardam dados separados. Por isso, no Safari do iPhone
+  // a chave continua no endereço e o manifest sai da página: assim o ícone criado abre o próprio link pessoal e ninguém digita nada.
+  const noIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const instalado = navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+  if (hash.get('k')) {
+    try { localStorage.setItem(LS.key, hash.get('k')); } catch (e) {}
+    if (noIOS && !instalado) { const mf = document.querySelector('link[rel="manifest"]'); if (mf) mf.remove(); }
+    else history.replaceState(null, '', location.pathname);
+  }
+  let KEY = localStorage.getItem(LS.key) || hash.get('k') || '';
 
   // ABAS: Apostar · Múltiplas · Jogos · Análise · Conta. Os nomes antigos guardados no aparelho são convertidos.
   const TABS = ['apostar', 'multiplas', 'jogos', 'analise', 'conta'];

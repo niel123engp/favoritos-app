@@ -1,5 +1,5 @@
 // Service worker: guarda a casca do app para abrir offline. Os dados vêm da API e ficam no localStorage.
-const CACHE = 'favoritos-v14';
+const CACHE = 'favoritos-v15';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
