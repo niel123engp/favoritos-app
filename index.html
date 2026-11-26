@@ -16,7 +16,7 @@
 <style>
   :root {
     --bg:#0B1220; --surface:#121A2B; --surface2:#182238; --border:#243049;
-    --text:#E8ECF1; --muted:#94A3B8; --muted2:#64748B;
+    --text:#F4F7FB; --muted:#C3CEDD; --muted2:#A3B1C6;
     --green:#34D399; --green-bg:rgba(52,211,153,.14);
     --amber:#FBBF24; --amber-bg:rgba(251,191,36,.14);
     --red:#F87171;   --red-bg:rgba(248,113,113,.14);
@@ -141,7 +141,7 @@
   .gr{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--muted2);border-radius:14px;padding:10px 12px;margin-bottom:8px;content-visibility:auto;contain-intrinsic-size:auto 78px}
   .gr:active{background:var(--surface2)}
   .gr.g{border-left-color:var(--green)} .gr.a{border-left-color:var(--amber)} .gr.r{border-left-color:var(--red)}
-  .gr.off{opacity:.55}
+  .gr.off{opacity:1}
   .gt{width:44px;flex:none;font-weight:800;font-size:13.5px;padding-top:1px}
   .gm{flex:1;min-width:0}
   .gj{font-weight:700;font-size:14.5px;line-height:1.25}
@@ -205,6 +205,17 @@
   .rxt{width:100%;border-collapse:collapse;font-size:12.5px} .rxt th{font-size:10px;color:var(--muted2);font-weight:700;text-align:left;padding:4px 4px;text-transform:uppercase;letter-spacing:.04em}
   .rxt td{padding:7px 4px;border-top:1px solid var(--border)} .rxt td:first-child{max-width:130px}
   nav button{position:relative;flex:1} .nb{position:absolute;top:0;left:calc(50% + 6px);background:var(--blue);color:#0B1220;font-size:10px;font-weight:800;border-radius:999px;min-width:16px;height:16px;line-height:16px;padding:0 4px}
+
+  /* ===== contraste 26/11: nada importante em cinza apagado; hierarquia por tamanho e peso ===== */
+  .gs,.gx,.jg,.k2,.mot,.fav,.rx,.vsub,.vline{color:var(--text)}
+  .gs{font-size:12.5px} .gx{font-size:12px;opacity:1} .rx{font-size:12.5px} .rx .rp,.rx .meta{color:var(--text)}
+  .jg{font-size:14px;font-weight:600} .mot{font-size:12.5px}
+  .gt{color:var(--text)} .gv .k{color:var(--muted)}
+  .d.n,.gr,.pc{--cz:#8FA0B8} .d.n{background:var(--cz)} .gr,.pc{border-left-color:var(--cz)}
+  .gr.g,.pc.g{border-left-color:var(--green)} .gr.a,.pc.a{border-left-color:var(--amber)} .gr.r,.pc.r{border-left-color:var(--red)} .pc.b{border-left-color:var(--blue)}
+  .pill.n,.tag{color:var(--text)}
+  .pos{color:#4ADE80} .neg{color:#FF8A8A} .mid{color:#FCD34D}
+  nav button{color:var(--muted)} .chip{color:var(--text)} .chip small{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -712,7 +723,7 @@
     const lista = base.filter((x) => Z.cor === 'all' || (Z.cor === 'apo' ? x.j.apostada : tier(x.j) === Z.cor)).sort(porHora);
     $('#zlista').innerHTML = lista.length ? lista.map(({ j, i }) => {
       const t = tier(j), mot = motivo(j), off = j.resultado || comecou(j), v = veredito(j);
-      return `<div class="gr ${t} ${off && !v ? 'off' : ''}" data-z="${i}">
+      return `<div class="gr ${t}" data-z="${i}">
         <div class="gt">${esc(j.hora)}</div>
         <div class="gm"><div class="gj">${esc(j.jogo)}</div>
           <div class="gs">${j.favorito ? '<b>' + esc(entrada(j)) + '</b> · ' : ''}${esc(casaDe(j) || '')}${casaDe(j) ? ' · ' : ''}${esc(j.liga)}</div>
@@ -720,7 +731,7 @@
           ${raioLinhas(j)}
           <div class="gx">${(v || !/^valor/i.test(mot)) && j.valor ? 'valor ' + esc(j.valor) + ' · ' : ''}${(v || !/^valor/i.test(mot)) && j.nota ? 'nota ' + esc(j.nota) + ' · ' : ''}${j.atualizado ? 'odd lida ' + esc(hhmm(j.atualizado)) : ''}</div></div>
         <div class="gv"><div class="on">${odd(j.odd)}</div><div class="k">odd</div>${pill(t)}
-          ${j.apostada ? '<div class="k" style="color:var(--blue)">apostada</div>' : ''}</div></div>`;
+          ${j.apostada ? '<div class="k" style="color:var(--blue)">apostada</div>' : ''}${off && !v ? '<div><span class="tag">já começou</span></div>' : ''}</div></div>`;
     }).join('') : '<div class="empty">Nenhum jogo com esse filtro.</div>';
   }
 
